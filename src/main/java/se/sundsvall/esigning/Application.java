@@ -1,8 +1,8 @@
-package se.sundsvall.template;
-
-import static org.springframework.boot.SpringApplication.run;
+package se.sundsvall.esigning;
 
 import se.sundsvall.dept44.ServiceApplication;
+
+import static org.springframework.boot.SpringApplication.run;
 
 @ServiceApplication
 public class Application {
