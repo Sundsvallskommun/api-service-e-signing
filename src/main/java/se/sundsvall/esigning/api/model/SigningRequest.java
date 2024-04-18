@@ -1,0 +1,74 @@
+package se.sundsvall.esigning.api.model;
+
+import java.time.OffsetDateTime;
+import java.util.Set;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(setterPrefix = "with")
+@Schema(description = "Signing request model")
+public class SigningRequest {
+
+	@OneOf(value = {"de-DE", "nb-NO", "ru-RU", "zh-CN", "fi-FI", "uk-UA", "en-US", "sv-SE", "da-DK", "fr-FR"}, message = "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR].", nullable = true)
+	@Schema(description = "Language parameter that overwrites the language of the signing instance for the current party. Valid values are one of [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR]", example = "sv-SE", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private String language;
+
+	@Schema(description = "Optional callback url", example = "https://example.com/callback", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private String callbackUrl;
+
+	@Future
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	@Schema(description = "The signing request expiration date and time", example = "2021-12-31T23:59:59Z", requiredMode = Schema.RequiredMode.REQUIRED)
+	private OffsetDateTime expires;
+
+	@Valid
+	@NotNull
+	@Schema(description = "The document to sign", implementation = Document.class, requiredMode = Schema.RequiredMode.REQUIRED)
+	private Document document;
+
+	@Valid
+	@NotNull
+	@Schema(description = "The initiator of the signing request", implementation = Initiator.class, requiredMode = Schema.RequiredMode.REQUIRED)
+	private Initiator initiator;
+
+	@Valid
+	@NotNull
+	@Schema(description = "The notification message", implementation = Message.class, requiredMode = Schema.RequiredMode.REQUIRED)
+	private Message notificationMessage;
+
+	@Valid
+	@NotNull
+	@Schema(description = "Reminder object", implementation = Reminder.class, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private Reminder reminder;
+
+	@NotEmpty
+	@ArraySchema(schema = @Schema(implementation = Signatory.class), minItems = 1, uniqueItems = true)
+	private Set<@Valid Signatory> signatories;
+
+
+}
