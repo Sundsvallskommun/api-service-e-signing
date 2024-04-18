@@ -1,5 +1,8 @@
 package se.sundsvall.esigning.api.model;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import java.time.OffsetDateTime;
 import java.util.Set;
 
@@ -34,36 +37,35 @@ import lombok.ToString;
 public class SigningRequest {
 
 	@OneOf(value = {"de-DE", "nb-NO", "ru-RU", "zh-CN", "fi-FI", "uk-UA", "en-US", "sv-SE", "da-DK", "fr-FR"}, message = "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR].", nullable = true)
-	@Schema(description = "Language parameter that overwrites the language of the signing instance for the current party. Valid values are one of [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR]", example = "sv-SE", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	@Schema(description = "The language used for the signing instance. Valid values are one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA]. Swedish will be used If no language is provided", example = "sv-SE", requiredMode = NOT_REQUIRED)
 	private String language;
 
-	@Schema(description = "Optional callback url", example = "https://example.com/callback", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	@Schema(description = "Optional callback url", example = "https://example.com/callback", requiredMode = NOT_REQUIRED)
 	private String callbackUrl;
 
 	@Future
 	@NotNull
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Schema(description = "The signing request expiration date and time", example = "2021-12-31T23:59:59Z", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "The signing request expiration date and time", example = "2021-12-31T23:59:59Z", requiredMode = REQUIRED)
 	private OffsetDateTime expires;
 
 	@Valid
 	@NotNull
-	@Schema(description = "The document to sign", implementation = Document.class, requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "The document to sign", implementation = Document.class, requiredMode = REQUIRED)
 	private Document document;
 
 	@Valid
 	@NotNull
-	@Schema(description = "The initiator of the signing request", implementation = Initiator.class, requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "The initiator of the signing request", implementation = Initiator.class, requiredMode = REQUIRED)
 	private Initiator initiator;
 
 	@Valid
 	@NotNull
-	@Schema(description = "The notification message", implementation = Message.class, requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "The notification message", implementation = Message.class, requiredMode = REQUIRED)
 	private Message notificationMessage;
 
 	@Valid
-	@NotNull
-	@Schema(description = "Reminder object", implementation = Reminder.class, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	@Schema(description = "Reminder object", implementation = Reminder.class, requiredMode = NOT_REQUIRED)
 	private Reminder reminder;
 
 	@NotEmpty

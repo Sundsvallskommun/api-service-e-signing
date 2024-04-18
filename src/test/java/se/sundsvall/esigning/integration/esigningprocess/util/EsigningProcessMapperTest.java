@@ -1,4 +1,4 @@
-package se.sundsvall.esigning.integration.esigning.util;
+package se.sundsvall.esigning.integration.esigningprocess.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.esigning.TestUtil.createInitiator;
@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test;
 
 import se.sundsvall.esigning.api.model.Signatory;
 
-class EsigningMapperTest {
+class EsigningProcessMapperTest {
 
 	@Test
 	void toSigningRequest() {
 		final var signingRequest = createSigningRequest();
 		final var signatory = signingRequest.getSignatories().stream().findFirst().get();
 
-		final var result = EsigningMapper.toSigningRequest(signingRequest);
+		final var result = EsigningProcessMapper.toSigningRequest(signingRequest);
 
 		assertThat(result).isNotNull();
 		assertThat(result.getCallbackUrl()).isEqualTo(signingRequest.getCallbackUrl());
@@ -58,14 +58,14 @@ class EsigningMapperTest {
 
 	@Test
 	void toSigningRequestWithNull() {
-		assertThat(EsigningMapper.toSigningRequest(null)).isNull();
+		assertThat(EsigningProcessMapper.toSigningRequest(null)).isNull();
 	}
 
 	@Test
 	void toSignatory() {
 		final var signatory = createSignatory();
 
-		final var result = EsigningMapper.toSignatory(signatory);
+		final var result = EsigningProcessMapper.toSignatory(signatory);
 
 		assertThat(result).isNotNull();
 		assertThat(result.getEmail()).isEqualTo(signatory.getEmail());
@@ -80,13 +80,13 @@ class EsigningMapperTest {
 
 	@Test
 	void toSignatoryWithNull() {
-		assertThat(EsigningMapper.toSignatory(null)).isNull();
+		assertThat(EsigningProcessMapper.toSignatory(null)).isNull();
 	}
 
 	@Test
 	void toSignatories() {
 		final var signatories = Set.of(createSignatory(), createSignatory());
-		final var result = EsigningMapper.toSignatories(signatories);
+		final var result = EsigningProcessMapper.toSignatories(signatories);
 
 		assertThat(result).isNotEmpty().hasSize(2);
 
@@ -100,14 +100,14 @@ class EsigningMapperTest {
 
 	@Test
 	void toSignatoriesWithNull() {
-		assertThat(EsigningMapper.toSignatories(null)).isEmpty();
+		assertThat(EsigningProcessMapper.toSignatories(null)).isEmpty();
 	}
 
 	@Test
 	void toInitiator() {
 		final var initiator = createInitiator();
 
-		final var result = EsigningMapper.toInitiator(initiator);
+		final var result = EsigningProcessMapper.toInitiator(initiator);
 
 		assertThat(result).isNotNull().satisfies(i -> {
 			assertThat(i.getEmail()).isEqualTo(initiator.getEmail());
@@ -119,14 +119,14 @@ class EsigningMapperTest {
 
 	@Test
 	void toInitiatorWithNull() {
-		assertThat(EsigningMapper.toInitiator(null)).isNull();
+		assertThat(EsigningProcessMapper.toInitiator(null)).isNull();
 	}
 
 	@Test
 	void toMessage() {
 		final var message = createMessage();
 
-		final var result = EsigningMapper.toMessage(message);
+		final var result = EsigningProcessMapper.toMessage(message);
 
 		assertThat(result).isNotNull().satisfies(m -> {
 			assertThat(m.getSubject()).isEqualTo(message.getSubject());
@@ -136,14 +136,14 @@ class EsigningMapperTest {
 
 	@Test
 	void toMessageWithNull() {
-		assertThat(EsigningMapper.toMessage(null)).isNull();
+		assertThat(EsigningProcessMapper.toMessage(null)).isNull();
 	}
 
 	@Test
 	void toReminder() {
 		final var reminder = createReminder();
 
-		final var result = EsigningMapper.toReminder(reminder);
+		final var result = EsigningProcessMapper.toReminder(reminder);
 
 		assertThat(result).isNotNull().satisfies(r -> {
 			assertThat(r.getIntervalInHours()).isEqualTo(reminder.getIntervalInHours());
@@ -157,7 +157,7 @@ class EsigningMapperTest {
 
 	@Test
 	void toReminderWithNull() {
-		assertThat(EsigningMapper.toReminder(null)).isNull();
+		assertThat(EsigningProcessMapper.toReminder(null)).isNull();
 	}
 
 }

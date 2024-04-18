@@ -1,5 +1,7 @@
 package se.sundsvall.esigning.api.model;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import jakarta.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,11 +24,11 @@ import lombok.ToString;
 public class Message {
 
 	@NotBlank
-	@Schema(description = "Subject of the message", example = "Please sign the document", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "Subject of the message", example = "Please sign the document", requiredMode = REQUIRED)
 	private String subject;
 
 	@NotBlank
-	@Schema(description = "Body of the message", example = "Dear John Doe, please sign the document.", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "Body of the message", example = "Dear John Doe, please sign the document.", requiredMode = REQUIRED)
 	private String body;
 
 

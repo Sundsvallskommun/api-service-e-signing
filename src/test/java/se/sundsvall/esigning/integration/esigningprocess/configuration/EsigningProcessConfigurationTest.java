@@ -1,9 +1,9 @@
-package se.sundsvall.esigning.integration.esigning.configuration;
+package se.sundsvall.esigning.integration.esigningprocess.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.esigning.integration.esigning.configuration.EsigningConfiguration.CLIENT_ID;
+import static se.sundsvall.esigning.integration.esigningprocess.configuration.EsigningProcessConfiguration.CLIENT_ID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 import feign.codec.ErrorDecoder;
 
 @ExtendWith(MockitoExtension.class)
-class EsigningConfigurationTest {
+class EsigningProcessConfigurationTest {
 
 	@Mock
 	private ClientRegistrationRepository clientRepositoryMock;
@@ -33,7 +33,7 @@ class EsigningConfigurationTest {
 	private ClientRegistration clientRegistrationMock;
 
 	@Mock
-	private EsigningProperties propertiesMock;
+	private EsigningProcessProperties propertiesMock;
 
 	@Spy
 	private FeignMultiCustomizer feignMultiCustomizerSpy;
@@ -42,7 +42,7 @@ class EsigningConfigurationTest {
 	private ArgumentCaptor<ErrorDecoder> errorDecoderCaptor;
 
 	@InjectMocks
-	private EsigningConfiguration configuration;
+	private EsigningProcessConfiguration configuration;
 
 	@Test
 	void testFeignBuilderCustomizer() {

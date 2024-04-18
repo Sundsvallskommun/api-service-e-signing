@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
+import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.service.SigningService;
 
@@ -45,7 +46,7 @@ class SigningResource {
 
 	@Operation(summary = "Start a signing process")
 	@PostMapping(value = "/start", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_PROBLEM_JSON_VALUE)
-	ResponseEntity<String> startSigningProcess(@Valid @RequestBody final SigningRequest request) {
+	ResponseEntity<EsigningResponse> startSigningProcess(@Valid @RequestBody final SigningRequest request) {
 		return accepted().body(signingService.startSigningProcess(request));
 	}
 

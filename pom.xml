@@ -83,11 +83,9 @@
                             <inputSpec>
                                 ${project.basedir}/src/main/resources/contract/pw-e-signing.yml
                             </inputSpec>
-                            <generateSupportingFiles>false</generateSupportingFiles>
                             <output>${generated-sources-path}</output>
                             <generatorName>spring</generatorName>
                             <generateApis>false</generateApis>
-                            <output>${generated-sources-path}</output>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>

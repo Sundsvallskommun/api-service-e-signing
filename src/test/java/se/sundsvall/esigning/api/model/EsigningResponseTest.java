@@ -11,11 +11,11 @@ import static org.hamcrest.CoreMatchers.allOf;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
-class DocumentTest {
+class EsigningResponseTest {
 
 	@Test
 	void testBean() {
-		MatcherAssert.assertThat(Document.class, allOf(
+		MatcherAssert.assertThat(EsigningResponse.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
 			hasValidBeanHashCode(),
@@ -25,28 +25,22 @@ class DocumentTest {
 
 	@Test
 	void builderTest() {
-		final var fileName = "fileName";
-		final var registrationNumber = "registrationNumber";
-		final var descriptiveName = "descriptiveName";
-		final var bean = Document.builder()
-			.withFileName(fileName)
-			.withRegistrationNumber(registrationNumber)
-			.withDescriptiveName(descriptiveName)
+		final var processId = "1234";
+
+		final var bean = EsigningResponse.builder()
+			.withProcessId(processId)
 			.build();
 
-		assertThat(bean).satisfies(b -> {
-			assertThat(b.getFileName()).isEqualTo(fileName);
-			assertThat(b.getRegistrationNumber()).isEqualTo(registrationNumber);
-			assertThat(b.getDescriptiveName()).isEqualTo(descriptiveName);
-		}).hasNoNullFieldsOrProperties();
+		assertThat(bean).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(bean.getProcessId()).isEqualTo(processId);
 	}
 
 	@Test
 	void testNoDirtOnCreatedBean() {
-		assertThat(Document.builder().build())
+		assertThat(EsigningResponse.builder().build())
 			.hasAllNullFieldsOrProperties();
 
-		assertThat(new Document())
+		assertThat(new EsigningResponse())
 			.hasAllNullFieldsOrProperties();
 	}
 }

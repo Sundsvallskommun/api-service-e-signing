@@ -13,6 +13,7 @@ import se.sundsvall.esigning.Application;
 class ProcessWorkerIT extends AbstractAppTest {
 
 	private static final String REQUEST_FILE = "request.json";
+	private static final String RESPONSE_FILE = "response.json";
 
 	@Test
 	void test01_startProcess() {
@@ -21,8 +22,8 @@ class ProcessWorkerIT extends AbstractAppTest {
 			.withHttpMethod(POST)
 			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(ACCEPTED)
-			.withExpectedResponse("123")
+			.withExpectedResponse(RESPONSE_FILE)
 			.sendRequestAndVerifyResponse();
 	}
-				
+
 }

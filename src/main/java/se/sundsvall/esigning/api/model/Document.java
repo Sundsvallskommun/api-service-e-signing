@@ -1,5 +1,8 @@
 package se.sundsvall.esigning.api.model;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import jakarta.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,15 +24,15 @@ import lombok.ToString;
 @Schema(description = "Document model")
 public class Document {
 
-	@Schema(description = "Optional descriptive name for the document that is to be signed.", example = "Employment contract", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	@Schema(description = "Optional descriptive name for the document that is to be signed.", example = "Employment contract", requiredMode = NOT_REQUIRED)
 	private String descriptiveName;
 
 	@NotBlank
-	@Schema(description = "The document registration number, the value must not be blank or null", example = "12345-2022", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "The document registration number, the value must not be blank or null", example = "12345-2022", requiredMode = REQUIRED)
 	private String registrationNumber;
 
 	@NotBlank
-	@Schema(description = "The document file name, the value must not be blank or null", example = "document.pdf", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "The document file name, the value must not be blank or null", example = "document.pdf", requiredMode = REQUIRED)
 	private String fileName;
 
 }

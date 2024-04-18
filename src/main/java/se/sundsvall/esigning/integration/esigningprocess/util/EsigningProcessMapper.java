@@ -1,4 +1,4 @@
-package se.sundsvall.esigning.integration.esigning.util;
+package se.sundsvall.esigning.integration.esigningprocess.util;
 
 
 import static java.util.Collections.emptySet;
@@ -13,9 +13,9 @@ import se.sundsvall.esigning.api.model.Reminder;
 import se.sundsvall.esigning.api.model.Signatory;
 import se.sundsvall.esigning.api.model.SigningRequest;
 
-public final class EsigningMapper {
+public final class EsigningProcessMapper {
 
-	private EsigningMapper() {
+	private EsigningProcessMapper() {
 	}
 
 	public static generated.se.sundsvall.pw_e_signing.SigningRequest toSigningRequest(final SigningRequest signingRequest) {
@@ -55,11 +55,9 @@ public final class EsigningMapper {
 	}
 
 	public static Set<generated.se.sundsvall.pw_e_signing.Signatory> toSignatories(final Set<Signatory> signatories) {
-		if (signatories == null) {
-			return emptySet();
-		}
-
-		return signatories.stream().map(EsigningMapper::toSignatory).collect(Collectors.toSet());
+		return Optional.ofNullable(signatories).orElse(emptySet()).stream()
+			.map(EsigningProcessMapper::toSignatory)
+			.collect(Collectors.toSet());
 	}
 
 

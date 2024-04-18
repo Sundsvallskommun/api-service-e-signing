@@ -55,7 +55,6 @@ class SigningResourceFailureTest {
 			Arguments.of(createSigningRequest(request -> request.setNotificationMessage(null)), "notificationMessage", "must not be null"),
 			Arguments.of(createSigningRequest(request -> request.getNotificationMessage().setBody(null)), "notificationMessage.body", "must not be blank"),
 			Arguments.of(createSigningRequest(request -> request.getNotificationMessage().setSubject(null)), "notificationMessage.subject", "must not be blank"),
-			Arguments.of(createSigningRequest(request -> request.setReminder(null)), "reminder", "must not be null"),
 			Arguments.of(createSigningRequest(request -> request.getReminder().setMessage(null)), "reminder.message", "must not be null"),
 			Arguments.of(createSigningRequest(request -> request.getReminder().getMessage().setSubject(null)), "reminder.message.subject", "must not be blank"),
 			Arguments.of(createSigningRequest(request -> request.getReminder().getMessage().setBody(null)), "reminder.message.body", "must not be blank"),

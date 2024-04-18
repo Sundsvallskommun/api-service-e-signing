@@ -1,4 +1,4 @@
-package se.sundsvall.esigning.integration.esigning.configuration;
+package se.sundsvall.esigning.integration.esigningprocess.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.MOCK;
@@ -12,10 +12,10 @@ import se.sundsvall.esigning.Application;
 
 @SpringBootTest(classes = Application.class, webEnvironment = MOCK)
 @ActiveProfiles("junit")
-class EsigningPropertiesTest {
+class EsigningProcessPropertiesTest {
 
 	@Autowired
-	private EsigningProperties properties;
+	private EsigningProcessProperties properties;
 
 	@Test
 	void testProperties() {

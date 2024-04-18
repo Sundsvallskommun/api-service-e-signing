@@ -1,23 +1,28 @@
 package se.sundsvall.esigning.service;
 
-import static se.sundsvall.esigning.integration.esigning.util.EsigningMapper.toSigningRequest;
+import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
 
 import org.springframework.stereotype.Service;
 
+import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
-import se.sundsvall.esigning.integration.esigning.EsigningIntegration;
+import se.sundsvall.esigning.integration.esigningprocess.EsigningProcessIntegration;
 
 @Service
 public class SigningService {
 
-	private final EsigningIntegration esigningIntegration;
+	private final EsigningProcessIntegration esigningProcessIntegration;
 
-	public SigningService(final EsigningIntegration esigningIntegration) {
-		this.esigningIntegration = esigningIntegration;
+	public SigningService(final EsigningProcessIntegration esigningProcessIntegration) {
+		this.esigningProcessIntegration = esigningProcessIntegration;
 	}
 
-	public String startSigningProcess(final SigningRequest signingRequest) {
-		return esigningIntegration.startProcess(toSigningRequest(signingRequest)).getProcessId();
+	public EsigningResponse startSigningProcess(final SigningRequest signingRequest) {
+		final var processId = esigningProcessIntegration.startProcess(toSigningRequest(signingRequest)).getProcessId();
+
+		return EsigningResponse.builder()
+			.withProcessId(processId)
+			.build();
 	}
 
 }

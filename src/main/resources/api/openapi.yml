@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:55863
+  - url: http://localhost:62572
     description: Generated server url
 tags:
   - name: eSigning
@@ -184,9 +184,9 @@ components:
       properties:
         language:
           type: string
-          description: "Language parameter that overwrites the language of the signing\
-            \ instance for the current party. Valid values are one of [de-DE, nb-NO,\
-            \ ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR]"
+          description: "The language used for the signing instance. Valid values are\
+            \ one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI,\
+            \ uk-UA]. Swedish will be used If no language is provided"
           example: sv-SE
         callbackUrl:
           type: string
@@ -227,9 +227,9 @@ components:
             type: object
         status:
           $ref: '#/components/schemas/StatusType'
-        title:
-          type: string
         detail:
+          type: string
+        title:
           type: string
     StatusType:
       type: object
@@ -362,9 +362,9 @@ components:
             type: object
         status:
           $ref: '#/components/schemas/StatusType'
-        title:
-          type: string
         detail:
+          type: string
+        title:
           type: string
         suppressed:
           type: array

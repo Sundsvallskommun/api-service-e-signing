@@ -1,4 +1,4 @@
-package se.sundsvall.esigning.integration.esigning;
+package se.sundsvall.esigning.integration.esigningprocess;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,25 +14,25 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Problem;
+import org.zalando.problem.ThrowableProblem;
 
-import se.sundsvall.esigning.integration.esigning.util.EsigningMapper;
+import se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper;
 
 import generated.se.sundsvall.pw_e_signing.StartResponse;
 
 @ExtendWith(MockitoExtension.class)
-class EsigningIntegrationTest {
+class EsigningProcessIntegrationTest {
 
 	@Mock
-	private EsigningClient mockClient;
+	private EsigningProcessClient mockClient;
 
 	@InjectMocks
-	private EsigningIntegration integration;
+	private EsigningProcessIntegration integration;
 
 	@Test
 	void startProcessTest() {
-		final var signingRequest = EsigningMapper.toSigningRequest(createSigningRequest());
+		final var signingRequest = EsigningProcessMapper.toSigningRequest(createSigningRequest());
 		final var response = new StartResponse().processId("123");
 		when(mockClient.startProcess(any())).thenReturn(response);
 
@@ -45,8 +45,8 @@ class EsigningIntegrationTest {
 
 	@Test
 	void startProcess_whenThrowsTest() {
-		final var signingRequest = EsigningMapper.toSigningRequest(createSigningRequest());
-		when(mockClient.startProcess(signingRequest)).thenThrow(new AbstractThrowableProblem() {
+		final var signingRequest = EsigningProcessMapper.toSigningRequest(createSigningRequest());
+		when(mockClient.startProcess(signingRequest)).thenThrow(new ThrowableProblem() {
 		});
 
 		assertThatThrownBy(() -> integration.startProcess(signingRequest))

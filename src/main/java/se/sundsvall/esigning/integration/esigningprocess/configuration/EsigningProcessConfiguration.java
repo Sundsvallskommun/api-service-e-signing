@@ -1,4 +1,4 @@
-package se.sundsvall.esigning.integration.esigning.configuration;
+package se.sundsvall.esigning.integration.esigningprocess.configuration;
 
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -10,15 +10,15 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 
 @Import(FeignConfiguration.class)
-public class EsigningConfiguration {
+public class EsigningProcessConfiguration {
 
 	public static final String CLIENT_ID = "esigning";
 
 	@Bean
-	FeignBuilderCustomizer feignBuilderCustomizer(final ClientRegistrationRepository clientRepository, final EsigningProperties esigningProperties) {
+	FeignBuilderCustomizer feignBuilderCustomizer(final ClientRegistrationRepository clientRepository, final EsigningProcessProperties esigningProcessProperties) {
 		return FeignMultiCustomizer.create()
 			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID))
-			.withRequestTimeoutsInSeconds(esigningProperties.connectTimeout(), esigningProperties.readTimeout())
+			.withRequestTimeoutsInSeconds(esigningProcessProperties.connectTimeout(), esigningProcessProperties.readTimeout())
 			.withRetryableOAuth2InterceptorForClientRegistration(clientRepository.findByRegistrationId(CLIENT_ID))
 			.composeCustomizersToOne();
 	}

@@ -1,34 +1,34 @@
-package se.sundsvall.esigning.integration.esigning;
+package se.sundsvall.esigning.integration.esigningprocess;
 
 import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Problem;
+import org.zalando.problem.ThrowableProblem;
 
 import generated.se.sundsvall.pw_e_signing.SigningRequest;
 import generated.se.sundsvall.pw_e_signing.StartResponse;
 
 
 @Component
-public class EsigningIntegration {
+public class EsigningProcessIntegration {
 
 	private static final String PROCESS_ENGINE_PROBLEM_DETAIL = "Unexpected response from ProcessEngine API.";
 	private static final String COULD_NOT_START_PROCESS = "Could not start process for signing request. Error: %s";
-	private static final Logger LOGGER = LoggerFactory.getLogger(EsigningIntegration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EsigningProcessIntegration.class);
 
-	private final EsigningClient esigningClient;
+	private final EsigningProcessClient esigningProcessClient;
 
-	public EsigningIntegration(final EsigningClient esigningClient) {
-		this.esigningClient = esigningClient;
+	public EsigningProcessIntegration(final EsigningProcessClient esigningProcessClient) {
+		this.esigningProcessClient = esigningProcessClient;
 	}
 
 	public StartResponse startProcess(final SigningRequest request) {
 		try {
-			return esigningClient.startProcess(request);
-		} catch (final AbstractThrowableProblem e) {
+			return esigningProcessClient.startProcess(request);
+		} catch (final ThrowableProblem e) {
 			LOGGER.error(COULD_NOT_START_PROCESS.formatted(e));
 			throw Problem.valueOf(SERVICE_UNAVAILABLE, PROCESS_ENGINE_PROBLEM_DETAIL);
 		}

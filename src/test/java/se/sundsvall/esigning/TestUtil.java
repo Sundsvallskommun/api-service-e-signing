@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import se.sundsvall.esigning.api.model.Document;
+import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.Initiator;
 import se.sundsvall.esigning.api.model.Message;
 import se.sundsvall.esigning.api.model.Reminder;
@@ -119,6 +120,20 @@ public final class TestUtil {
 
 	public static SigningRequest createSigningRequest() {
 		return createSigningRequest(null);
+	}
+
+	public static EsigningResponse createEsigningResponse(final Consumer<EsigningResponse> modifier) {
+		final var bean = EsigningResponse.builder()
+			.withProcessId("1234")
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static EsigningResponse createEsigningResponse() {
+		return createEsigningResponse(null);
 	}
 
 }
