@@ -26,12 +26,6 @@ paths:
               $ref: '#/components/schemas/SigningRequest'
         required: true
       responses:
-        "404":
-          description: Not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "502":
           description: Bad Gateway
           content:
@@ -47,6 +41,12 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/StartResponse'
+        "404":
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "500":
           description: Internal Server error
           content:
@@ -135,8 +135,8 @@ components:
         startDateTime:
           type: string
           description: The date and time when the first reminder message will be sent.
-            Format is yyyy-MM-dd'T'HH:mm:ss.SSSXXX
           format: date-time
+          example: 2021-12-31T23:59:59Z
       description: Reminder message model for the signature request.
     Signatory:
       required:
@@ -165,7 +165,6 @@ components:
       description: A party assigned as signatory to the signing.
     SigningRequest:
       required:
-        - expires
         - fileName
         - initiator
         - notificationMessage
@@ -190,14 +189,16 @@ components:
           example: Employment contract
         expires:
           type: string
-          description: The date and time when the signing request expires. Format
-            is yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+          description: "Optional date and time when the signing request expires. If\
+            \ no exipre date is provided, expiretime will be set to 30 days from time\
+            \ when request was received."
           format: date-time
+          example: 2021-12-31T23:59:59Z
         language:
           type: string
           description: "The language used by the signing procedure. Valid values are\
             \ one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI,\
-            \ uk-UA]. Swedish will be used If no language is provided."
+            \ uk-UA]. If no language is provided, sv-SE will be used."
           example: sv-SE
         notificationMessage:
           $ref: '#/components/schemas/Message'
@@ -233,12 +234,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        detail:
-          type: string
-        title:
-          type: string
         status:
           $ref: '#/components/schemas/StatusType'
+        title:
+          type: string
+        detail:
+          type: string
     StatusType:
       type: object
       properties:
@@ -368,12 +369,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        detail:
-          type: string
-        title:
-          type: string
         status:
           $ref: '#/components/schemas/StatusType'
+        title:
+          type: string
+        detail:
+          type: string
         suppressed:
           type: array
           items:

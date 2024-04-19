@@ -44,9 +44,8 @@ public class SigningRequest {
 	private String callbackUrl;
 
 	@Future
-	@NotNull
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Schema(description = "The signing request expiration date and time", example = "2021-12-31T23:59:59Z", requiredMode = REQUIRED)
+	@Schema(description = "The signing request expiration date and time", example = "2021-12-31T23:59:59Z", requiredMode = NOT_REQUIRED)
 	private OffsetDateTime expires;
 
 	@Valid

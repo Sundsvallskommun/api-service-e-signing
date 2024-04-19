@@ -44,7 +44,6 @@ class SigningResourceFailureTest {
 			Arguments.of(createSigningRequest(request -> request.getDocument().setFileName(null)), "document.fileName", "must not be blank"),
 			Arguments.of(createSigningRequest(request -> request.getDocument().setRegistrationNumber(null)), "document.registrationNumber", "must not be blank"),
 			Arguments.of(createSigningRequest(request -> request.setLanguage("invalid-language")), "language", "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR]."),
-			Arguments.of(createSigningRequest(request -> request.setExpires(null)), "expires", "must not be null"),
 			Arguments.of(createSigningRequest(request -> request.setExpires(OffsetDateTime.now().minusDays(3))), "expires", "must be a future date"),
 			Arguments.of(createSigningRequest(request -> request.setInitiator(null)), "initiator", "must not be null"),
 			Arguments.of(createSigningRequest(request -> request.getInitiator().setEmail(null)), "initiator.email", "must not be null"),

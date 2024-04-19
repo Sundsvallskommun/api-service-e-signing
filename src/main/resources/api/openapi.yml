@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:62572
+  - url: http://localhost:57467
     description: Generated server url
 tags:
   - name: eSigning
@@ -26,16 +26,18 @@ paths:
               $ref: '#/components/schemas/SigningRequest'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         "503":
           description: Service Unavailable
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        "202":
-          description: Accepted
-          content:
-            application/json: { }
         "400":
           description: Bad Request
           content:
@@ -44,12 +46,10 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "500":
-          description: Internal Server Error
+        "202":
+          description: Accepted
           content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
+            application/json: { }
   /api-docs:
     get:
       tags:
@@ -176,7 +176,6 @@ components:
     SigningRequest:
       required:
         - document
-        - expires
         - initiator
         - notificationMessage
         - signatories
