@@ -12,7 +12,7 @@ import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 @Import(FeignConfiguration.class)
 public class EsigningProcessConfiguration {
 
-	public static final String CLIENT_ID = "esigning";
+	public static final String CLIENT_ID = "esigningprocess";
 
 	@Bean
 	FeignBuilderCustomizer feignBuilderCustomizer(final ClientRegistrationRepository clientRepository, final EsigningProcessProperties esigningProcessProperties) {

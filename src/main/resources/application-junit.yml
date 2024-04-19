@@ -6,7 +6,7 @@ logging:
     root: INFO
 config:
   integration:
-    esigning:
+    esigningprocess:
       base-url: http://localhost:${wiremock.server.port}/pw-esigning
       token-url: http://localhost:${wiremock.server.port}/token
       client-id: someClientId

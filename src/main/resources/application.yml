@@ -15,16 +15,16 @@ spring:
     oauth2:
       client:
         provider:
-          esigning:
-            token-uri: ${config.integration.esigning.token-url}
+          esigningprocess:
+            token-uri: ${config.integration.esigningprocess.token-url}
         registration:
-          esigning:
+          esigningprocess:
             authorization-grant-type: client_credentials
-            provider: esigning
-            client-id: ${config.integration.esigning.client-id}
-            client-secret: ${config.integration.esigning.client-secret}
+            provider: esigningprocess
+            client-id: ${config.integration.esigningprocess.client-id}
+            client-secret: ${config.integration.esigningprocess.client-secret}
 integration:
-  esigning:
-    connect-timeout: ${config.integration.esigning.connectTimeout}
-    read-timeout: ${config.integration.esigning.readTimeout}
-    base-url: ${config.integration.esigning.base-url}
+  esigningprocess:
+    connect-timeout: ${config.integration.esigningprocess.connectTimeout}
+    read-timeout: ${config.integration.esigningprocess.readTimeout}
+    base-url: ${config.integration.esigningprocess.base-url}

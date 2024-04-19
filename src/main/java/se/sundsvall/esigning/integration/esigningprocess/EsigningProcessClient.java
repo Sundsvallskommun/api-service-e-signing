@@ -15,7 +15,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 
 @FeignClient(
 	name = CLIENT_ID,
-	url = "${integration.esigning.base-url}",
+	url = "${integration.esigningprocess.base-url}",
 	configuration = EsigningProcessConfiguration.class
 )
 public interface EsigningProcessClient {
