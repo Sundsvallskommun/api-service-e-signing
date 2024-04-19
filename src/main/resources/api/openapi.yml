@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "1.0"
 servers:
-  - url: http://localhost:57467
+  - url: http://localhost:60249
     description: Generated server url
 tags:
   - name: eSigning
@@ -26,6 +26,10 @@ paths:
               $ref: '#/components/schemas/SigningRequest'
         required: true
       responses:
+        "202":
+          description: Accepted
+          content:
+            application/json: { }
         "500":
           description: Internal Server Error
           content:
@@ -46,10 +50,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Problem'
                   - $ref: '#/components/schemas/ConstraintViolationProblem'
-        "202":
-          description: Accepted
-          content:
-            application/json: { }
   /api-docs:
     get:
       tags:
@@ -193,7 +193,9 @@ components:
           example: https://example.com/callback
         expires:
           type: string
-          description: The signing request expiration date and time
+          description: "Optional date and time when the signing request expires. If\
+            \ no exipre date is provided, expiretime will be set to 30 days from time\
+            \ when request was received."
           format: date-time
           example: 2021-12-31T23:59:59Z
         document:
@@ -224,12 +226,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: '#/components/schemas/StatusType'
         detail:
           type: string
         title:
           type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
     StatusType:
       type: object
       properties:
@@ -359,12 +361,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: '#/components/schemas/StatusType'
         detail:
           type: string
         title:
           type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
         suppressed:
           type: array
           items:

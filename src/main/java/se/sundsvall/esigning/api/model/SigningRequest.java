@@ -2,6 +2,7 @@ package se.sundsvall.esigning.api.model;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -44,8 +45,8 @@ public class SigningRequest {
 	private String callbackUrl;
 
 	@Future
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	@Schema(description = "The signing request expiration date and time", example = "2021-12-31T23:59:59Z", requiredMode = NOT_REQUIRED)
+	@DateTimeFormat(iso = DATE_TIME)
+	@Schema(description = "Optional date and time when the signing request expires. If no exipre date is provided, expiretime will be set to 30 days from time when request was received.", example = "2021-12-31T23:59:59Z")
 	private OffsetDateTime expires;
 
 	@Valid
