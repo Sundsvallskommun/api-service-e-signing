@@ -1,0 +1,410 @@
+openapi: 3.0.1
+info:
+  title: api-e-signing
+  contact: { }
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: "1.0"
+servers:
+  - url: http://localhost:60249
+    description: Generated server url
+tags:
+  - name: eSigning
+    description: E-signing
+paths:
+  /e-signing/start:
+    post:
+      tags:
+        - eSigning
+      summary: Start a signing process
+      operationId: startSigningProcess
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigningRequest'
+        required: true
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json: { }
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "503":
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+  /api-docs:
+    get:
+      tags:
+        - API
+      summary: OpenAPI
+      operationId: getApiDocs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/yaml:
+              schema:
+                type: string
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
+components:
+  schemas:
+    Document:
+      required:
+        - fileName
+        - registrationNumber
+      type: object
+      properties:
+        descriptiveName:
+          type: string
+          description: Optional descriptive name for the document that is to be signed.
+          example: Employment contract
+        registrationNumber:
+          type: string
+          description: "The document registration number, the value must not be blank\
+            \ or null"
+          example: 12345-2022
+        fileName:
+          type: string
+          description: "The document file name, the value must not be blank or null"
+          example: document.pdf
+      description: Document model
+    Initiator:
+      required:
+        - email
+        - name
+        - partyId
+      type: object
+      properties:
+        name:
+          type: string
+          description: The initiator name
+          example: John Doe
+        partyId:
+          type: string
+          description: The initiator party id
+          example: 550e8400-e29b-41d4-a716-446655440000
+        organization:
+          type: string
+          description: The initiator organization
+          example: Sundsvall Municipality
+        email:
+          type: string
+          description: The initiator email
+          example: john.doe@sundsvall.se
+      description: Initiator model
+    Message:
+      required:
+        - body
+        - subject
+      type: object
+      properties:
+        subject:
+          type: string
+          description: Subject of the message
+          example: Please sign the document
+        body:
+          type: string
+          description: Body of the message
+          example: "Dear John Doe, please sign the document."
+      description: Message model
+    Reminder:
+      required:
+        - intervalInHours
+        - message
+        - startDateTime
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/Message'
+        intervalInHours:
+          minimum: 1
+          type: integer
+          description: The reminder interval in hours
+          format: int32
+          example: 24
+        startDateTime:
+          type: string
+          description: The reminder start date and time
+          format: date-time
+          example: 2021-12-31T23:59:59Z
+      description: Reminder model
+    Signatory:
+      required:
+        - name
+        - partyId
+      type: object
+      properties:
+        name:
+          type: string
+          description: The signatory name
+          example: John Doe
+        organization:
+          type: string
+          description: The signatory organization
+          example: Sundsvall Municipality
+        partyId:
+          type: string
+          description: The signatory party id
+          example: 550e8400-e29b-41d4-a716-446655440000
+        email:
+          type: string
+          description: The signatory email
+          example: john.doe@sundsvall.se
+        notificationMessage:
+          $ref: '#/components/schemas/Message'
+      description: Signatory model
+    SigningRequest:
+      required:
+        - document
+        - initiator
+        - notificationMessage
+        - signatories
+      type: object
+      properties:
+        language:
+          type: string
+          description: "The language used for the signing instance. Valid values are\
+            \ one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI,\
+            \ uk-UA]. Swedish will be used If no language is provided"
+          example: sv-SE
+        callbackUrl:
+          type: string
+          description: Optional callback url
+          example: https://example.com/callback
+        expires:
+          type: string
+          description: "Optional date and time when the signing request expires. If\
+            \ no exipre date is provided, expiretime will be set to 30 days from time\
+            \ when request was received."
+          format: date-time
+          example: 2021-12-31T23:59:59Z
+        document:
+          $ref: '#/components/schemas/Document'
+        initiator:
+          $ref: '#/components/schemas/Initiator'
+        notificationMessage:
+          $ref: '#/components/schemas/Message'
+        reminder:
+          $ref: '#/components/schemas/Reminder'
+        signatories:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Signatory'
+      description: Signing request model
+    Problem:
+      type: object
+      properties:
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        title:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
+    StatusType:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        reasonPhrase:
+          type: string
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        cause:
+          $ref: '#/components/schemas/ThrowableProblem'
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        type:
+          type: string
+          format: uri
+        status:
+          $ref: '#/components/schemas/StatusType'
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Violation'
+        title:
+          type: string
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ThrowableProblem:
+      type: object
+      properties:
+        cause:
+          $ref: '#/components/schemas/ThrowableProblem'
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        title:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusType'
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+  securitySchemes: { }

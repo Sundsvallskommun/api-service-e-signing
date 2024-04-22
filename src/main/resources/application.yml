@@ -11,3 +11,20 @@ openapi:
 spring:
   application:
     name: api-e-signing
+  security:
+    oauth2:
+      client:
+        provider:
+          esigningprocess:
+            token-uri: ${config.integration.esigningprocess.token-url}
+        registration:
+          esigningprocess:
+            authorization-grant-type: client_credentials
+            provider: esigningprocess
+            client-id: ${config.integration.esigningprocess.client-id}
+            client-secret: ${config.integration.esigningprocess.client-secret}
+integration:
+  esigningprocess:
+    connect-timeout: ${config.integration.esigningprocess.connectTimeout}
+    read-timeout: ${config.integration.esigningprocess.readTimeout}
+    base-url: ${config.integration.esigningprocess.base-url}

@@ -3,4 +3,13 @@
 #========================================
 logging:
   level:
-    root: DEBUG
+    root: INFO
+config:
+  integration:
+    esigningprocess:
+      base-url: http://localhost:${wiremock.server.port}/pw-esigning
+      token-url: http://localhost:${wiremock.server.port}/token
+      client-id: someClientId
+      client-secret: someClientSecret
+      connectTimeout: 5
+      readTimeout: 30
