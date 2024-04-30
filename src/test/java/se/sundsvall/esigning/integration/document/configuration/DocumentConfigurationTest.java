@@ -1,9 +1,9 @@
-package se.sundsvall.esigning.integration.esigningprocess.configuration;
+package se.sundsvall.esigning.integration.document.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.esigning.integration.esigningprocess.configuration.EsigningProcessConfiguration.CLIENT_ID;
+import static se.sundsvall.esigning.integration.document.configuration.DocumentConfiguration.CLIENT_ID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 import feign.codec.ErrorDecoder;
 
 @ExtendWith(MockitoExtension.class)
-class EsigningProcessConfigurationTest {
+class DocumentConfigurationTest {
 
 	@Mock
 	private ClientRegistrationRepository clientRepositoryMock;
@@ -33,7 +33,7 @@ class EsigningProcessConfigurationTest {
 	private ClientRegistration clientRegistrationMock;
 
 	@Mock
-	private EsigningProcessProperties propertiesMock;
+	private DocumentProperties propertiesMock;
 
 	@Spy
 	private FeignMultiCustomizer feignMultiCustomizerSpy;
@@ -42,7 +42,7 @@ class EsigningProcessConfigurationTest {
 	private ArgumentCaptor<ErrorDecoder> errorDecoderCaptor;
 
 	@InjectMocks
-	private EsigningProcessConfiguration configuration;
+	private DocumentConfiguration configuration;
 
 	@Test
 	void testFeignBuilderCustomizer() {
@@ -76,5 +76,4 @@ class EsigningProcessConfigurationTest {
 			.isInstanceOf(ProblemErrorDecoder.class)
 			.hasFieldOrPropertyWithValue("integrationName", CLIENT_ID);
 	}
-
 }

@@ -12,3 +12,10 @@ config:
     client-secret: someClientSecret
     connect-timeout: 5
     read-timeout: 30
+  document:
+    base-url: http://localhost:${wiremock.server.port}/document
+    token-url: http://localhost:${wiremock.server.port}/token
+    client-id: someClientId
+    client-secret: someClientSecret
+    connect-timeout: 5
+    read-timeout: 30

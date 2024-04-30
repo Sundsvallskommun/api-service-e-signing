@@ -72,7 +72,7 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>e-signing</id>
+                        <id>pw-e-signing</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -93,6 +93,32 @@
                                 <generatePom>false</generatePom>
                                 <useBeanValidation>false</useBeanValidation>
                                 <useSwaggerAnnotations>false</useSwaggerAnnotations>
+                                <interfaceOnly>true</interfaceOnly>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>document</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/contract/document.yml
+                            </inputSpec>
+                            <output>${generated-sources-path}</output>
+                            <generatorName>spring</generatorName>
+                            <generateApis>false</generateApis>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <sourceFolder>${generated-sources-java-path}</sourceFolder>
+                                <dateLibrary>java8</dateLibrary>
+                                <modelPackage>generated.se.sundsvall.document</modelPackage>
+                                <openApiNullable>false</openApiNullable>
+                                <generatePom>false</generatePom>
+                                <useBeanValidation>true</useBeanValidation>
+                                <useSwaggerAnnotations>true</useSwaggerAnnotations>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                         </configuration>

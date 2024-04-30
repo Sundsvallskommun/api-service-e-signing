@@ -17,14 +17,25 @@ spring:
         provider:
           esigningprocess:
             token-uri: ${config.esigningprocess.token-url}
+          document:
+            token-uri: ${config.document.token-url}
         registration:
           esigningprocess:
             authorization-grant-type: client_credentials
             provider: esigningprocess
             client-id: ${config.esigningprocess.client-id}
             client-secret: ${config.esigningprocess.client-secret}
+          document:
+            authorization-grant-type: client_credentials
+            provider: document
+            client-id: ${config.document.client-id}
+            client-secret: ${config.document.client-secret}
 integration:
   esigningprocess:
     connect-timeout: ${config.esigningprocess.connect-timeout}
     read-timeout: ${config.esigningprocess.read-timeout}
     base-url: ${config.esigningprocess.base-url}
+  document:
+    connect-timeout: ${config.document.connect-timeout}
+    read-timeout: ${config.document.read-timeout}
+    base-url: ${config.document.base-url}

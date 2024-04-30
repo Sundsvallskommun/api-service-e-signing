@@ -11,7 +11,6 @@ import org.zalando.problem.ThrowableProblem;
 import generated.se.sundsvall.pw_e_signing.SigningRequest;
 import generated.se.sundsvall.pw_e_signing.StartResponse;
 
-
 @Component
 public class EsigningProcessIntegration {
 
@@ -33,5 +32,4 @@ public class EsigningProcessIntegration {
 			throw Problem.valueOf(SERVICE_UNAVAILABLE, PROCESS_ENGINE_PROBLEM_DETAIL);
 		}
 	}
-
 }
