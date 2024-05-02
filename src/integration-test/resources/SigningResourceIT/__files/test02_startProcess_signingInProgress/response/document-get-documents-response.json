@@ -1,0 +1,28 @@
+{
+  "id": "0d64c132-3aea-11ec-8d3d-0242ac130003",
+  "municipalityId": "2281",
+  "registrationNumber": "2023-2281-1337",
+  "revision": 2,
+  "confidentiality": {
+    "confidential": true,
+    "legalCitation": "25 kap. 1 § OSL"
+  },
+  "description": "A brief description of this object.",
+  "created": "2023-08-30T23:30:00Z",
+  "createdBy": "username123",
+  "archive": false,
+  "metadataList": [
+    {
+      "key": "signingInProgress",
+      "value": "true"
+    }
+  ],
+  "documentData": [
+    {
+      "id": "082ba08f-03c7-409f-b8a6-940a1397ba38",
+      "fileName": "contract.pdf",
+      "mimeType": "application/pdf",
+      "fileSizeInBytes": 5068
+    }
+  ]
+}

@@ -117,8 +117,8 @@
                                 <modelPackage>generated.se.sundsvall.document</modelPackage>
                                 <openApiNullable>false</openApiNullable>
                                 <generatePom>false</generatePom>
-                                <useBeanValidation>true</useBeanValidation>
-                                <useSwaggerAnnotations>true</useSwaggerAnnotations>
+                                <useBeanValidation>false</useBeanValidation>
+                                <useSwaggerAnnotations>false</useSwaggerAnnotations>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                         </configuration>

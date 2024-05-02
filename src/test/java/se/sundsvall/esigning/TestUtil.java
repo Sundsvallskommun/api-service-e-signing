@@ -92,8 +92,9 @@ public final class TestUtil {
 
 	public static Document createDocument(final Consumer<Document> modifier) {
 		final var bean = Document.builder()
-			.withFileName("fileName")
+			.withFileName("test.pdf")
 			.withRegistrationNumber("registrationNumber")
+			.withDescriptiveName("descriptiveName")
 			.build();
 
 		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
