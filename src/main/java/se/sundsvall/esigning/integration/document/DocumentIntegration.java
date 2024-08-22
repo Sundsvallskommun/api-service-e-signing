@@ -1,14 +1,13 @@
 package se.sundsvall.esigning.integration.document;
 
-import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
-
+import generated.se.sundsvall.document.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
 
-import generated.se.sundsvall.document.Document;
+import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
 
 @Component
 public class DocumentIntegration {
@@ -23,9 +22,9 @@ public class DocumentIntegration {
 		this.documentClient = documentClient;
 	}
 
-	public Document getDocument(final String registrationNumber) {
+	public Document getDocument(final String municipalityId, final String registrationNumber) {
 		try {
-			return documentClient.getDocument(registrationNumber);
+			return documentClient.getDocument(municipalityId, registrationNumber);
 		} catch (final ThrowableProblem e) {
 			LOGGER.error(COULD_NOT_RETRIEVE_DOCUMENT.formatted(registrationNumber), e);
 			throw Problem.valueOf(SERVICE_UNAVAILABLE, DOCUMENT_PROBLEM_DETAIL);

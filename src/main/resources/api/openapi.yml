@@ -1,55 +1,63 @@
 openapi: 3.0.1
 info:
   title: api-e-signing
-  contact: { }
+  contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: "1.0"
+  version: '2.0'
 servers:
-  - url: http://localhost:60249
+  - url: http://localhost:8080
     description: Generated server url
 tags:
   - name: eSigning
     description: E-signing
 paths:
-  /e-signing/start:
+  /{municipalityId}/e-signing/start:
     post:
       tags:
         - eSigning
       summary: Start a signing process
       operationId: startSigningProcess
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality id
+          required: true
+          schema:
+            type: string
+          example: 2281
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SigningRequest'
+              $ref: "#/components/schemas/SigningRequest"
         required: true
       responses:
-        "202":
-          description: Accepted
-          content:
-            application/json: { }
-        "500":
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        "503":
-          description: Service Unavailable
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Problem'
-                  - $ref: '#/components/schemas/ConstraintViolationProblem'
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "202":
+          description: Accepted
+          content:
+            application/json: {}
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /api-docs:
     get:
       tags:
@@ -135,7 +143,7 @@ components:
       type: object
       properties:
         message:
-          $ref: '#/components/schemas/Message'
+          $ref: "#/components/schemas/Message"
         intervalInHours:
           minimum: 1
           type: integer
@@ -171,7 +179,7 @@ components:
           description: The signatory email
           example: john.doe@sundsvall.se
         notificationMessage:
-          $ref: '#/components/schemas/Message'
+          $ref: "#/components/schemas/Message"
       description: Signatory model
     SigningRequest:
       required:
@@ -199,19 +207,19 @@ components:
           format: date-time
           example: 2021-12-31T23:59:59Z
         document:
-          $ref: '#/components/schemas/Document'
+          $ref: "#/components/schemas/Document"
         initiator:
-          $ref: '#/components/schemas/Initiator'
+          $ref: "#/components/schemas/Initiator"
         notificationMessage:
-          $ref: '#/components/schemas/Message'
+          $ref: "#/components/schemas/Message"
         reminder:
-          $ref: '#/components/schemas/Reminder'
+          $ref: "#/components/schemas/Reminder"
         signatories:
           minItems: 1
           uniqueItems: true
           type: array
           items:
-            $ref: '#/components/schemas/Signatory'
+            $ref: "#/components/schemas/Signatory"
       description: Signing request model
     Problem:
       type: object
@@ -226,12 +234,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        detail:
-          type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
-        status:
-          $ref: '#/components/schemas/StatusType'
+        detail:
+          type: string
     StatusType:
       type: object
       properties:
@@ -244,7 +252,7 @@ components:
       type: object
       properties:
         cause:
-          $ref: '#/components/schemas/ThrowableProblem'
+          $ref: "#/components/schemas/ThrowableProblem"
         stackTrace:
           type: array
           items:
@@ -271,11 +279,11 @@ components:
           type: string
           format: uri
         status:
-          $ref: '#/components/schemas/StatusType'
+          $ref: "#/components/schemas/StatusType"
         violations:
           type: array
           items:
-            $ref: '#/components/schemas/Violation'
+            $ref: "#/components/schemas/Violation"
         title:
           type: string
         message:
@@ -326,7 +334,7 @@ components:
       type: object
       properties:
         cause:
-          $ref: '#/components/schemas/ThrowableProblem'
+          $ref: "#/components/schemas/ThrowableProblem"
         stackTrace:
           type: array
           items:
@@ -361,12 +369,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        detail:
-          type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         title:
           type: string
-        status:
-          $ref: '#/components/schemas/StatusType'
+        detail:
+          type: string
         suppressed:
           type: array
           items:
@@ -407,4 +415,4 @@ components:
           type: string
         message:
           type: string
-  securitySchemes: { }
+  securitySchemes: {}
