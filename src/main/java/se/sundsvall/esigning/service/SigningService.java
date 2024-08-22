@@ -1,21 +1,19 @@
 package se.sundsvall.esigning.service;
 
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
-
-import java.util.Collections;
-import java.util.Optional;
-
+import generated.se.sundsvall.document.Document;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
-
 import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.integration.document.DocumentIntegration;
 import se.sundsvall.esigning.integration.esigningprocess.EsigningProcessIntegration;
 
-import generated.se.sundsvall.document.Document;
+import java.util.Collections;
+import java.util.Optional;
+
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
 
 @Service
 public class SigningService {
@@ -31,20 +29,20 @@ public class SigningService {
 		this.esigningProcessIntegration = esigningProcessIntegration;
 	}
 
-	public EsigningResponse startSigningProcess(final SigningRequest signingRequest) {
-		validateDocument(signingRequest);
+	public EsigningResponse startSigningProcess(final String municipalityId, final SigningRequest signingRequest) {
+		validateDocument(municipalityId, signingRequest);
 
-		final var processId = esigningProcessIntegration.startProcess(toSigningRequest(signingRequest)).getProcessId();
+		final var processId = esigningProcessIntegration.startProcess(municipalityId, toSigningRequest(signingRequest)).getProcessId();
 
 		return EsigningResponse.builder()
 			.withProcessId(processId)
 			.build();
 	}
 
-	void validateDocument(final SigningRequest signingRequest) {
+	void validateDocument(final String municipalityId, final SigningRequest signingRequest) {
 		final var registrationNumber = signingRequest.getDocument().getRegistrationNumber();
 		final var fileName = signingRequest.getDocument().getFileName();
-		final var document = documentIntegration.getDocument(registrationNumber);
+		final var document = documentIntegration.getDocument(municipalityId, registrationNumber);
 
 		checkForSigningInProgress(document);
 		validateMimeType(document, fileName);
