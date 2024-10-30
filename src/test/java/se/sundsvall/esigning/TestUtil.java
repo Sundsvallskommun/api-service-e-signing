@@ -16,8 +16,7 @@ import se.sundsvall.esigning.api.model.SigningRequest;
 
 public final class TestUtil {
 
-	private TestUtil() {
-	}
+	private TestUtil() {}
 
 	public static Initiator createInitiator(final Consumer<Initiator> modifier) {
 		final var bean = Initiator.builder()
@@ -84,7 +83,6 @@ public final class TestUtil {
 	public static Signatory createSignatory() {
 		return createSignatory(null);
 	}
-
 
 	public static Document createDocument() {
 		return createDocument(null);

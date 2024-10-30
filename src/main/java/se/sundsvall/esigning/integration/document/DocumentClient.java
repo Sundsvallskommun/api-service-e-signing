@@ -14,12 +14,13 @@ import static se.sundsvall.esigning.integration.document.configuration.DocumentC
 @FeignClient(
 	name = CLIENT_ID,
 	url = "${integration.document.base-url}",
-	configuration = DocumentConfiguration.class
-)
+	configuration = DocumentConfiguration.class)
 public interface DocumentClient {
 
 	@Retry(name = CLIENT_ID)
-	@GetMapping(path = "/{municipalityId}/documents/{registrationNumber}", produces = {APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE})
+	@GetMapping(path = "/{municipalityId}/documents/{registrationNumber}", produces = {
+		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
+	})
 	Document getDocument(@PathVariable("municipalityId") String municipalityId, @PathVariable(name = "registrationNumber") final String registrationNumber);
 
 }

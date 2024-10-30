@@ -1,5 +1,5 @@
 {
-  "title": "Bad Request",
-  "status": 400,
-  "detail": "Document have an ongoing signing process"
+	"detail": "Document have an ongoing signing process",
+	"title": "Bad Request",
+	"status": 400
 }

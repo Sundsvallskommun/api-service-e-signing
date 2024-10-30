@@ -31,5 +31,4 @@ public class Message {
 	@Schema(description = "Body of the message", example = "Dear John Doe, please sign the document.", requiredMode = REQUIRED)
 	private String body;
 
-
 }

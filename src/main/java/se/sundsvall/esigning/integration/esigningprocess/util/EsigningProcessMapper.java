@@ -1,6 +1,5 @@
 package se.sundsvall.esigning.integration.esigningprocess.util;
 
-
 import static java.util.Collections.emptySet;
 
 import java.util.Optional;
@@ -15,8 +14,7 @@ import se.sundsvall.esigning.api.model.SigningRequest;
 
 public final class EsigningProcessMapper {
 
-	private EsigningProcessMapper() {
-	}
+	private EsigningProcessMapper() {}
 
 	public static generated.se.sundsvall.pw_e_signing.SigningRequest toSigningRequest(final SigningRequest signingRequest) {
 		if (signingRequest == null) {
@@ -59,7 +57,6 @@ public final class EsigningProcessMapper {
 			.map(EsigningProcessMapper::toSignatory)
 			.collect(Collectors.toSet());
 	}
-
 
 	public static generated.se.sundsvall.pw_e_signing.Initiator toInitiator(final Initiator initiator) {
 		if (initiator == null) {

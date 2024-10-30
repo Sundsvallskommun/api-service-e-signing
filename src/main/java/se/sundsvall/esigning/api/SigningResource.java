@@ -31,7 +31,9 @@ import static org.springframework.http.ResponseEntity.accepted;
 @RequestMapping("/{municipalityId}/e-signing")
 @ApiResponses(value = {
 	@ApiResponse(responseCode = "202", description = "Accepted", content = @Content(mediaType = APPLICATION_JSON_VALUE), useReturnTypeSchema = true),
-	@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class}))),
+	@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
+		Problem.class, ConstraintViolationProblem.class
+	}))),
 	@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
 	@ApiResponse(responseCode = "503", description = "Service Unavailable", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 })
@@ -47,8 +49,7 @@ class SigningResource {
 	@Operation(summary = "Start a signing process")
 	@PostMapping(value = "/start", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_PROBLEM_JSON_VALUE)
 	ResponseEntity<EsigningResponse> startSigningProcess(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281")
-		@PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
 		@Valid @RequestBody final SigningRequest request) {
 		return accepted().body(signingService.startSigningProcess(municipalityId, request));
 	}
