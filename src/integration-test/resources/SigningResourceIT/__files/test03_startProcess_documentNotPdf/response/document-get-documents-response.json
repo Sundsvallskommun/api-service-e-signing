@@ -1,28 +1,24 @@
 {
-  "id": "0d64c132-3aea-11ec-8d3d-0242ac130003",
-  "municipalityId": "2281",
-  "registrationNumber": "2023-2281-1337",
-  "revision": 2,
-  "confidentiality": {
-    "confidential": true,
-    "legalCitation": "25 kap. 1 § OSL"
-  },
-  "description": "A brief description of this object.",
-  "created": "2023-08-30T23:30:00Z",
-  "createdBy": "username123",
-  "archive": false,
-  "metadataList": [
-    {
-      "key": "signingOnGoing",
-      "value": "true"
-    }
-  ],
-  "documentData": [
-    {
-      "id": "082ba08f-03c7-409f-b8a6-940a1397ba38",
-      "fileName": "this-is-not-a-pdf.txt",
-      "mimeType": "text/plain",
-      "fileSizeInBytes": 5068
-    }
-  ]
+	"municipalityId": "2281",
+	"createdBy": "username123",
+	"registrationNumber": "2023-2281-1337",
+	"created": "2023-08-30T23:30:00Z",
+	"confidentiality": {
+		"legalCitation": "25 kap. 1 § OSL",
+		"confidential": true
+	},
+	"description": "A brief description of this object.",
+	"archive": false,
+	"id": "0d64c132-3aea-11ec-8d3d-0242ac130003",
+	"documentData": [{
+		"fileName": "this-is-not-a-pdf.txt",
+		"fileSizeInBytes": 5068,
+		"id": "082ba08f-03c7-409f-b8a6-940a1397ba38",
+		"mimeType": "text/plain"
+	}],
+	"revision": 2,
+	"metadataList": [{
+		"value": "true",
+		"key": "signingOnGoing"
+	}]
 }

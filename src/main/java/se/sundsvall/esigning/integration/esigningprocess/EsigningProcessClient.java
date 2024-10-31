@@ -15,8 +15,7 @@ import static se.sundsvall.esigning.integration.esigningprocess.configuration.Es
 @FeignClient(
 	name = CLIENT_ID,
 	url = "${integration.esigningprocess.base-url}",
-	configuration = EsigningProcessConfiguration.class
-)
+	configuration = EsigningProcessConfiguration.class)
 public interface EsigningProcessClient {
 
 	@Retry(name = CLIENT_ID)

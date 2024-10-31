@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter
 @Setter
 @ToString
@@ -37,8 +36,12 @@ import lombok.ToString;
 @Schema(description = "Signing request model")
 public class SigningRequest {
 
-	@OneOf(value = {"de-DE", "nb-NO", "ru-RU", "zh-CN", "fi-FI", "uk-UA", "en-US", "sv-SE", "da-DK", "fr-FR"}, message = "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR].", nullable = true)
-	@Schema(description = "The language used for the signing instance. Valid values are one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA]. Swedish will be used If no language is provided", example = "sv-SE", requiredMode = NOT_REQUIRED)
+	@OneOf(value = {
+		"de-DE", "nb-NO", "ru-RU", "zh-CN", "fi-FI", "uk-UA", "en-US", "sv-SE", "da-DK", "fr-FR"
+	}, message = "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR].", nullable = true)
+	@Schema(description = "The language used for the signing instance. Valid values are one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA]. Swedish will be used If no language is provided",
+		example = "sv-SE",
+		requiredMode = NOT_REQUIRED)
 	private String language;
 
 	@Schema(description = "Optional callback url", example = "https://example.com/callback", requiredMode = NOT_REQUIRED)
@@ -71,6 +74,5 @@ public class SigningRequest {
 	@NotEmpty
 	@ArraySchema(schema = @Schema(implementation = Signatory.class), minItems = 1, uniqueItems = true)
 	private Set<@Valid Signatory> signatories;
-
 
 }

@@ -64,8 +64,7 @@ class SigningResourceFailureTest {
 			Arguments.of(municipalityId, createSigningRequest(request -> request.setSignatories(Set.of(createSignatory(signatory -> signatory.setPartyId(null))))), "signatories[].partyId", "not a valid UUID"),
 			Arguments.of(municipalityId, createSigningRequest(request -> request.setSignatories(Set.of(createSignatory(signatory -> signatory.setEmail(null))))), "signatories[].email", "must not be blank"),
 			Arguments.of(municipalityId, createSigningRequest(request -> request.setSignatories(Set.of(createSignatory(signatory -> signatory.setEmail("not-a-valid-email"))))), "signatories[].email", "must be a well-formed email address"),
-			Arguments.of("not valid", createSigningRequest(), "startSigningProcess.municipalityId", "not a valid municipality ID")
-		);
+			Arguments.of("not valid", createSigningRequest(), "startSigningProcess.municipalityId", "not a valid municipality ID"));
 	}
 
 	@ParameterizedTest
@@ -83,7 +82,6 @@ class SigningResourceFailureTest {
 			.expectBody(ConstraintViolationProblem.class)
 			.returnResult()
 			.getResponseBody();
-
 
 		assertThat(response).isNotNull().satisfies(r -> {
 			assertThat(r.getTitle()).isEqualTo("Constraint Violation");
