@@ -1,9 +1,20 @@
 package se.sundsvall.esigning.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.esigning.TestUtil.createSigningRequest;
+import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
+
 import generated.se.sundsvall.document.Document;
 import generated.se.sundsvall.document.DocumentData;
 import generated.se.sundsvall.document.DocumentMetadata;
 import generated.se.sundsvall.pw_e_signing.StartResponse;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,18 +24,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.Problem;
 import se.sundsvall.esigning.integration.document.DocumentIntegration;
 import se.sundsvall.esigning.integration.esigningprocess.EsigningProcessIntegration;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.esigning.TestUtil.createSigningRequest;
-import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SigningServiceTest {

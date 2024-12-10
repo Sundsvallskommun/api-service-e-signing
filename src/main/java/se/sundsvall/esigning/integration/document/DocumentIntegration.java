@@ -1,13 +1,13 @@
 package se.sundsvall.esigning.integration.document;
 
+import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
+
 import generated.se.sundsvall.document.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
-
-import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
 
 @Component
 public class DocumentIntegration {
