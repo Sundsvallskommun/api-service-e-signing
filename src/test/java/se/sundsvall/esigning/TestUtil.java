@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
-
 import se.sundsvall.esigning.api.model.Document;
 import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.Initiator;

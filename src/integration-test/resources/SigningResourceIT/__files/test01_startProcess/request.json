@@ -1,14 +1,16 @@
 {
-	"signatories": [{
-		"organization": "Sundsvall Municipality",
-		"name": "John Doe",
-		"notificationMessage": {
-			"subject": "Please sign the document",
-			"body": "Dear John Doe, please sign the document."
-		},
-		"partyId": "550e8400-e29b-41d4-a716-446655440000",
-		"email": "john.doe@sundsvall.se"
-	}],
+	"signatories": [
+		{
+			"organization": "Sundsvall Municipality",
+			"name": "John Doe",
+			"notificationMessage": {
+				"subject": "Please sign the document",
+				"body": "Dear John Doe, please sign the document."
+			},
+			"partyId": "550e8400-e29b-41d4-a716-446655440000",
+			"email": "john.doe@sundsvall.se"
+		}
+	],
 	"expires": "2040-12-31T23:59:59Z",
 	"reminder": {
 		"intervalInHours": 24,

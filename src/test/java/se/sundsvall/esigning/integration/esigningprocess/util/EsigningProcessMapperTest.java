@@ -8,9 +8,7 @@ import static se.sundsvall.esigning.TestUtil.createSignatory;
 import static se.sundsvall.esigning.TestUtil.createSigningRequest;
 
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
-
 import se.sundsvall.esigning.api.model.Signatory;
 
 class EsigningProcessMapperTest {

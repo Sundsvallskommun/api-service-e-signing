@@ -13,11 +13,10 @@ import static se.sundsvall.esigning.TestUtil.createMessage;
 import static se.sundsvall.esigning.TestUtil.createReminder;
 import static se.sundsvall.esigning.TestUtil.createSignatory;
 
+import com.google.code.beanmatchers.BeanMatchers;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.Set;
-
-import com.google.code.beanmatchers.BeanMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

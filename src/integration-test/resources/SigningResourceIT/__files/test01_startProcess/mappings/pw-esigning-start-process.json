@@ -1,47 +1,59 @@
 {
 	"request": {
-		"headers": {"Authorization": {"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"}},
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			}
+		},
 		"method": "POST",
-		"bodyPatterns": [{"equalToJson": {
-			"signatories": [{
-				"organization": "Sundsvall Municipality",
-				"name": "John Doe",
-				"notificationMessage": {
-					"subject": "Please sign the document",
-					"body": "Dear John Doe, please sign the document."
-				},
-				"partyId": "550e8400-e29b-41d4-a716-446655440000",
-				"email": "john.doe@sundsvall.se"
-			}],
-			"fileName": "contract.pdf",
-			"expires": "2040-12-31T23:59:59Z",
-			"reminder": {
-				"intervalInHours": 24,
-				"startDateTime": "2040-12-31T23:59:59Z",
-				"reminderMessage": {
-					"subject": "Please sign the document",
-					"body": "Dear John Doe, please sign the document."
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"signatories": [
+						{
+							"organization": "Sundsvall Municipality",
+							"name": "John Doe",
+							"notificationMessage": {
+								"subject": "Please sign the document",
+								"body": "Dear John Doe, please sign the document."
+							},
+							"partyId": "550e8400-e29b-41d4-a716-446655440000",
+							"email": "john.doe@sundsvall.se"
+						}
+					],
+					"fileName": "contract.pdf",
+					"expires": "2040-12-31T23:59:59Z",
+					"reminder": {
+						"intervalInHours": 24,
+						"startDateTime": "2040-12-31T23:59:59Z",
+						"reminderMessage": {
+							"subject": "Please sign the document",
+							"body": "Dear John Doe, please sign the document."
+						}
+					},
+					"registrationNumber": "2023-2281-1337",
+					"initiator": {
+						"organization": "Sundsvall Municipality",
+						"name": "John Doe",
+						"partyId": "550e8400-e29b-41d4-a716-446655440000",
+						"email": "john.doe@sundsvall.se"
+					},
+					"name": "Employment contract",
+					"notificationMessage": {
+						"subject": "Please sign the document",
+						"body": "Dear John Doe, please sign the document."
+					},
+					"language": "sv-SE",
+					"callbackUrl": "https://callback.url"
 				}
-			},
-			"registrationNumber": "2023-2281-1337",
-			"initiator": {
-				"organization": "Sundsvall Municipality",
-				"name": "John Doe",
-				"partyId": "550e8400-e29b-41d4-a716-446655440000",
-				"email": "john.doe@sundsvall.se"
-			},
-			"name": "Employment contract",
-			"notificationMessage": {
-				"subject": "Please sign the document",
-				"body": "Dear John Doe, please sign the document."
-			},
-			"language": "sv-SE",
-			"callbackUrl": "https://callback.url"
-		}}],
+			}
+		],
 		"url": "/pw-esigning/2281/process/start"
 	},
 	"response": {
-		"headers": {"Content-Type": "application/json"},
+		"headers": {
+			"Content-Type": "application/json"
+		},
 		"bodyFileName": "test01_startProcess/response/pw-esigning-start-process-response.json",
 		"status": 200
 	},

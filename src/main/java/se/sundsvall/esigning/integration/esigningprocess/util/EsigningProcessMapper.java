@@ -5,7 +5,6 @@ import static java.util.Collections.emptySet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import se.sundsvall.esigning.api.model.Initiator;
 import se.sundsvall.esigning.api.model.Message;
 import se.sundsvall.esigning.api.model.Reminder;
