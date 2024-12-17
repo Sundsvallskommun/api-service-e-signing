@@ -5,6 +5,7 @@ import static se.sundsvall.esigning.integration.esigningprocess.configuration.Es
 
 import generated.se.sundsvall.pw_e_signing.SigningRequest;
 import generated.se.sundsvall.pw_e_signing.StartResponse;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import se.sundsvall.esigning.integration.esigningprocess.configuration.EsigningP
 	name = CLIENT_ID,
 	url = "${integration.esigningprocess.base-url}",
 	configuration = EsigningProcessConfiguration.class)
+@CircuitBreaker(name = CLIENT_ID)
 public interface EsigningProcessClient {
 
 	@Retry(name = CLIENT_ID)
