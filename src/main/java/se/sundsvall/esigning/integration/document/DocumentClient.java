@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static se.sundsvall.esigning.integration.document.configuration.DocumentConfiguration.CLIENT_ID;
 
 import generated.se.sundsvall.document.Document;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import se.sundsvall.esigning.integration.document.configuration.DocumentConfigur
 	name = CLIENT_ID,
 	url = "${integration.document.base-url}",
 	configuration = DocumentConfiguration.class)
+@CircuitBreaker(name = CLIENT_ID)
 public interface DocumentClient {
 
 	@Retry(name = CLIENT_ID)
