@@ -21,6 +21,7 @@ _A prerequisite for being able to initiate a signing process is that the documen
    git clone https://github.com/Sundsvallskommun/api-service-e-signing.git
    cd api-service-e-signing
    ```
+   
 2. **Configure the application:**
 
    Before running the application, you need to set up configuration settings.
@@ -117,9 +118,6 @@ Configuration is crucial for the application to run successfully. Ensure all nec
   server:
     port: 8080
   ```
-- **Database Settings:**
-
-  No database is used by this microservice
 
 - **External Service URLs:**
 
