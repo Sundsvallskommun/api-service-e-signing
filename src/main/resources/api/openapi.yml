@@ -1,13 +1,13 @@
 openapi: 3.0.1
 info:
   title: api-e-signing
-  contact: {}
+  contact: { }
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: '2.0'
+  version: "2.0"
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:58366
     description: Generated server url
 tags:
   - name: eSigning
@@ -34,6 +34,10 @@ paths:
               $ref: "#/components/schemas/SigningRequest"
         required: true
       responses:
+        "202":
+          description: Accepted
+          content:
+            application/json: { }
         "400":
           description: Bad Request
           content:
@@ -42,10 +46,6 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
-        "202":
-          description: Accepted
-          content:
-            application/json: {}
         "500":
           description: Internal Server Error
           content:
@@ -87,11 +87,13 @@ components:
           description: Optional descriptive name for the document that is to be signed.
           example: Employment contract
         registrationNumber:
+          minLength: 1
           type: string
           description: "The document registration number, the value must not be blank\
             \ or null"
           example: 12345-2022
         fileName:
+          minLength: 1
           type: string
           description: "The document file name, the value must not be blank or null"
           example: document.pdf
@@ -104,6 +106,7 @@ components:
       type: object
       properties:
         name:
+          minLength: 1
           type: string
           description: The initiator name
           example: John Doe
@@ -127,10 +130,12 @@ components:
       type: object
       properties:
         subject:
+          minLength: 1
           type: string
           description: Subject of the message
           example: Please sign the document
         body:
+          minLength: 1
           type: string
           description: Body of the message
           example: "Dear John Doe, please sign the document."
@@ -163,6 +168,7 @@ components:
       type: object
       properties:
         name:
+          minLength: 1
           type: string
           description: The signatory name
           example: John Doe
@@ -175,6 +181,7 @@ components:
           description: The signatory party id
           example: 550e8400-e29b-41d4-a716-446655440000
         email:
+          minLength: 1
           type: string
           description: The signatory email
           example: john.doe@sundsvall.se
@@ -186,7 +193,6 @@ components:
         - document
         - initiator
         - notificationMessage
-        - signatories
       type: object
       properties:
         language:
@@ -415,4 +421,4 @@ components:
           type: string
         message:
           type: string
-  securitySchemes: {}
+  securitySchemes: { }
