@@ -1,32 +1,32 @@
 openapi: 3.0.1
 info:
   title: api-e-signing
-  contact: { }
+  contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-  - url: http://localhost:58366
-    description: Generated server url
+- url: http://localhost:8080
+  description: Generated server url
 tags:
-  - name: eSigning
-    description: E-signing
+- name: eSigning
+  description: E-signing
 paths:
   /{municipalityId}/e-signing/start:
     post:
       tags:
-        - eSigning
+      - eSigning
       summary: Start a signing process
       operationId: startSigningProcess
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
       requestBody:
         content:
           application/json:
@@ -37,15 +37,15 @@ paths:
         "202":
           description: Accepted
           content:
-            application/json: { }
+            application/json: {}
         "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -61,7 +61,7 @@ paths:
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -78,8 +78,8 @@ components:
   schemas:
     Document:
       required:
-        - fileName
-        - registrationNumber
+      - fileName
+      - registrationNumber
       type: object
       properties:
         descriptiveName:
@@ -100,9 +100,9 @@ components:
       description: Document model
     Initiator:
       required:
-        - email
-        - name
-        - partyId
+      - email
+      - name
+      - partyId
       type: object
       properties:
         name:
@@ -125,8 +125,8 @@ components:
       description: Initiator model
     Message:
       required:
-        - body
-        - subject
+      - body
+      - subject
       type: object
       properties:
         subject:
@@ -142,9 +142,9 @@ components:
       description: Message model
     Reminder:
       required:
-        - intervalInHours
-        - message
-        - startDateTime
+      - intervalInHours
+      - message
+      - startDateTime
       type: object
       properties:
         message:
@@ -163,8 +163,9 @@ components:
       description: Reminder model
     Signatory:
       required:
-        - name
-        - partyId
+      - email
+      - name
+      - partyId
       type: object
       properties:
         name:
@@ -190,9 +191,10 @@ components:
       description: Signatory model
     SigningRequest:
       required:
-        - document
-        - initiator
-        - notificationMessage
+      - document
+      - initiator
+      - notificationMessage
+      - signatories
       type: object
       properties:
         language:
@@ -421,4 +423,4 @@ components:
           type: string
         message:
           type: string
-  securitySchemes: { }
+  securitySchemes: {}
