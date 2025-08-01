@@ -1,6 +1,7 @@
 package se.sundsvall.esigning.integration.document;
 
 import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 import generated.se.sundsvall.document.Document;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class DocumentIntegration {
 		try {
 			return documentClient.getDocument(municipalityId, registrationNumber);
 		} catch (final ThrowableProblem e) {
-			LOGGER.error(COULD_NOT_RETRIEVE_DOCUMENT.formatted(registrationNumber), e);
+			LOGGER.error(COULD_NOT_RETRIEVE_DOCUMENT.formatted(sanitizeForLogging(registrationNumber)), e);
 			throw Problem.valueOf(SERVICE_UNAVAILABLE, DOCUMENT_PROBLEM_DETAIL);
 		}
 	}

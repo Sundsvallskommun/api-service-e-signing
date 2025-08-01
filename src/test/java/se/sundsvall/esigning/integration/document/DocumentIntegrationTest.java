@@ -44,6 +44,7 @@ class DocumentIntegrationTest {
 		final var municipalityId = "2281";
 		final var registrationNumber = "123-321";
 		when(mockClient.getDocument(municipalityId, registrationNumber)).thenThrow(new ThrowableProblem() {
+			private static final long serialVersionUID = -1842468863954454368L;
 		});
 
 		assertThatThrownBy(() -> integration.getDocument(municipalityId, registrationNumber))

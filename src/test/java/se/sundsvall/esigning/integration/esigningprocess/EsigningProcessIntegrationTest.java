@@ -48,6 +48,7 @@ class EsigningProcessIntegrationTest {
 		final var municipalityId = "municipalityId";
 		final var signingRequest = EsigningProcessMapper.toSigningRequest(createSigningRequest());
 		when(mockClient.startProcess(municipalityId, signingRequest)).thenThrow(new ThrowableProblem() {
+			private static final long serialVersionUID = 94942837028478614L;
 		});
 
 		assertThatThrownBy(() -> integration.startProcess(municipalityId, signingRequest))
