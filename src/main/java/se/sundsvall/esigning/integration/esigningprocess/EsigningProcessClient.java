@@ -23,5 +23,4 @@ public interface EsigningProcessClient {
 	@Retry(name = CLIENT_ID)
 	@PostMapping(path = "/{municipalityId}/process/start", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	StartResponse startProcess(@PathVariable("municipalityId") String municipalityId, @RequestBody final SigningRequest request);
-
 }
