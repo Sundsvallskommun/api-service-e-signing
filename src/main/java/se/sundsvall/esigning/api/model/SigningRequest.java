@@ -36,16 +36,16 @@ public class SigningRequest {
 		"de-DE", "nb-NO", "ru-RU", "zh-CN", "fi-FI", "uk-UA", "en-US", "sv-SE", "da-DK", "fr-FR"
 	}, message = "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR].", nullable = true)
 	@Schema(description = "The language used for the signing instance. Valid values are one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA]. Swedish will be used If no language is provided",
-		example = "sv-SE",
+		examples = "sv-SE",
 		requiredMode = NOT_REQUIRED)
 	private String language;
 
-	@Schema(description = "Optional callback url", example = "https://example.com/callback", requiredMode = NOT_REQUIRED)
+	@Schema(description = "Optional callback url", examples = "https://example.com/callback", requiredMode = NOT_REQUIRED)
 	private String callbackUrl;
 
 	@Future
 	@DateTimeFormat(iso = DATE_TIME)
-	@Schema(description = "Optional date and time when the signing request expires. If no exipre date is provided, expiretime will be set to 30 days from time when request was received.", example = "2021-12-31T23:59:59Z")
+	@Schema(description = "Optional date and time when the signing request expires. If no exipre date is provided, expiretime will be set to 30 days from time when request was received.", examples = "2021-12-31T23:59:59Z")
 	private OffsetDateTime expires;
 
 	@Valid

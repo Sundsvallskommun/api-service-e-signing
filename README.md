@@ -2,13 +2,15 @@
 
 _The service acts as the starting point of the process carried out to sign a document electronically._
 
-_A prerequisite for being able to initiate a signing process is that the document to be signed has been stored in the document service. In the call to this service's API, the reference to the document to be signed is passed, which is later used by the signing process to retrieve and update the actual document stored in the document service._
+_A prerequisite for being able to initiate a signing process is that the document to be signed has been stored in the
+document service. In the call to this service's API, the reference to the document to be signed is passed, which is
+later used by the signing process to retrieve and update the actual document stored in the document service._
 
 ## Getting Started
 
 ### Prerequisites
 
-- **Java 21 or higher**
+- **Java 25 or higher**
 - **Maven**
 - **Git**
 - **[Dependent Microservices](#dependencies)**
@@ -30,7 +32,8 @@ _A prerequisite for being able to initiate a signing process is that the documen
 
 3. **Ensure dependent services are running:**
 
-   If this microservice depends on other services, make sure they are up and accessible. See [Dependencies](#dependencies) for more details.
+   If this microservice depends on other services, make sure they are up and accessible.
+   See [Dependencies](#dependencies) for more details.
 
 4. **Build and run the application:**
 
@@ -50,12 +53,16 @@ _A prerequisite for being able to initiate a signing process is that the documen
 This microservice depends on the following services:
 
 - **Document**
-  - **Purpose:** The service is used to verify that a signing process can be initiated for the document matching the provided id
-  - **Repository:** [https://github.com/Sundsvallskommun/api-service-document](https://github.com/Sundsvallskommun/api-service-document)
+  - **Purpose:** The service is used to verify that a signing process can be initiated for the document matching the
+    provided id
+  - **Repository:
+    ** [https://github.com/Sundsvallskommun/api-service-document](https://github.com/Sundsvallskommun/api-service-document)
   - **Setup Instructions:** See documentation in repository above for installation and configuration steps.
 - **E-signing Process**
-  - **Purpose:** Service handling the process of signing a document, to which a start request is made from this service
-  - **Repository:** [https://github.com/Sundsvallskommun/pw-e-signing](https://github.com/Sundsvallskommun/pw-e-signing)
+  - **Purpose:** Service handling the process of signing a document, to which a start request is made from this
+    service
+  - **Repository:
+    ** [https://github.com/Sundsvallskommun/pw-e-signing](https://github.com/Sundsvallskommun/pw-e-signing)
   - **Setup Instructions:** See documentation in repository above for installation and configuration steps.
 
 Ensure that these services are running and properly configured before starting this microservice.
@@ -107,7 +114,8 @@ curl -X 'POST' 'http://localhost:8080/2281/e-signing/start' -H 'Content-Type: ap
 
 ## Configuration
 
-Configuration is crucial for the application to run successfully. Ensure all necessary settings are configured in `application.yml`.
+Configuration is crucial for the application to run successfully. Ensure all necessary settings are configured in
+`application.yml`.
 
 ### Key Configuration Parameters
 
@@ -149,7 +157,8 @@ Configuration is crucial for the application to run successfully. Ensure all nec
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/Sundsvallskommun/.github/blob/main/.github/CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please
+see [CONTRIBUTING.md](https://github.com/Sundsvallskommun/.github/blob/main/.github/CONTRIBUTING.md) for guidelines.
 
 ## License
 

@@ -23,15 +23,15 @@ import lombok.ToString;
 @Schema(description = "Document model")
 public class Document {
 
-	@Schema(description = "Optional descriptive name for the document that is to be signed.", example = "Employment contract", requiredMode = NOT_REQUIRED)
+	@Schema(description = "Optional descriptive name for the document that is to be signed.", examples = "Employment contract", requiredMode = NOT_REQUIRED)
 	private String descriptiveName;
 
 	@NotBlank
-	@Schema(description = "The document registration number, the value must not be blank or null", example = "12345-2022", requiredMode = REQUIRED)
+	@Schema(description = "The document registration number, the value must not be blank or null", examples = "12345-2022", requiredMode = REQUIRED)
 	private String registrationNumber;
 
 	@NotBlank
-	@Schema(description = "The document file name, the value must not be blank or null", example = "document.pdf", requiredMode = REQUIRED)
+	@Schema(description = "The document file name, the value must not be blank or null", examples = "document.pdf", requiredMode = REQUIRED)
 	private String fileName;
 
 }

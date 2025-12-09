@@ -27,19 +27,19 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 public class Signatory {
 
 	@NotBlank
-	@Schema(description = "The signatory name", example = "John Doe", requiredMode = REQUIRED)
+	@Schema(description = "The signatory name", examples = "John Doe", requiredMode = REQUIRED)
 	private String name;
 
-	@Schema(description = "The signatory organization", example = "Sundsvall Municipality", requiredMode = NOT_REQUIRED)
+	@Schema(description = "The signatory organization", examples = "Sundsvall Municipality", requiredMode = NOT_REQUIRED)
 	private String organization;
 
 	@ValidUuid
-	@Schema(description = "The signatory party id", example = "550e8400-e29b-41d4-a716-446655440000", requiredMode = REQUIRED)
+	@Schema(description = "The signatory party id", examples = "550e8400-e29b-41d4-a716-446655440000", requiredMode = REQUIRED)
 	private String partyId;
 
 	@Email
 	@NotBlank
-	@Schema(description = "The signatory email", example = "john.doe@sundsvall.se", requiredMode = NOT_REQUIRED)
+	@Schema(description = "The signatory email", examples = "john.doe@sundsvall.se", requiredMode = NOT_REQUIRED)
 	private String email;
 
 	@Valid

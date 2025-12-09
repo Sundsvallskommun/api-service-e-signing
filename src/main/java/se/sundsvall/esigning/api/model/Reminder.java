@@ -31,11 +31,11 @@ public class Reminder {
 	private Message message;
 
 	@Min(1)
-	@Schema(description = "The reminder interval in hours", example = "24", requiredMode = REQUIRED)
+	@Schema(description = "The reminder interval in hours", examples = "24", requiredMode = REQUIRED)
 	private int intervalInHours;
 
 	@NotNull
-	@Schema(description = "The reminder start date and time", example = "2021-12-31T23:59:59Z", requiredMode = REQUIRED)
+	@Schema(description = "The reminder start date and time", examples = "2021-12-31T23:59:59Z", requiredMode = REQUIRED)
 	private OffsetDateTime startDateTime;
 
 }

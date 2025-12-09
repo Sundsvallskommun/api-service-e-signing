@@ -23,11 +23,11 @@ import lombok.ToString;
 public class Message {
 
 	@NotBlank
-	@Schema(description = "Subject of the message", example = "Please sign the document", requiredMode = REQUIRED)
+	@Schema(description = "Subject of the message", examples = "Please sign the document", requiredMode = REQUIRED)
 	private String subject;
 
 	@NotBlank
-	@Schema(description = "Body of the message", example = "Dear John Doe, please sign the document.", requiredMode = REQUIRED)
+	@Schema(description = "Body of the message", examples = "Dear John Doe, please sign the document.", requiredMode = REQUIRED)
 	private String body;
 
 }
