@@ -27,19 +27,19 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 public class Initiator {
 
 	@NotBlank
-	@Schema(description = "The initiator name", example = "John Doe", requiredMode = REQUIRED)
+	@Schema(description = "The initiator name", examples = "John Doe", requiredMode = REQUIRED)
 	private String name;
 
 	@ValidUuid
-	@Schema(description = "The initiator party id", example = "550e8400-e29b-41d4-a716-446655440000", requiredMode = REQUIRED)
+	@Schema(description = "The initiator party id", examples = "550e8400-e29b-41d4-a716-446655440000", requiredMode = REQUIRED)
 	private String partyId;
 
-	@Schema(description = "The initiator organization", example = "Sundsvall Municipality", requiredMode = NOT_REQUIRED)
+	@Schema(description = "The initiator organization", examples = "Sundsvall Municipality", requiredMode = NOT_REQUIRED)
 	private String organization;
 
 	@Email
 	@NotNull
-	@Schema(description = "The initiator email", example = "john.doe@sundsvall.se", requiredMode = REQUIRED)
+	@Schema(description = "The initiator email", examples = "john.doe@sundsvall.se", requiredMode = REQUIRED)
 	private String email;
 
 }

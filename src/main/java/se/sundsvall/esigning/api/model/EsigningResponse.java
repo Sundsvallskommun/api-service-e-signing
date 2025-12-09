@@ -19,6 +19,6 @@ import lombok.ToString;
 @Schema(description = "Response model")
 public class EsigningResponse {
 
-	@Schema(description = "The process id of the esigning process", example = "12345")
+	@Schema(description = "The process id of the esigning process", examples = "12345")
 	private String processId;
 }
