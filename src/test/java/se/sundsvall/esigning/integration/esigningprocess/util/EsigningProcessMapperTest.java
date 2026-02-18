@@ -1,15 +1,15 @@
 package se.sundsvall.esigning.integration.esigningprocess.util;
 
+import java.util.Set;
+import org.junit.jupiter.api.Test;
+import se.sundsvall.esigning.api.model.Signatory;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.esigning.TestUtil.createInitiator;
 import static se.sundsvall.esigning.TestUtil.createMessage;
 import static se.sundsvall.esigning.TestUtil.createReminder;
 import static se.sundsvall.esigning.TestUtil.createSignatory;
 import static se.sundsvall.esigning.TestUtil.createSigningRequest;
-
-import java.util.Set;
-import org.junit.jupiter.api.Test;
-import se.sundsvall.esigning.api.model.Signatory;
 
 class EsigningProcessMapperTest {
 

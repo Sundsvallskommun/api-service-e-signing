@@ -1,15 +1,5 @@
 package se.sundsvall.esigning.integration.esigningprocess;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
-import static se.sundsvall.esigning.TestUtil.createSigningRequest;
-
 import generated.se.sundsvall.pw_e_signing.StartResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +9,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
+import static se.sundsvall.esigning.TestUtil.createSigningRequest;
 
 @ExtendWith(MockitoExtension.class)
 class EsigningProcessIntegrationTest {
