@@ -1,7 +1,5 @@
 package se.sundsvall.esigning.integration.esigningprocess.util;
 
-import static java.util.Collections.emptySet;
-
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,6 +8,8 @@ import se.sundsvall.esigning.api.model.Message;
 import se.sundsvall.esigning.api.model.Reminder;
 import se.sundsvall.esigning.api.model.Signatory;
 import se.sundsvall.esigning.api.model.SigningRequest;
+
+import static java.util.Collections.emptySet;
 
 public final class EsigningProcessMapper {
 

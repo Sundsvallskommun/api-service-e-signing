@@ -1,5 +1,13 @@
 package se.sundsvall.esigning.api.model;
 
+import com.google.code.beanmatchers.BeanMatchers;
+import java.time.OffsetDateTime;
+import java.util.Random;
+import java.util.Set;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanEquals;
 import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
@@ -12,14 +20,6 @@ import static se.sundsvall.esigning.TestUtil.createInitiator;
 import static se.sundsvall.esigning.TestUtil.createMessage;
 import static se.sundsvall.esigning.TestUtil.createReminder;
 import static se.sundsvall.esigning.TestUtil.createSignatory;
-
-import com.google.code.beanmatchers.BeanMatchers;
-import java.time.OffsetDateTime;
-import java.util.Random;
-import java.util.Set;
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 class SigningRequestTest {
 

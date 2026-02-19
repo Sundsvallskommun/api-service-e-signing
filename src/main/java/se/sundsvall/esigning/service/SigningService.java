@@ -1,9 +1,5 @@
 package se.sundsvall.esigning.service;
 
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
-
 import generated.se.sundsvall.document.Document;
 import java.util.Collections;
 import java.util.Optional;
@@ -13,6 +9,10 @@ import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.integration.document.DocumentIntegration;
 import se.sundsvall.esigning.integration.esigningprocess.EsigningProcessIntegration;
+
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
 
 @Service
 public class SigningService {
