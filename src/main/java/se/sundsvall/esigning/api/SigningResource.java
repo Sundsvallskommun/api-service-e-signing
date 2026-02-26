@@ -47,9 +47,9 @@ class SigningResource {
 	}
 
 	@Operation(summary = "Start a signing process")
-	@PostMapping(value = "/start", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_PROBLEM_JSON_VALUE)
+	@PostMapping(value = "/start", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<EsigningResponse> startSigningProcess(
-		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @PathVariable("municipalityId") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@Valid @RequestBody final SigningRequest request) {
 		return accepted().body(signingService.startSigningProcess(municipalityId, request));
 	}
