@@ -7,26 +7,26 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-  - url: http://localhost:57984
-    description: Generated server url
+- url: http://localhost:52108
+  description: Generated server url
 tags:
-  - name: eSigning
-    description: E-signing
+- name: eSigning
+  description: E-signing
 paths:
   /{municipalityId}/e-signing/start:
     post:
       tags:
-        - eSigning
+      - eSigning
       summary: Start a signing process
       operationId: startSigningProcess
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
       requestBody:
         content:
           application/json:
@@ -37,15 +37,17 @@ paths:
         "202":
           description: Accepted
           content:
-            application/json: {}
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EsigningResponse"
         "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -61,7 +63,7 @@ paths:
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -84,23 +86,21 @@ components:
           type: string
           description: Optional descriptive name for the document that is to be signed.
           examples:
-            - Employment contract
+          - Employment contract
         registrationNumber:
           type: string
           description: "The document registration number, the value must not be blank\
             \ or null"
           examples:
-            - 12345-2022
-          minLength: 1
+          - 12345-2022
         fileName:
           type: string
           description: "The document file name, the value must not be blank or null"
           examples:
-            - document.pdf
-          minLength: 1
+          - document.pdf
       required:
-        - fileName
-        - registrationNumber
+      - fileName
+      - registrationNumber
     Initiator:
       type: object
       description: Initiator model
@@ -109,28 +109,27 @@ components:
           type: string
           description: The initiator name
           examples:
-            - John Doe
-          minLength: 1
+          - John Doe
         partyId:
           type: string
           description: The initiator party id
           examples:
-            - 550e8400-e29b-41d4-a716-446655440000
+          - 550e8400-e29b-41d4-a716-446655440000
         organization:
           type: string
           description: The initiator organization
           examples:
-            - Sundsvall Municipality
+          - Sundsvall Municipality
         email:
           type: string
           format: email
           description: The initiator email
           examples:
-            - john.doe@sundsvall.se
+          - john.doe@sundsvall.se
       required:
-        - email
-        - name
-        - partyId
+      - email
+      - name
+      - partyId
     Message:
       type: object
       description: Message model
@@ -139,17 +138,15 @@ components:
           type: string
           description: Subject of the message
           examples:
-            - Please sign the document
-          minLength: 1
+          - Please sign the document
         body:
           type: string
           description: Body of the message
           examples:
-            - "Dear John Doe, please sign the document."
-          minLength: 1
+          - "Dear John Doe, please sign the document."
       required:
-        - body
-        - subject
+      - body
+      - subject
     Reminder:
       type: object
       description: Reminder model
@@ -162,18 +159,18 @@ components:
           format: int32
           description: The reminder interval in hours
           examples:
-            - "24"
+          - "24"
           minimum: 1
         startDateTime:
           type: string
           format: date-time
           description: The reminder start date and time
           examples:
-            - 2021-12-31T23:59:59Z
+          - 2021-12-31T23:59:59Z
       required:
-        - intervalInHours
-        - message
-        - startDateTime
+      - intervalInHours
+      - message
+      - startDateTime
     Signatory:
       type: object
       description: Signatory model
@@ -182,32 +179,29 @@ components:
           type: string
           description: The signatory name
           examples:
-            - John Doe
-          minLength: 1
+          - John Doe
         organization:
           type: string
           description: The signatory organization
           examples:
-            - Sundsvall Municipality
+          - Sundsvall Municipality
         partyId:
           type: string
           description: The signatory party id
           examples:
-            - 550e8400-e29b-41d4-a716-446655440000
+          - 550e8400-e29b-41d4-a716-446655440000
         email:
           type: string
           format: email
           description: The signatory email
           examples:
-            - john.doe@sundsvall.se
-          minLength: 1
+          - john.doe@sundsvall.se
         notificationMessage:
           $ref: "#/components/schemas/Message"
           description: The notification message
       required:
-        - email
-        - name
-        - partyId
+      - name
+      - partyId
     SigningRequest:
       type: object
       description: Signing request model
@@ -218,12 +212,12 @@ components:
             \ one of [en-US, sv-SE, da-DK, fr-FR, de-DE, nb-NO, ru-RU, zh-CN, fi-FI,\
             \ uk-UA]. Swedish will be used If no language is provided"
           examples:
-            - sv-SE
+          - sv-SE
         callbackUrl:
           type: string
           description: Optional callback url
           examples:
-            - https://example.com/callback
+          - https://example.com/callback
         expires:
           type: string
           format: date-time
@@ -231,7 +225,7 @@ components:
             \ no exipre date is provided, expiretime will be set to 30 days from time\
             \ when request was received."
           examples:
-            - 2021-12-31T23:59:59Z
+          - 2021-12-31T23:59:59Z
         document:
           $ref: "#/components/schemas/Document"
           description: The document to sign
@@ -253,10 +247,10 @@ components:
           minItems: 1
           uniqueItems: true
       required:
-        - document
-        - initiator
-        - notificationMessage
-        - signatories
+      - document
+      - initiator
+      - notificationMessage
+      - signatories
     Problem:
       type: object
       properties:
@@ -264,182 +258,54 @@ components:
           type: string
         detail:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         instance:
           type: string
           format: uri
         type:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: {}
-    StatusType:
-      type: object
-      properties:
-        reasonPhrase:
-          type: string
-        statusCode:
+        status:
           type: integer
           format: int32
     ConstraintViolationProblem:
       type: object
       properties:
-        cause:
-          $ref: "#/components/schemas/ThrowableProblem"
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
         type:
           type: string
           format: uri
         status:
-          $ref: "#/components/schemas/StatusType"
+          type: integer
+          format: int32
         violations:
           type: array
           items:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        message:
-          type: string
         detail:
           type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
         instance:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: {}
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
     ThrowableProblem:
       type: object
       properties:
-        cause: {}
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
-        message:
-          type: string
-        title:
-          type: string
-        detail:
-          type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
-        instance:
-          type: string
-          format: uri
         type:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: {}
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
+        title:
           type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        causeAsProblem: {}
     Violation:
       type: object
       properties:
@@ -447,4 +313,13 @@ components:
           type: string
         message:
           type: string
+    EsigningResponse:
+      type: object
+      description: Response model
+      properties:
+        processId:
+          type: string
+          description: The process id of the esigning process
+          examples:
+          - "12345"
   securitySchemes: {}

@@ -4,6 +4,12 @@
 logging:
   level:
     root: INFO
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.health.DataSourceHealthContributorAutoConfiguration
 config:
   esigningprocess:
     base-url: http://localhost:${wiremock.server.port}/pw-esigning

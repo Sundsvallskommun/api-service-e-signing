@@ -6,15 +6,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ThrowableProblem;
+import se.sundsvall.dept44.problem.Problem;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @ExtendWith(MockitoExtension.class)
 class DocumentIntegrationTest {
@@ -43,9 +43,7 @@ class DocumentIntegrationTest {
 	void getDocument_whenThrowsTest() {
 		final var municipalityId = "2281";
 		final var registrationNumber = "123-321";
-		when(mockClient.getDocument(municipalityId, registrationNumber)).thenThrow(new ThrowableProblem() {
-			private static final long serialVersionUID = -1842468863954454368L;
-		});
+		when(mockClient.getDocument(municipalityId, registrationNumber)).thenThrow(Problem.valueOf(INTERNAL_SERVER_ERROR));
 
 		assertThatThrownBy(() -> integration.getDocument(municipalityId, registrationNumber))
 			.isInstanceOf(Problem.class)
