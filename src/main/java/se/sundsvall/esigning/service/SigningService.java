@@ -4,14 +4,14 @@ import generated.se.sundsvall.document.Document;
 import java.util.Collections;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
+import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.integration.document.DocumentIntegration;
 import se.sundsvall.esigning.integration.esigningprocess.EsigningProcessIntegration;
 
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.NOT_FOUND;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.esigning.integration.esigningprocess.util.EsigningProcessMapper.toSigningRequest;
 
 @Service

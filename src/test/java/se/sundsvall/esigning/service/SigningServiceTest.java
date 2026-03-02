@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.zalando.problem.Problem;
+import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.esigning.integration.document.DocumentIntegration;
 import se.sundsvall.esigning.integration.esigningprocess.EsigningProcessIntegration;
 

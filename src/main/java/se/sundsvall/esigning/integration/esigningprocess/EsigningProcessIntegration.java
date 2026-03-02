@@ -5,10 +5,10 @@ import generated.se.sundsvall.pw_e_signing.StartResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ThrowableProblem;
+import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 
-import static org.zalando.problem.Status.SERVICE_UNAVAILABLE;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Component
 public class EsigningProcessIntegration {

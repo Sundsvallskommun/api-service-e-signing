@@ -4,17 +4,24 @@
 logging:
   level:
     root: INFO
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.health.DataSourceHealthContributorAutoConfiguration
 config:
   esigningprocess:
-    base-url: http://localhost:${wiremock.server.port}/pw-esigning
-    token-url: http://localhost:${wiremock.server.port}/token
+    base-url: http://localhost:59999/pw-esigning
+    token-url: http://localhost:59999/token
     client-id: someClientId
     client-secret: someClientSecret
     connect-timeout: 5
     read-timeout: 30
   document:
-    base-url: http://localhost:${wiremock.server.port}/document
-    token-url: http://localhost:${wiremock.server.port}/token
+    base-url: http://localhost:59999/document
+    token-url: http://localhost:59999/token
     client-id: someClientId
     client-secret: someClientSecret
     connect-timeout: 5
