@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:52108
+- url: http://localhost:52687
   description: Generated server url
 tags:
 - name: eSigning
@@ -93,11 +93,13 @@ components:
             \ or null"
           examples:
           - 12345-2022
+          minLength: 1
         fileName:
           type: string
           description: "The document file name, the value must not be blank or null"
           examples:
           - document.pdf
+          minLength: 1
       required:
       - fileName
       - registrationNumber
@@ -110,6 +112,7 @@ components:
           description: The initiator name
           examples:
           - John Doe
+          minLength: 1
         partyId:
           type: string
           description: The initiator party id
@@ -139,11 +142,13 @@ components:
           description: Subject of the message
           examples:
           - Please sign the document
+          minLength: 1
         body:
           type: string
           description: Body of the message
           examples:
           - "Dear John Doe, please sign the document."
+          minLength: 1
       required:
       - body
       - subject
@@ -180,6 +185,7 @@ components:
           description: The signatory name
           examples:
           - John Doe
+          minLength: 1
         organization:
           type: string
           description: The signatory organization
@@ -196,6 +202,7 @@ components:
           description: The signatory email
           examples:
           - john.doe@sundsvall.se
+          minLength: 1
         notificationMessage:
           $ref: "#/components/schemas/Message"
           description: The notification message
