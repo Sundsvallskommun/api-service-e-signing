@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:52687
+- url: http://localhost:60399
   description: Generated server url
 tags:
 - name: eSigning
@@ -164,7 +164,7 @@ components:
           format: int32
           description: The reminder interval in hours
           examples:
-          - "24"
+          - 24
           minimum: 1
         startDateTime:
           type: string
@@ -249,8 +249,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Signatory"
-            minItems: 1
-            uniqueItems: true
           minItems: 1
           uniqueItems: true
       required:
