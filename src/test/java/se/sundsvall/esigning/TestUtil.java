@@ -11,7 +11,9 @@ import se.sundsvall.esigning.api.model.Initiator;
 import se.sundsvall.esigning.api.model.Message;
 import se.sundsvall.esigning.api.model.Reminder;
 import se.sundsvall.esigning.api.model.Signatory;
+import se.sundsvall.esigning.api.model.SigningDocument;
 import se.sundsvall.esigning.api.model.SigningRequest;
+import se.sundsvall.esigning.api.model.StartSigningRequest;
 
 public final class TestUtil {
 
@@ -132,6 +134,44 @@ public final class TestUtil {
 
 	public static EsigningResponse createEsigningResponse() {
 		return createEsigningResponse(null);
+	}
+
+	public static SigningDocument createSigningDocument(final Consumer<SigningDocument> modifier) {
+		final var bean = SigningDocument.builder()
+			.withName("descriptiveName")
+			.withFileName("test.pdf")
+			.withMimeType("application/pdf")
+			.withContent("dGVzdA==")
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static SigningDocument createSigningDocument() {
+		return createSigningDocument(null);
+	}
+
+	public static StartSigningRequest createStartSigningRequest(final Consumer<StartSigningRequest> modifier) {
+		final var bean = StartSigningRequest.builder()
+			.withExpires(OffsetDateTime.now().plusDays(1))
+			.withLanguage("sv-SE")
+			.withCallbackUrl("callbackUrl")
+			.withNotificationMessage(createMessage())
+			.withInitiator(createInitiator())
+			.withReminder(createReminder())
+			.withSignatories(Set.of(createSignatory()))
+			.withDocument(createSigningDocument())
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static StartSigningRequest createStartSigningRequest() {
+		return createStartSigningRequest(null);
 	}
 
 }
