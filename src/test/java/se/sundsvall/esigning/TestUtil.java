@@ -13,6 +13,7 @@ import se.sundsvall.esigning.api.model.Message;
 import se.sundsvall.esigning.api.model.Reminder;
 import se.sundsvall.esigning.api.model.Signatory;
 import se.sundsvall.esigning.api.model.SigningDocument;
+import se.sundsvall.esigning.api.model.SigningEventNotification;
 import se.sundsvall.esigning.api.model.SigningInstanceResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
@@ -210,6 +211,22 @@ public final class TestUtil {
 
 	public static SigningInstanceResponse createSigningInstanceResponse() {
 		return createSigningInstanceResponse(null);
+	}
+
+	public static SigningEventNotification createSigningEventNotification(final Consumer<SigningEventNotification> modifier) {
+		final var bean = SigningEventNotification.builder()
+			.withProviderCaseId("1234567890")
+			.withEventType("signingInstanceCompleted")
+			.withOccurredAt(OffsetDateTime.now())
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static SigningEventNotification createSigningEventNotification() {
+		return createSigningEventNotification(null);
 	}
 
 }

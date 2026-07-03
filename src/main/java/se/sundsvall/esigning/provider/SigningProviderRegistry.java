@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.esigning.provider.configuration.ProviderProperties;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
@@ -20,6 +21,7 @@ public class SigningProviderRegistry {
 
 	private static final String NO_PROVIDER_CONFIGURED = "No signing provider is configured for municipality %s";
 	private static final String PROVIDER_NOT_AVAILABLE = "Configured signing provider '%s' for municipality %s is not available";
+	private static final String UNKNOWN_PROVIDER_ID = "Unknown signing provider '%s'";
 
 	private final ProviderProperties providerProperties;
 	private final Map<String, SigningProvider> providersById;
@@ -40,5 +42,10 @@ public class SigningProviderRegistry {
 
 		return Optional.ofNullable(providersById.get(providerId))
 			.orElseThrow(() -> Problem.valueOf(INTERNAL_SERVER_ERROR, PROVIDER_NOT_AVAILABLE.formatted(providerId, municipalityId)));
+	}
+
+	public SigningProvider getById(final String providerId) {
+		return Optional.ofNullable(providersById.get(providerId))
+			.orElseThrow(() -> Problem.valueOf(BAD_REQUEST, UNKNOWN_PROVIDER_ID.formatted(providerId)));
 	}
 }
