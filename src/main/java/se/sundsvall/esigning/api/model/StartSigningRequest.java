@@ -10,11 +10,8 @@ import java.time.OffsetDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.dept44.common.validators.annotation.OneOf;
 
@@ -22,10 +19,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
@@ -37,9 +31,6 @@ public class StartSigningRequest {
 	}, message = "The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR].", nullable = true)
 	@Schema(description = "The language used for the signing instance. Swedish will be used if no language is provided", examples = "sv-SE", requiredMode = NOT_REQUIRED)
 	private String language;
-
-	@Schema(description = "Optional callback url that is notified when the signing case reaches a terminal state", examples = "https://example.com/callback", requiredMode = NOT_REQUIRED)
-	private String callbackUrl;
 
 	@Future
 	@DateTimeFormat(iso = DATE_TIME)

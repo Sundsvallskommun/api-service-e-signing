@@ -159,7 +159,6 @@ public final class TestUtil {
 		final var bean = StartSigningRequest.builder()
 			.withExpires(OffsetDateTime.now().plusDays(1))
 			.withLanguage("sv-SE")
-			.withCallbackUrl("callbackUrl")
 			.withNotificationMessage(createMessage())
 			.withInitiator(createInitiator())
 			.withReminder(createReminder())

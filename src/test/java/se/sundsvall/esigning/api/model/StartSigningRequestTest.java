@@ -42,7 +42,6 @@ class StartSigningRequestTest {
 	void builderTest() {
 		final var expires = OffsetDateTime.now();
 		final var language = "sv-SE";
-		final var callbackUrl = "callbackUrl";
 		final var reminder = createReminder();
 		final var signatories = Set.of(createSignatory());
 		final var message = createMessage();
@@ -53,7 +52,6 @@ class StartSigningRequestTest {
 			.withExpires(expires)
 			.withDocument(document)
 			.withLanguage(language)
-			.withCallbackUrl(callbackUrl)
 			.withReminder(reminder)
 			.withSignatories(signatories)
 			.withNotificationMessage(message)
@@ -61,7 +59,6 @@ class StartSigningRequestTest {
 			.build();
 
 		assertThat(bean).satisfies(b -> {
-			assertThat(b.getCallbackUrl()).isEqualTo(callbackUrl);
 			assertThat(b.getExpires()).isEqualTo(expires);
 			assertThat(b.getLanguage()).isEqualTo(language);
 			assertThat(b.getReminder()).isEqualTo(reminder);
