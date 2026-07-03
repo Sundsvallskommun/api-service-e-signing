@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:60399
+- url: http://localhost:57283
   description: Generated server url
 tags:
 - name: eSigning
@@ -56,6 +56,53 @@ paths:
                 $ref: "#/components/schemas/Problem"
         "503":
           description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /{municipalityId}/e-signing/signings:
+    post:
+      tags:
+      - eSigning
+      summary: Create a signing request via the configured signing provider
+      operationId: createSigning
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartSigningRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartSigningResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
           content:
             application/problem+json:
               schema:
@@ -287,10 +334,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        detail:
-          type: string
         causeAsProblem:
           $ref: "#/components/schemas/ThrowableProblem"
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -327,4 +374,110 @@ components:
           description: The process id of the esigning process
           examples:
           - "12345"
+    SigningDocument:
+      type: object
+      description: Document to be signed
+      properties:
+        name:
+          type: string
+          description: "Optional descriptive name for the document, visible to the\
+            \ signatory"
+          examples:
+          - Employment contract
+        fileName:
+          type: string
+          description: The document file name including extension
+          examples:
+          - document.pdf
+          minLength: 1
+        mimeType:
+          type: string
+          description: The document mime type. Must be application/pdf
+          examples:
+          - application/pdf
+        content:
+          type: string
+          description: Base64-encoded content of the document to be signed
+          examples:
+          - dGVzdA==
+          minLength: 1
+      required:
+      - content
+      - fileName
+      - mimeType
+    StartSigningRequest:
+      type: object
+      description: Start signing request model
+      properties:
+        language:
+          type: string
+          description: The language used for the signing instance. Swedish will be
+            used if no language is provided
+          examples:
+          - sv-SE
+        callbackUrl:
+          type: string
+          description: Optional callback url that is notified when the signing case
+            reaches a terminal state
+          examples:
+          - https://example.com/callback
+        expires:
+          type: string
+          format: date-time
+          description: Optional date and time when the signing request expires
+          examples:
+          - 2026-12-31T23:59:59Z
+        document:
+          $ref: "#/components/schemas/SigningDocument"
+          description: The document to sign
+        initiator:
+          $ref: "#/components/schemas/Initiator"
+          description: The initiator of the signing request
+        notificationMessage:
+          $ref: "#/components/schemas/Message"
+          description: The notification message
+        reminder:
+          $ref: "#/components/schemas/Reminder"
+          description: Reminder object
+        signatories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Signatory"
+          minItems: 1
+          uniqueItems: true
+      required:
+      - document
+      - initiator
+      - notificationMessage
+      - signatories
+    StartSigningResponse:
+      type: object
+      description: Start signing response model
+      properties:
+        providerCaseId:
+          type: string
+          description: The signing provider's case id
+          examples:
+          - "1234567890"
+        status:
+          type: string
+          description: The normalized status of the signing case
+          enum:
+          - INITIERAT
+          - INVANTAR_SIGNERING
+          - SIGNERAT
+          - UTGANGET
+          - FEL
+          examples:
+          - INITIERAT
+        provider:
+          type: string
+          description: The id of the signing provider that handled the request
+          examples:
+          - comfact
+        signatoryUrls:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Direct signing urls per party id, when supplied by the provider"
   securitySchemes: {}

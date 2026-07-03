@@ -1,6 +1,7 @@
 package se.sundsvall.esigning;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import se.sundsvall.esigning.api.model.Signatory;
 import se.sundsvall.esigning.api.model.SigningDocument;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
+import se.sundsvall.esigning.api.model.StartSigningResponse;
 
 public final class TestUtil {
 
@@ -172,6 +174,23 @@ public final class TestUtil {
 
 	public static StartSigningRequest createStartSigningRequest() {
 		return createStartSigningRequest(null);
+	}
+
+	public static StartSigningResponse createStartSigningResponse(final Consumer<StartSigningResponse> modifier) {
+		final var bean = StartSigningResponse.builder()
+			.withProviderCaseId("1234567890")
+			.withStatus("INITIERAT")
+			.withProvider("comfact")
+			.withSignatoryUrls(Map.of("550e8400-e29b-41d4-a716-446655440000", "https://sign.example/abc"))
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static StartSigningResponse createStartSigningResponse() {
+		return createStartSigningResponse(null);
 	}
 
 }
