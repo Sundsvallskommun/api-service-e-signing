@@ -37,6 +37,12 @@ spring:
             provider: comfactfacade
             client-id: ${config.comfactfacade.client-id}
             client-secret: ${config.comfactfacade.client-secret}
+esigning:
+  provider:
+    # Active signing provider per organization (municipality id). Falls back to default-provider when unmapped.
+    default-provider: comfact
+    by-municipality-id:
+      "2281": comfact
 integration:
   esigningprocess:
     connect-timeout: ${config.esigningprocess.connect-timeout}
