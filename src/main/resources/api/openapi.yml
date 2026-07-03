@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:57283
+- url: http://localhost:53625
   description: Generated server url
 tags:
 - name: eSigning
@@ -87,6 +87,60 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StartSigningResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /{municipalityId}/e-signing/signings/{providerCaseId}:
+    get:
+      tags:
+      - eSigning
+      summary: Get the current status of a signing case
+      operationId: getSigningInstance
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: providerCaseId
+        in: path
+        description: The signing provider's case id
+        required: true
+        schema:
+          type: string
+        example: 1234567890
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SigningInstanceResponse"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -480,4 +534,38 @@ components:
           additionalProperties:
             type: string
           description: "Direct signing urls per party id, when supplied by the provider"
+    SigningInstanceResponse:
+      type: object
+      description: Signing instance response model
+      properties:
+        providerCaseId:
+          type: string
+          description: The signing provider's case id
+          examples:
+          - "1234567890"
+        status:
+          type: string
+          description: The normalized status of the signing case
+          enum:
+          - INITIERAT
+          - INVANTAR_SIGNERING
+          - SIGNERAT
+          - UTGANGET
+          - FEL
+          examples:
+          - INVANTAR_SIGNERING
+        provider:
+          type: string
+          description: The id of the signing provider that handled the request
+          examples:
+          - comfact
+        expires:
+          type: string
+          format: date-time
+          description: When the signing case expires
+          examples:
+          - 2026-12-31T23:59:59Z
+        signedDocument:
+          $ref: "#/components/schemas/SigningDocument"
+          description: "The signed document, present only when status is SIGNERAT"
   securitySchemes: {}

@@ -1,6 +1,7 @@
 package se.sundsvall.esigning.integration.comfactfacade;
 
 import generated.se.sundsvall.comfactfacade.CreateSigningResponse;
+import generated.se.sundsvall.comfactfacade.SigningInstance;
 import generated.se.sundsvall.comfactfacade.SigningRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class ComfactFacadeIntegrationTest {
@@ -53,6 +55,35 @@ class ComfactFacadeIntegrationTest {
 			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
 
 		verify(mockClient).createSigningRequest(municipalityId, request);
+		verifyNoMoreInteractions(mockClient);
+	}
+
+	@Test
+	void getSigning() {
+		final var municipalityId = "2281";
+		final var signingId = "comfact-123";
+		final var instance = new SigningInstance().signingId(signingId);
+		when(mockClient.getSigningInstance(municipalityId, signingId)).thenReturn(instance);
+
+		final var result = integration.getSigning(municipalityId, signingId);
+
+		assertThat(result).isEqualTo(instance);
+		verify(mockClient).getSigningInstance(municipalityId, signingId);
+		verifyNoMoreInteractions(mockClient);
+	}
+
+	@Test
+	void getSigning_whenThrowsPropagatesProblem() {
+		final var municipalityId = "2281";
+		final var signingId = "comfact-123";
+		when(mockClient.getSigningInstance(municipalityId, signingId)).thenThrow(Problem.valueOf(NOT_FOUND, "No such signing instance"));
+
+		assertThatThrownBy(() -> integration.getSigning(municipalityId, signingId))
+			.isInstanceOf(Problem.class)
+			.hasMessage("Not Found: No such signing instance")
+			.hasFieldOrPropertyWithValue("status", NOT_FOUND);
+
+		verify(mockClient).getSigningInstance(municipalityId, signingId);
 		verifyNoMoreInteractions(mockClient);
 	}
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
 import se.sundsvall.esigning.provider.configuration.ProviderProperties;
+import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
 import se.sundsvall.esigning.provider.model.SigningResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +70,11 @@ class SigningProviderRegistryTest {
 
 		@Override
 		public SigningResult startSigning(final String municipalityId, final StartSigningRequest request) {
+			return null;
+		}
+
+		@Override
+		public SigningInstanceInfo getSigningInstance(final String municipalityId, final String providerCaseId) {
 			return null;
 		}
 	}

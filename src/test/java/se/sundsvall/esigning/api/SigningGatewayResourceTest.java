@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.sundsvall.esigning.Application;
+import se.sundsvall.esigning.api.model.SigningInstanceResponse;
 import se.sundsvall.esigning.api.model.StartSigningResponse;
 import se.sundsvall.esigning.service.SigningGatewayService;
 
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static se.sundsvall.esigning.TestUtil.createSigningInstanceResponse;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
 import static se.sundsvall.esigning.TestUtil.createStartSigningResponse;
 
@@ -49,6 +51,27 @@ class SigningGatewayResourceTest {
 
 		assertThat(responseBody).isEqualTo(response);
 		verify(signingGatewayServiceMock).startSigning(municipalityId, request);
+		verifyNoMoreInteractions(signingGatewayServiceMock);
+	}
+
+	@Test
+	void getSigningInstance() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "1234567890";
+		final var response = createSigningInstanceResponse();
+
+		when(signingGatewayServiceMock.getSigningInstance(municipalityId, providerCaseId)).thenReturn(response);
+
+		final var responseBody = webTestClient.get()
+			.uri("/" + municipalityId + "/e-signing/signings/" + providerCaseId)
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody(SigningInstanceResponse.class)
+			.returnResult()
+			.getResponseBody();
+
+		assertThat(responseBody).isEqualTo(response);
+		verify(signingGatewayServiceMock).getSigningInstance(municipalityId, providerCaseId);
 		verifyNoMoreInteractions(signingGatewayServiceMock);
 	}
 }
