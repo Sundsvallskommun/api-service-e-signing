@@ -4,21 +4,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import se.sundsvall.dept44.common.validators.annotation.OneOf;
 import se.sundsvall.dept44.common.validators.annotation.ValidBase64;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
@@ -37,7 +31,7 @@ public class SigningDocument {
 	private String mimeType;
 
 	@NotBlank
-	@ValidBase64(nullable = true)
+	@ValidBase64
 	@Schema(description = "Base64-encoded content of the document to be signed", examples = "dGVzdA==", requiredMode = REQUIRED)
 	private String content;
 
