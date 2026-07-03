@@ -26,3 +26,10 @@ config:
     client-secret: someClientSecret
     connect-timeout: 5
     read-timeout: 30
+  comfactfacade:
+    base-url: http://localhost:59999/comfactfacade
+    token-url: http://localhost:59999/token
+    client-id: someClientId
+    client-secret: someClientSecret
+    connect-timeout: 5
+    read-timeout: 30
