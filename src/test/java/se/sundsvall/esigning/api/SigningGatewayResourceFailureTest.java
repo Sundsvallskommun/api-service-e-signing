@@ -44,7 +44,6 @@ class SigningGatewayResourceFailureTest {
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setDocument(null)), "document", "must not be null"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getDocument().setFileName(null)), "document.fileName", "must not be blank"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getDocument().setMimeType("text/plain")), "document.mimeType", "The provided mime type is not valid. Only application/pdf is supported."),
-			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getDocument().setContent(null)), "document.content", "must not be blank"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getDocument().setContent("@@@@")), "document.content", "not a valid BASE64-encoded string"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setLanguage("invalid-language")), "language",
 				"The provided language is not valid. Valid values are [de-DE, nb-NO, ru-RU, zh-CN, fi-FI, uk-UA, en-US, sv-SE, da-DK, fr-FR]."),

@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:57283
+- url: http://localhost:58664
   description: Generated server url
 tags:
 - name: eSigning
@@ -415,12 +415,6 @@ components:
             used if no language is provided
           examples:
           - sv-SE
-        callbackUrl:
-          type: string
-          description: Optional callback url that is notified when the signing case
-            reaches a terminal state
-          examples:
-          - https://example.com/callback
         expires:
           type: string
           format: date-time
