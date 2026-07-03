@@ -19,6 +19,8 @@ spring:
             token-uri: ${config.esigningprocess.token-url}
           document:
             token-uri: ${config.document.token-url}
+          comfactfacade:
+            token-uri: ${config.comfactfacade.token-url}
         registration:
           esigningprocess:
             authorization-grant-type: client_credentials
@@ -30,6 +32,11 @@ spring:
             provider: document
             client-id: ${config.document.client-id}
             client-secret: ${config.document.client-secret}
+          comfactfacade:
+            authorization-grant-type: client_credentials
+            provider: comfactfacade
+            client-id: ${config.comfactfacade.client-id}
+            client-secret: ${config.comfactfacade.client-secret}
 integration:
   esigningprocess:
     connect-timeout: ${config.esigningprocess.connect-timeout}
@@ -39,3 +46,7 @@ integration:
     connect-timeout: ${config.document.connect-timeout}
     read-timeout: ${config.document.read-timeout}
     base-url: ${config.document.base-url}
+  comfactfacade:
+    connect-timeout: ${config.comfactfacade.connect-timeout}
+    read-timeout: ${config.comfactfacade.read-timeout}
+    base-url: ${config.comfactfacade.base-url}
