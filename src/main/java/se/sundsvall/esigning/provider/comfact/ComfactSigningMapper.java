@@ -102,12 +102,19 @@ public final class ComfactSigningMapper {
 
 	public static SigningInstanceInfo toSigningInstanceInfo(final SigningInstance instance) {
 		final var statusCode = Optional.ofNullable(instance.getStatus()).map(Status::getCode).orElse(null);
+		final var status = toSigningStatus(statusCode);
+
+		// The signed document is only exposed once the case is signed (see SigningInstanceInfo / SigningInstanceResponse).
+		final var signedDocument = Optional.of(status)
+			.filter(SIGNERAT::equals)
+			.map(_ -> toSignedDocument(instance.getSignedDocument()))
+			.orElse(null);
 
 		return new SigningInstanceInfo(
 			instance.getSigningId(),
-			toSigningStatus(statusCode),
+			status,
 			instance.getExpires(),
-			toSignedDocument(instance.getSignedDocument()));
+			signedDocument);
 	}
 
 	static SigningDocument toSignedDocument(final Document document) {
