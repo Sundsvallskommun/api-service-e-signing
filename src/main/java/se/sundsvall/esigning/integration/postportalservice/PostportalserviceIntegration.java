@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.sundsvall.dept44.problem.ThrowableProblem;
 
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
+
 @Component
 public class PostportalserviceIntegration {
 
@@ -22,7 +24,8 @@ public class PostportalserviceIntegration {
 			postportalserviceClient.sendCallback(municipalityId, request);
 		} catch (final ThrowableProblem e) {
 			// Propagate so the whole webhook chain fails and the provider retries the delivery later.
-			LOGGER.error(COULD_NOT_SEND_CALLBACK.formatted(request.providerCaseId(), e.getMessage()));
+			// providerCaseId originates from an inbound webhook payload - sanitize it to avoid log injection.
+			LOGGER.error(COULD_NOT_SEND_CALLBACK.formatted(sanitizeForLogging(request.providerCaseId()), e.getMessage()));
 			throw e;
 		}
 	}
