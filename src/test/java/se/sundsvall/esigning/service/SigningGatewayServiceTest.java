@@ -1,5 +1,6 @@
 package se.sundsvall.esigning.service;
 
+import java.time.OffsetDateTime;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,14 +9,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.esigning.provider.SigningProvider;
 import se.sundsvall.esigning.provider.SigningProviderRegistry;
+import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
 import se.sundsvall.esigning.provider.model.SigningResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static se.sundsvall.esigning.TestUtil.createSigningDocument;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
 import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
+import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNERAT;
 
 @ExtendWith(MockitoExtension.class)
 class SigningGatewayServiceTest {
@@ -47,6 +51,30 @@ class SigningGatewayServiceTest {
 
 		verify(mockRegistry).resolve(municipalityId);
 		verify(mockProvider).startSigning(municipalityId, request);
+		verify(mockProvider).getId();
+		verifyNoMoreInteractions(mockRegistry, mockProvider);
+	}
+
+	@Test
+	void getSigningInstance() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "case-1";
+		final var expires = OffsetDateTime.now().plusDays(10);
+		final var signedDocument = createSigningDocument();
+		when(mockRegistry.resolve(municipalityId)).thenReturn(mockProvider);
+		when(mockProvider.getSigningInstance(municipalityId, providerCaseId)).thenReturn(new SigningInstanceInfo(providerCaseId, SIGNERAT, expires, signedDocument));
+		when(mockProvider.getId()).thenReturn("comfact");
+
+		final var response = service.getSigningInstance(municipalityId, providerCaseId);
+
+		assertThat(response.getProviderCaseId()).isEqualTo(providerCaseId);
+		assertThat(response.getStatus()).isEqualTo("SIGNERAT");
+		assertThat(response.getProvider()).isEqualTo("comfact");
+		assertThat(response.getExpires()).isEqualTo(expires);
+		assertThat(response.getSignedDocument()).isEqualTo(signedDocument);
+
+		verify(mockRegistry).resolve(municipalityId);
+		verify(mockProvider).getSigningInstance(municipalityId, providerCaseId);
 		verify(mockProvider).getId();
 		verifyNoMoreInteractions(mockRegistry, mockProvider);
 	}

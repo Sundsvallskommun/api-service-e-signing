@@ -6,17 +6,28 @@ import generated.se.sundsvall.comfactfacade.NotificationMessage;
 import generated.se.sundsvall.comfactfacade.Party;
 import generated.se.sundsvall.comfactfacade.Reminder;
 import generated.se.sundsvall.comfactfacade.Signatory;
+import generated.se.sundsvall.comfactfacade.SigningInstance;
 import generated.se.sundsvall.comfactfacade.SigningRequest;
+import generated.se.sundsvall.comfactfacade.Status;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import se.sundsvall.esigning.api.model.Initiator;
 import se.sundsvall.esigning.api.model.Message;
 import se.sundsvall.esigning.api.model.SigningDocument;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
+import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
+import se.sundsvall.esigning.provider.model.SigningStatus;
+
+import static se.sundsvall.esigning.provider.model.SigningStatus.FEL;
+import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
+import static se.sundsvall.esigning.provider.model.SigningStatus.INVANTAR_SIGNERING;
+import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNERAT;
+import static se.sundsvall.esigning.provider.model.SigningStatus.UTGANGET;
 
 /**
- * Maps the provider-neutral API request to Comfact facade's generated request model.
+ * Maps between the provider-neutral API/domain models and Comfact facade's generated models.
  */
 public final class ComfactSigningMapper {
 
@@ -87,5 +98,48 @@ public final class ComfactSigningMapper {
 				.startDateTime(r.getStartDateTime())
 				.message(toNotificationMessage(r.getMessage(), language)))
 			.orElse(null);
+	}
+
+	public static SigningInstanceInfo toSigningInstanceInfo(final SigningInstance instance) {
+		final var statusCode = Optional.ofNullable(instance.getStatus()).map(Status::getCode).orElse(null);
+		final var status = toSigningStatus(statusCode);
+
+		// The signed document is only exposed once the case is signed (see SigningInstanceInfo / SigningInstanceResponse).
+		final var signedDocument = Optional.of(status)
+			.filter(SIGNERAT::equals)
+			.map(_ -> toSignedDocument(instance.getSignedDocument()))
+			.orElse(null);
+
+		return new SigningInstanceInfo(
+			instance.getSigningId(),
+			status,
+			instance.getExpires(),
+			signedDocument);
+	}
+
+	static SigningDocument toSignedDocument(final Document document) {
+		return Optional.ofNullable(document)
+			.map(d -> SigningDocument.builder()
+				.withName(d.getName())
+				.withFileName(d.getFileName())
+				.withMimeType(d.getMimeType())
+				.withContent(Optional.ofNullable(d.getContent()).map(Base64.getEncoder()::encodeToString).orElse(null))
+				.build())
+			.orElse(null);
+	}
+
+	/**
+	 * Normalizes a Comfact status code to the domain status vocabulary. Matching is case-insensitive.
+	 */
+	static SigningStatus toSigningStatus(final String comfactStatusCode) {
+		return switch (Optional.ofNullable(comfactStatusCode).map(code -> code.toLowerCase(Locale.ROOT)).orElse("")) {
+			case "created" -> INITIERAT;
+			case "active", "reactivated", "approved" -> INVANTAR_SIGNERING;
+			case "completed" -> SIGNERAT;
+			case "expired" -> UTGANGET;
+			case "withdrawn", "declined", "halted", "faulty" -> FEL;
+			// Unknown/unset: do not finalize the case - the authoritative terminal status arrives via a known code.
+			default -> INVANTAR_SIGNERING;
+		};
 	}
 }

@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
 import se.sundsvall.esigning.integration.comfactfacade.ComfactFacadeIntegration;
 import se.sundsvall.esigning.provider.SigningProvider;
+import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
 import se.sundsvall.esigning.provider.model.SigningResult;
 
 import static java.util.Collections.emptyMap;
 import static se.sundsvall.esigning.provider.comfact.ComfactSigningMapper.toComfactSigningRequest;
+import static se.sundsvall.esigning.provider.comfact.ComfactSigningMapper.toSigningInstanceInfo;
 import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
 
 /**
@@ -38,5 +40,10 @@ public class ComfactSigningProvider implements SigningProvider {
 			response.getSigningId(),
 			INITIERAT,
 			Optional.ofNullable(response.getSignatoryUrls()).orElse(emptyMap()));
+	}
+
+	@Override
+	public SigningInstanceInfo getSigningInstance(final String municipalityId, final String providerCaseId) {
+		return toSigningInstanceInfo(comfactFacadeIntegration.getSigning(municipalityId, providerCaseId));
 	}
 }

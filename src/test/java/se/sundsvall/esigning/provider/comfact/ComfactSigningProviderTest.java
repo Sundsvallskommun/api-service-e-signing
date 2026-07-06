@@ -1,7 +1,12 @@
 package se.sundsvall.esigning.provider.comfact;
 
 import generated.se.sundsvall.comfactfacade.CreateSigningResponse;
+import generated.se.sundsvall.comfactfacade.Document;
+import generated.se.sundsvall.comfactfacade.SigningInstance;
 import generated.se.sundsvall.comfactfacade.SigningRequest;
+import generated.se.sundsvall.comfactfacade.Status;
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,5 +73,29 @@ class ComfactSigningProviderTest {
 		final var result = provider.startSigning(municipalityId, request);
 
 		assertThat(result.signatoryUrls()).isEmpty();
+	}
+
+	@Test
+	void getSigningInstance() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "comfact-123";
+		final var expires = OffsetDateTime.now().plusDays(10);
+		when(mockIntegration.getSigning(municipalityId, providerCaseId))
+			.thenReturn(new SigningInstance()
+				.signingId(providerCaseId)
+				.status(new Status().code("Completed"))
+				.expires(expires)
+				.signedDocument(new Document().fileName("signed.pdf").mimeType("application/pdf").content("test".getBytes(StandardCharsets.UTF_8))));
+
+		final var info = provider.getSigningInstance(municipalityId, providerCaseId);
+
+		assertThat(info.providerCaseId()).isEqualTo(providerCaseId);
+		assertThat(info.status()).isEqualTo(SigningStatus.SIGNERAT);
+		assertThat(info.expires()).isEqualTo(expires);
+		assertThat(info.signedDocument().getFileName()).isEqualTo("signed.pdf");
+		assertThat(info.signedDocument().getContent()).isEqualTo("dGVzdA==");
+
+		verify(mockIntegration).getSigning(municipalityId, providerCaseId);
+		verifyNoMoreInteractions(mockIntegration);
 	}
 }

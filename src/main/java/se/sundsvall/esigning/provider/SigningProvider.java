@@ -1,6 +1,7 @@
 package se.sundsvall.esigning.provider;
 
 import se.sundsvall.esigning.api.model.StartSigningRequest;
+import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
 import se.sundsvall.esigning.provider.model.SigningResult;
 
 /**
@@ -23,4 +24,13 @@ public interface SigningProvider {
 	 * @return                the provider-neutral result including the provider's case id and the normalized status
 	 */
 	SigningResult startSigning(String municipalityId, StartSigningRequest request);
+
+	/**
+	 * Fetches the current snapshot of a signing case from the provider.
+	 *
+	 * @param  municipalityId the municipality the signing belongs to
+	 * @param  providerCaseId the provider's case id
+	 * @return                the provider-neutral snapshot including the normalized status and, once signed, the document
+	 */
+	SigningInstanceInfo getSigningInstance(String municipalityId, String providerCaseId);
 }
