@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.sundsvall.dept44.problem.ThrowableProblem;
 
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
+
 @Component
 public class ComfactFacadeIntegration {
 
@@ -36,7 +38,8 @@ public class ComfactFacadeIntegration {
 			return comfactFacadeClient.getSigningInstance(municipalityId, signingId);
 		} catch (final ThrowableProblem e) {
 			// Preserve the provider's original problem (e.g. 404 for an unknown case) so the caller gets a clear error.
-			LOGGER.error(COULD_NOT_GET_SIGNING.formatted(signingId, e.getMessage()));
+			// signingId is a user-provided path variable - sanitize it to avoid log injection.
+			LOGGER.error(COULD_NOT_GET_SIGNING.formatted(sanitizeForLogging(signingId), e.getMessage()));
 			throw e;
 		}
 	}
