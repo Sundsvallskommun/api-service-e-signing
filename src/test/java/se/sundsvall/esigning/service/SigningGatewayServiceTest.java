@@ -4,25 +4,21 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.esigning.integration.postportalservice.PostportalserviceIntegration;
-import se.sundsvall.esigning.integration.postportalservice.SigningCallbackRequest;
 import se.sundsvall.esigning.provider.SigningProvider;
 import se.sundsvall.esigning.provider.SigningProviderRegistry;
 import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
 import se.sundsvall.esigning.provider.model.SigningResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.esigning.TestUtil.createSigningDocument;
-import static se.sundsvall.esigning.TestUtil.createSigningEventNotification;
+import static se.sundsvall.esigning.TestUtil.createSigningEvent;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
 import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
 import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNERAT;
@@ -38,9 +34,6 @@ class SigningGatewayServiceTest {
 
 	@Mock
 	private PostportalserviceIntegration mockPostportalserviceIntegration;
-
-	@Captor
-	private ArgumentCaptor<SigningCallbackRequest> callbackCaptor;
 
 	@InjectMocks
 	private SigningGatewayService service;
@@ -92,26 +85,13 @@ class SigningGatewayServiceTest {
 	}
 
 	@Test
-	void handleProviderEvent() {
+	void relaySigningEvent() {
 		final var municipalityId = "2281";
-		final var providerId = "comfact";
-		final var notification = createSigningEventNotification();
-		final var signedDocument = createSigningDocument();
-		final var expires = OffsetDateTime.now().plusDays(1);
-		when(mockRegistry.getById(providerId)).thenReturn(mockProvider);
-		when(mockProvider.getSigningInstance(municipalityId, notification.getProviderCaseId()))
-			.thenReturn(new SigningInstanceInfo(notification.getProviderCaseId(), SIGNERAT, expires, signedDocument));
+		final var event = createSigningEvent();
 
-		service.handleProviderEvent(municipalityId, providerId, notification);
+		service.relaySigningEvent(municipalityId, event);
 
-		verify(mockRegistry).getById(providerId);
-		verify(mockProvider).getSigningInstance(municipalityId, notification.getProviderCaseId());
-		verify(mockPostportalserviceIntegration).sendCallback(eq(municipalityId), callbackCaptor.capture());
+		verify(mockPostportalserviceIntegration).sendEvent(municipalityId, event);
 		verifyNoMoreInteractions(mockRegistry, mockProvider, mockPostportalserviceIntegration);
-
-		final var sent = callbackCaptor.getValue();
-		assertThat(sent.providerCaseId()).isEqualTo(notification.getProviderCaseId());
-		assertThat(sent.status()).isEqualTo("SIGNERAT");
-		assertThat(sent.signedDocument()).isEqualTo(signedDocument);
 	}
 }

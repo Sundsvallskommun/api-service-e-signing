@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
-import se.sundsvall.esigning.api.model.SigningEventNotification;
+import se.sundsvall.esigning.api.model.ComfactEventNotification;
+import se.sundsvall.esigning.provider.comfact.ComfactSigningMapper;
 import se.sundsvall.esigning.service.SigningGatewayService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -36,24 +37,22 @@ import static org.springframework.http.ResponseEntity.ok;
 	@ApiResponse(responseCode = "502", description = "Bad Gateway", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 })
 @Tag(name = "eSigning", description = "E-signing")
-class SigningWebhookResource {
+class ComfactWebhookResource {
 
 	private final SigningGatewayService signingGatewayService;
 
-	SigningWebhookResource(final SigningGatewayService signingGatewayService) {
+	ComfactWebhookResource(final SigningGatewayService signingGatewayService) {
 		this.signingGatewayService = signingGatewayService;
 	}
 
-	@Operation(summary = "Receive a signing event notification from a signing provider", responses = {
-		@ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
-		@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	@Operation(summary = "Receive a signing event from Comfact (forwarded by api-comfact-facade)", responses = {
+		@ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
 	})
-	@PostMapping(value = "/webhooks/{provider}", consumes = APPLICATION_JSON_VALUE)
-	ResponseEntity<Void> handleProviderEvent(
+	@PostMapping(value = "/webhooks/comfact", consumes = APPLICATION_JSON_VALUE)
+	ResponseEntity<Void> handleComfactEvent(
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
-		@PathVariable @Parameter(name = "provider", description = "The signing provider id", example = "comfact") final String provider,
-		@Valid @RequestBody final SigningEventNotification notification) {
-		signingGatewayService.handleProviderEvent(municipalityId, provider, notification);
+		@Valid @RequestBody final ComfactEventNotification notification) {
+		signingGatewayService.relaySigningEvent(municipalityId, ComfactSigningMapper.toSigningEvent(notification));
 		return ok().build();
 	}
 

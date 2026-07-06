@@ -11,7 +11,6 @@ import se.sundsvall.esigning.provider.model.SigningResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 class SigningProviderRegistryTest {
@@ -58,23 +57,6 @@ class SigningProviderRegistryTest {
 			.isInstanceOf(Problem.class)
 			.hasMessage("Internal Server Error: Configured signing provider 'missing' for municipality 2281 is not available")
 			.hasFieldOrPropertyWithValue("status", INTERNAL_SERVER_ERROR);
-	}
-
-	@Test
-	void getByIdReturnsProvider() {
-		final var registry = new SigningProviderRegistry(new ProviderProperties("comfact", Map.of()), List.of(COMFACT, OTHER));
-
-		assertThat(registry.getById("comfact")).isSameAs(COMFACT);
-	}
-
-	@Test
-	void getByIdThrowsWhenUnknown() {
-		final var registry = new SigningProviderRegistry(new ProviderProperties("comfact", Map.of()), List.of(COMFACT));
-
-		assertThatThrownBy(() -> registry.getById("nope"))
-			.isInstanceOf(Problem.class)
-			.hasMessage("Bad Request: Unknown signing provider 'nope'")
-			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
 	}
 
 	private record TestProvider(String id)

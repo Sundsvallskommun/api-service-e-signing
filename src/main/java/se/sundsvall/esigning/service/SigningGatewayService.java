@@ -1,18 +1,18 @@
 package se.sundsvall.esigning.service;
 
 import org.springframework.stereotype.Service;
-import se.sundsvall.esigning.api.model.SigningEventNotification;
 import se.sundsvall.esigning.api.model.SigningInstanceResponse;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
 import se.sundsvall.esigning.api.model.StartSigningResponse;
 import se.sundsvall.esigning.integration.postportalservice.PostportalserviceIntegration;
-import se.sundsvall.esigning.integration.postportalservice.SigningCallbackRequest;
+import se.sundsvall.esigning.integration.postportalservice.SigningEvent;
 import se.sundsvall.esigning.provider.SigningProvider;
 import se.sundsvall.esigning.provider.SigningProviderRegistry;
 
 /**
  * Entry point for the provider-agnostic signing flow. Selects the configured provider for the municipality and
- * delegates the (synchronous) start of the signing process to it, and relays provider events back to the consumer.
+ * delegates the (synchronous) start of the signing process to it, and relays normalized provider events to the
+ * consumer.
  */
 @Service
 public class SigningGatewayService {
@@ -51,13 +51,11 @@ public class SigningGatewayService {
 	}
 
 	/**
-	 * Handles an inbound provider event: pulls the authoritative signing-instance snapshot and relays the normalized
-	 * status (and signed document, once available) to Postportalservice, which correlates the case by provider case id.
+	 * Relays a normalized, provider-neutral signing event to Postportalservice. The provider-specific inbound resource
+	 * has already mapped the provider's payload to {@link SigningEvent}; pps correlates the case by
+	 * {@code customerReference} and the recipient by {@code signatory.partyId}.
 	 */
-	public void handleProviderEvent(final String municipalityId, final String providerId, final SigningEventNotification notification) {
-		final var provider = signingProviderRegistry.getById(providerId);
-		final var info = provider.getSigningInstance(municipalityId, notification.getProviderCaseId());
-
-		postportalserviceIntegration.sendCallback(municipalityId, new SigningCallbackRequest(info.providerCaseId(), info.status().name(), info.signedDocument()));
+	public void relaySigningEvent(final String municipalityId, final SigningEvent signingEvent) {
+		postportalserviceIntegration.sendEvent(municipalityId, signingEvent);
 	}
 }

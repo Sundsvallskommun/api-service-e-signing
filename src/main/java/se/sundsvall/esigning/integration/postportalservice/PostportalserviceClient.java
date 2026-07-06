@@ -19,6 +19,6 @@ import static se.sundsvall.esigning.integration.postportalservice.configuration.
 public interface PostportalserviceClient {
 
 	@Retry(name = CLIENT_ID)
-	@PostMapping(path = "/{municipalityId}/e-signing/callbacks", consumes = APPLICATION_JSON_VALUE)
-	void sendCallback(@PathVariable("municipalityId") String municipalityId, @RequestBody SigningCallbackRequest request);
+	@PostMapping(path = "/{municipalityId}/e-signing/events", consumes = APPLICATION_JSON_VALUE)
+	void sendEvent(@PathVariable("municipalityId") String municipalityId, @RequestBody SigningEvent signingEvent);
 }

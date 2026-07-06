@@ -10,7 +10,7 @@ import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 @Component
 public class PostportalserviceIntegration {
 
-	private static final String COULD_NOT_SEND_CALLBACK = "Could not send signing callback for case %s to Postportalservice. Error: %s";
+	private static final String COULD_NOT_SEND_EVENT = "Could not send signing event for case %s to Postportalservice. Error: %s";
 	private static final Logger LOGGER = LoggerFactory.getLogger(PostportalserviceIntegration.class);
 
 	private final PostportalserviceClient postportalserviceClient;
@@ -19,13 +19,13 @@ public class PostportalserviceIntegration {
 		this.postportalserviceClient = postportalserviceClient;
 	}
 
-	public void sendCallback(final String municipalityId, final SigningCallbackRequest request) {
+	public void sendEvent(final String municipalityId, final SigningEvent signingEvent) {
 		try {
-			postportalserviceClient.sendCallback(municipalityId, request);
+			postportalserviceClient.sendEvent(municipalityId, signingEvent);
 		} catch (final ThrowableProblem e) {
 			// Propagate so the whole webhook chain fails and the provider retries the delivery later.
 			// providerCaseId originates from an inbound webhook payload - sanitize it to avoid log injection.
-			LOGGER.error(COULD_NOT_SEND_CALLBACK.formatted(sanitizeForLogging(request.providerCaseId()), e.getMessage()));
+			LOGGER.error(COULD_NOT_SEND_EVENT.formatted(sanitizeForLogging(signingEvent.providerCaseId()), e.getMessage()));
 			throw e;
 		}
 	}

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;
-import static se.sundsvall.esigning.TestUtil.createSigningDocument;
+import static se.sundsvall.esigning.TestUtil.createSigningEvent;
 
 @ExtendWith(MockitoExtension.class)
 class PostportalserviceIntegrationTest {
@@ -25,28 +25,28 @@ class PostportalserviceIntegrationTest {
 	private PostportalserviceIntegration integration;
 
 	@Test
-	void sendCallback() {
+	void sendEvent() {
 		final var municipalityId = "2281";
-		final var request = new SigningCallbackRequest("case-1", "SIGNERAT", createSigningDocument());
+		final var event = createSigningEvent();
 
-		assertThatNoException().isThrownBy(() -> integration.sendCallback(municipalityId, request));
+		assertThatNoException().isThrownBy(() -> integration.sendEvent(municipalityId, event));
 
-		verify(mockClient).sendCallback(municipalityId, request);
+		verify(mockClient).sendEvent(municipalityId, event);
 		verifyNoMoreInteractions(mockClient);
 	}
 
 	@Test
-	void sendCallback_whenThrowsPropagatesProblem() {
+	void sendEvent_whenThrowsPropagatesProblem() {
 		final var municipalityId = "2281";
-		final var request = new SigningCallbackRequest("case-1", "SIGNERAT", null);
-		doThrow(Problem.valueOf(BAD_GATEWAY, "Postportalservice unavailable")).when(mockClient).sendCallback(municipalityId, request);
+		final var event = createSigningEvent();
+		doThrow(Problem.valueOf(BAD_GATEWAY, "Postportalservice unavailable")).when(mockClient).sendEvent(municipalityId, event);
 
-		assertThatThrownBy(() -> integration.sendCallback(municipalityId, request))
+		assertThatThrownBy(() -> integration.sendEvent(municipalityId, event))
 			.isInstanceOf(Problem.class)
 			.hasMessage("Bad Gateway: Postportalservice unavailable")
 			.hasFieldOrPropertyWithValue("status", BAD_GATEWAY);
 
-		verify(mockClient).sendCallback(municipalityId, request);
+		verify(mockClient).sendEvent(municipalityId, event);
 		verifyNoMoreInteractions(mockClient);
 	}
 }
