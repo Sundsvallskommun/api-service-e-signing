@@ -41,6 +41,7 @@ public final class ComfactSigningMapper {
 
 		return new SigningRequest()
 			.language(language)
+			.customerReference(request.getCustomerReference())
 			.expires(request.getExpires())
 			.document(toDocument(request.getDocument()))
 			.initiator(toInitiator(request.getInitiator()))

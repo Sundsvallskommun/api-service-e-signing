@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:60089
+- url: http://localhost:50762
   description: Generated server url
 tags:
 - name: eSigning
@@ -388,10 +388,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
         detail:
           type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
         instance:
           type: string
           format: uri
@@ -469,6 +469,13 @@ components:
             used if no language is provided
           examples:
           - sv-SE
+        customerReference:
+          type: string
+          description: "The consumer's own reference for the case (e.g. Postportalen's\
+            \ MessageId). It is passed to the provider and echoed back verbatim in\
+            \ every event callback, so the consumer can correlate the case."
+          examples:
+          - 550e8400-e29b-41d4-a716-446655440000
         expires:
           type: string
           format: date-time

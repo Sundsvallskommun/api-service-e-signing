@@ -42,6 +42,7 @@ class StartSigningRequestTest {
 	void builderTest() {
 		final var expires = OffsetDateTime.now();
 		final var language = "sv-SE";
+		final var customerReference = "550e8400-e29b-41d4-a716-446655440000";
 		final var reminder = createReminder();
 		final var signatories = Set.of(createSignatory());
 		final var message = createMessage();
@@ -52,6 +53,7 @@ class StartSigningRequestTest {
 			.withExpires(expires)
 			.withDocument(document)
 			.withLanguage(language)
+			.withCustomerReference(customerReference)
 			.withReminder(reminder)
 			.withSignatories(signatories)
 			.withNotificationMessage(message)
@@ -61,6 +63,7 @@ class StartSigningRequestTest {
 		assertThat(bean).satisfies(b -> {
 			assertThat(b.getExpires()).isEqualTo(expires);
 			assertThat(b.getLanguage()).isEqualTo(language);
+			assertThat(b.getCustomerReference()).isEqualTo(customerReference);
 			assertThat(b.getReminder()).isEqualTo(reminder);
 			assertThat(b.getSignatories()).isEqualTo(signatories);
 			assertThat(b.getNotificationMessage()).isEqualTo(message);
