@@ -138,4 +138,17 @@ class ComfactSigningMapperTest {
 		assertThat(info.status()).isEqualTo(INVANTAR_SIGNERING);
 		assertThat(info.signedDocument()).isNull();
 	}
+
+	@Test
+	void toSigningInstanceInfo_dropsSignedDocumentWhenNotSigned() {
+		final var instance = new SigningInstance()
+			.signingId("comfact-123")
+			.status(new Status().code("Active"))
+			.signedDocument(new Document().fileName("signed.pdf").mimeType("application/pdf").content("test".getBytes(StandardCharsets.UTF_8)));
+
+		final var info = ComfactSigningMapper.toSigningInstanceInfo(instance);
+
+		assertThat(info.status()).isEqualTo(INVANTAR_SIGNERING);
+		assertThat(info.signedDocument()).isNull();
+	}
 }
