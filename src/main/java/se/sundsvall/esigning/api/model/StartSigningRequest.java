@@ -32,6 +32,11 @@ public class StartSigningRequest {
 	@Schema(description = "The language used for the signing instance. Swedish will be used if no language is provided", examples = "sv-SE", requiredMode = NOT_REQUIRED)
 	private String language;
 
+	@Schema(description = "The consumer's own reference for the case (e.g. Postportalen's MessageId). It is passed to the provider and echoed back verbatim in every event callback, so the consumer can correlate the case.",
+		examples = "550e8400-e29b-41d4-a716-446655440000",
+		requiredMode = NOT_REQUIRED)
+	private String customerReference;
+
 	@Future
 	@DateTimeFormat(iso = DATE_TIME)
 	@Schema(description = "Optional date and time when the signing request expires", examples = "2026-12-31T23:59:59Z", requiredMode = NOT_REQUIRED)
