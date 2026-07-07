@@ -20,5 +20,5 @@ public interface PostportalserviceClient {
 
 	@Retry(name = CLIENT_ID)
 	@PostMapping(path = "/{municipalityId}/e-signing/events", consumes = APPLICATION_JSON_VALUE)
-	void sendEvent(@PathVariable("municipalityId") String municipalityId, @RequestBody SigningEvent signingEvent);
+	void sendEvent(@PathVariable String municipalityId, @RequestBody SigningEvent signingEvent);
 }

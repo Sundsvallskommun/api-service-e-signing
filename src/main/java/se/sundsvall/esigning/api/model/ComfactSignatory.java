@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se.sundsvall.dept44.common.validators.annotation.OneOf;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 
@@ -18,6 +19,9 @@ public class ComfactSignatory {
 	@Schema(description = "The party id of the signatory", examples = "550e8400-e29b-41d4-a716-446655440000", requiredMode = NOT_REQUIRED)
 	private String partyId;
 
+	@OneOf(value = {
+		"approved", "declined"
+	}, message = "The provided action is not a known Comfact signatory action.", nullable = true)
 	@Schema(description = "The action taken by the signatory", examples = "approved", allowableValues = {
 		"approved", "declined"
 	}, requiredMode = NOT_REQUIRED)

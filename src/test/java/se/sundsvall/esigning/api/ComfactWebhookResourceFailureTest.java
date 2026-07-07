@@ -14,6 +14,7 @@ import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
 import se.sundsvall.dept44.problem.violations.Violation;
 import se.sundsvall.esigning.Application;
 import se.sundsvall.esigning.api.model.ComfactEventNotification;
+import se.sundsvall.esigning.api.model.ComfactSignatory;
 import se.sundsvall.esigning.service.SigningGatewayService;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +41,7 @@ class ComfactWebhookResourceFailureTest {
 		return Stream.of(
 			Arguments.of(municipalityId, createComfactEventNotification(n -> n.setEventTrigger("notAnEvent")), "eventTrigger", "The provided event trigger is not a known Comfact event."),
 			Arguments.of(municipalityId, createComfactEventNotification(n -> n.setSigningInstanceId(null)), "signingInstanceId", "must not be blank"),
+			Arguments.of(municipalityId, createComfactEventNotification(n -> n.setSignatory(ComfactSignatory.builder().withAction("invalidAction").build())), "signatory.action", "The provided action is not a known Comfact signatory action."),
 			Arguments.of("not valid", createComfactEventNotification(), "handleComfactEvent.municipalityId", "not a valid municipality ID"));
 	}
 
