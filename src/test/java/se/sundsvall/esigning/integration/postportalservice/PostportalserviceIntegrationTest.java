@@ -43,7 +43,8 @@ class PostportalserviceIntegrationTest {
 
 		assertThatThrownBy(() -> integration.sendEvent(municipalityId, event))
 			.isInstanceOf(Problem.class)
-			.hasMessage("Bad Gateway: Postportalservice unavailable")
+			.hasMessageContaining("Could not send signing event for case")
+			.hasMessageContaining("Postportalservice unavailable")
 			.hasFieldOrPropertyWithValue("status", BAD_GATEWAY);
 
 		verify(mockClient).sendEvent(municipalityId, event);
