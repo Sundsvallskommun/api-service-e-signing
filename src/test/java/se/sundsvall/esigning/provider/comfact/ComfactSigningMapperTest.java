@@ -32,6 +32,7 @@ class ComfactSigningMapperTest {
 		final var result = ComfactSigningMapper.toComfactSigningRequest(request);
 
 		assertThat(result.getLanguage()).isEqualTo("sv-SE");
+		assertThat(result.getCustomerReference()).isEqualTo(request.getCustomerReference());
 		assertThat(result.getExpires()).isEqualTo(request.getExpires());
 
 		assertThat(result.getNotificationMessage()).isNotNull();
