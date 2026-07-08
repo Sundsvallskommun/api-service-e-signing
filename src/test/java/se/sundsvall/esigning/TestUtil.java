@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import se.sundsvall.esigning.api.model.ComfactEventNotification;
+import se.sundsvall.esigning.api.model.ComfactSignatory;
 import se.sundsvall.esigning.api.model.Document;
 import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.Initiator;
@@ -17,6 +19,8 @@ import se.sundsvall.esigning.api.model.SigningInstanceResponse;
 import se.sundsvall.esigning.api.model.SigningRequest;
 import se.sundsvall.esigning.api.model.StartSigningRequest;
 import se.sundsvall.esigning.api.model.StartSigningResponse;
+import se.sundsvall.esigning.integration.postportalservice.EventSignatory;
+import se.sundsvall.esigning.integration.postportalservice.SigningEvent;
 
 public final class TestUtil {
 
@@ -210,6 +214,55 @@ public final class TestUtil {
 
 	public static SigningInstanceResponse createSigningInstanceResponse() {
 		return createSigningInstanceResponse(null);
+	}
+
+	public static ComfactSignatory createComfactSignatory(final Consumer<ComfactSignatory> modifier) {
+		final var bean = ComfactSignatory.builder()
+			.withPartyId("550e8400-e29b-41d4-a716-446655440000")
+			.withAction("approved")
+			.withReason("reason")
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static ComfactSignatory createComfactSignatory() {
+		return createComfactSignatory(null);
+	}
+
+	public static ComfactEventNotification createComfactEventNotification(final Consumer<ComfactEventNotification> modifier) {
+		final var bean = ComfactEventNotification.builder()
+			.withEventTrigger("signingInstanceCompleted")
+			.withSigningInstanceId("1234567890")
+			.withCustomerReference("550e8400-e29b-41d4-a716-446655440000")
+			.withStatusCode("completed")
+			.withExpires(OffsetDateTime.now().plusDays(30))
+			.withSignatory(createComfactSignatory())
+			.withSignedDocument(createSigningDocument())
+			.withTimestamp(OffsetDateTime.now())
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static ComfactEventNotification createComfactEventNotification() {
+		return createComfactEventNotification(null);
+	}
+
+	public static SigningEvent createSigningEvent() {
+		return new SigningEvent(
+			"550e8400-e29b-41d4-a716-446655440000",
+			"1234567890",
+			"comfact",
+			"CASE_COMPLETED",
+			"SIGNERAT",
+			new EventSignatory("550e8400-e29b-41d4-a716-446655440000", "APPROVED", null),
+			createSigningDocument(),
+			OffsetDateTime.now());
 	}
 
 }

@@ -12,9 +12,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.esigning.provider.model.SigningEventType;
 import se.sundsvall.esigning.provider.model.SigningStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static se.sundsvall.esigning.TestUtil.createComfactEventNotification;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
 import static se.sundsvall.esigning.provider.model.SigningStatus.FEL;
 import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
@@ -151,5 +156,93 @@ class ComfactSigningMapperTest {
 
 		assertThat(info.status()).isEqualTo(INVANTAR_SIGNERING);
 		assertThat(info.signedDocument()).isNull();
+	}
+
+	@Test
+	void toSigningEvent_completed() {
+		final var notification = createComfactEventNotification();
+
+		final var event = ComfactSigningMapper.toSigningEvent(notification);
+
+		assertThat(event.customerReference()).isEqualTo(notification.getCustomerReference());
+		assertThat(event.providerCaseId()).isEqualTo(notification.getSigningInstanceId());
+		assertThat(event.provider()).isEqualTo("comfact");
+		assertThat(event.eventType()).isEqualTo("CASE_COMPLETED");
+		assertThat(event.status()).isEqualTo("SIGNERAT");
+		assertThat(event.occurredAt()).isEqualTo(notification.getTimestamp());
+		assertThat(event.signedDocument()).isNotNull();
+		assertThat(event.signedDocument().getFileName()).isEqualTo("test.pdf");
+	}
+
+	@Test
+	void toSigningEvent_signatoryApprovedMapsSignatoryAndDropsDocument() {
+		final var notification = createComfactEventNotification(n -> {
+			n.setEventTrigger("signatoryActionApproved");
+			n.setStatusCode("active");
+			n.getSignatory().setAction("approved");
+		});
+
+		final var event = ComfactSigningMapper.toSigningEvent(notification);
+
+		assertThat(event.eventType()).isEqualTo("SIGNATORY_APPROVED");
+		assertThat(event.status()).isEqualTo("INVANTAR_SIGNERING");
+		assertThat(event.signedDocument()).isNull();
+		assertThat(event.signatory()).isNotNull();
+		assertThat(event.signatory().partyId()).isEqualTo(notification.getSignatory().getPartyId());
+		assertThat(event.signatory().action()).isEqualTo("APPROVED");
+		assertThat(event.signatory().reason()).isEqualTo("reason");
+	}
+
+	@Test
+	void toSigningEvent_declinedMapsAction() {
+		final var notification = createComfactEventNotification(n -> {
+			n.setEventTrigger("signatoryActionDeclined");
+			n.getSignatory().setAction("declined");
+		});
+
+		final var event = ComfactSigningMapper.toSigningEvent(notification);
+
+		assertThat(event.eventType()).isEqualTo("SIGNATORY_DECLINED");
+		assertThat(event.signatory().action()).isEqualTo("DECLINED");
+	}
+
+	@Test
+	void toSigningEvent_noSignatory() {
+		final var notification = createComfactEventNotification(n -> n.setSignatory(null));
+
+		final var event = ComfactSigningMapper.toSigningEvent(notification);
+
+		assertThat(event.signatory()).isNull();
+	}
+
+	private static Stream<Arguments> eventTypeMappings() {
+		return Stream.of(
+			Arguments.of("signingInstanceCreated", SigningEventType.CASE_CREATED),
+			Arguments.of("signatoryActionApproved", SigningEventType.SIGNATORY_APPROVED),
+			Arguments.of("signatoryActionDeclined", SigningEventType.SIGNATORY_DECLINED),
+			Arguments.of("signingInstanceCompleted", SigningEventType.CASE_COMPLETED),
+			Arguments.of("signingInstanceWithdrawn", SigningEventType.CASE_WITHDRAWN),
+			Arguments.of("signingInstanceExpired", SigningEventType.CASE_EXPIRED),
+			Arguments.of("signingInstanceHalted", SigningEventType.CASE_HALTED),
+			Arguments.of("signingInstanceReactivated", SigningEventType.CASE_REACTIVATED));
+	}
+
+	@ParameterizedTest
+	@MethodSource("eventTypeMappings")
+	void toEventType(final String comfactTrigger, final SigningEventType expected) {
+		assertThat(ComfactSigningMapper.toEventType(comfactTrigger)).isEqualTo(expected);
+	}
+
+	@Test
+	void toEventType_unknownThrows() {
+		assertThatThrownBy(() -> ComfactSigningMapper.toEventType("notAnEvent"))
+			.isInstanceOf(Problem.class)
+			.hasMessage("Bad Request: Unsupported Comfact event trigger")
+			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
+	}
+
+	@Test
+	void toSignatoryAction_nullReturnsNull() {
+		assertThat(ComfactSigningMapper.toSignatoryAction(null)).isNull();
 	}
 }
