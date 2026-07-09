@@ -7,12 +7,55 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:63765
+- url: http://localhost:64052
   description: Generated server url
 tags:
 - name: eSigning
   description: E-signing
 paths:
+  /{municipalityId}/e-signing/webhooks/comfact:
+    post:
+      tags:
+      - eSigning
+      summary: Receive a signing event from Comfact (forwarded by api-comfact-facade)
+      operationId: handleComfactEvent
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComfactEventNotification"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
   /{municipalityId}/e-signing/start:
     post:
       tags:
@@ -230,6 +273,168 @@ paths:
       x-wso2-mutual-ssl: Optional
 components:
   schemas:
+    ComfactEventNotification:
+      type: object
+      description: A signing event forwarded from Comfact (via api-comfact-facade)
+      properties:
+        eventTrigger:
+          type: string
+          description: The Comfact event trigger
+          examples:
+          - signingInstanceCompleted
+        signingInstanceId:
+          type: string
+          description: The Comfact signing instance id
+          examples:
+          - "1234567890"
+          minLength: 1
+        customerReference:
+          type: string
+          description: The customer reference (Postportalen MessageId) supplied at
+            create and echoed back by Comfact
+          examples:
+          - 550e8400-e29b-41d4-a716-446655440000
+        statusCode:
+          type: string
+          description: The Comfact status code of the signing instance
+          examples:
+          - completed
+        expires:
+          type: string
+          format: date-time
+          description: When the signing instance expires
+          examples:
+          - 2026-12-31T23:59:59Z
+        signatory:
+          $ref: "#/components/schemas/ComfactSignatory"
+          description: "The acting signatory, present on signatory events"
+        signedDocument:
+          $ref: "#/components/schemas/SigningDocument"
+          description: "The signed document, present on a completed event"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the event occurred
+          examples:
+          - 2026-12-31T23:59:59Z
+      required:
+      - eventTrigger
+      - signingInstanceId
+    ComfactSignatory:
+      type: object
+      description: The signatory referenced by a Comfact event
+      properties:
+        partyId:
+          type: string
+          description: The party id of the signatory
+          examples:
+          - 550e8400-e29b-41d4-a716-446655440000
+        action:
+          type: string
+          description: The action taken by the signatory
+          enum:
+          - approved
+          - declined
+          examples:
+          - approved
+        reason:
+          type: string
+          description: "The reason given for the action, when provided"
+          examples:
+          - Not authorised to sign
+    SigningDocument:
+      type: object
+      description: Document to be signed
+      properties:
+        name:
+          type: string
+          description: "Optional descriptive name for the document, visible to the\
+            \ signatory"
+          examples:
+          - Employment contract
+        fileName:
+          type: string
+          description: The document file name including extension
+          examples:
+          - document.pdf
+          minLength: 1
+        mimeType:
+          type: string
+          description: The document mime type. Must be application/pdf
+          examples:
+          - application/pdf
+        content:
+          type: string
+          description: Base64-encoded content of the document to be signed
+          examples:
+          - dGVzdA==
+          minLength: 1
+      required:
+      - content
+      - fileName
+      - mimeType
+    Problem:
+      type: object
+      properties:
+        title:
+          type: string
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        status:
+          type: integer
+          format: int32
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        status:
+          type: integer
+          format: int32
+        violations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Violation"
+        title:
+          type: string
+        detail:
+          type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
+        instance:
+          type: string
+          format: uri
+    ThrowableProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        causeAsProblem: {}
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
     Document:
       type: object
       description: Document model
@@ -408,68 +613,6 @@ components:
       - initiator
       - notificationMessage
       - signatories
-    Problem:
-      type: object
-      properties:
-        title:
-          type: string
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-        type:
-          type: string
-          format: uri
-        status:
-          type: integer
-          format: int32
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-        status:
-          type: integer
-          format: int32
-        violations:
-          type: array
-          items:
-            $ref: "#/components/schemas/Violation"
-        title:
-          type: string
-        causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-    ThrowableProblem:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-        title:
-          type: string
-        status:
-          type: integer
-          format: int32
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-        causeAsProblem: {}
-    Violation:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
     EsigningResponse:
       type: object
       description: Response model
@@ -479,37 +622,6 @@ components:
           description: The process id of the esigning process
           examples:
           - "12345"
-    SigningDocument:
-      type: object
-      description: Document to be signed
-      properties:
-        name:
-          type: string
-          description: "Optional descriptive name for the document, visible to the\
-            \ signatory"
-          examples:
-          - Employment contract
-        fileName:
-          type: string
-          description: The document file name including extension
-          examples:
-          - document.pdf
-          minLength: 1
-        mimeType:
-          type: string
-          description: The document mime type. Must be application/pdf
-          examples:
-          - application/pdf
-        content:
-          type: string
-          description: Base64-encoded content of the document to be signed
-          examples:
-          - dGVzdA==
-          minLength: 1
-      required:
-      - content
-      - fileName
-      - mimeType
     StartSigningRequest:
       type: object
       description: Start signing request model
@@ -520,6 +632,13 @@ components:
             used if no language is provided
           examples:
           - sv-SE
+        customerReference:
+          type: string
+          description: "The consumer's own reference for the case (e.g. Postportalen's\
+            \ MessageId). It is passed to the provider and echoed back verbatim in\
+            \ every event callback, so the consumer can correlate the case."
+          examples:
+          - 550e8400-e29b-41d4-a716-446655440000
         expires:
           type: string
           format: date-time

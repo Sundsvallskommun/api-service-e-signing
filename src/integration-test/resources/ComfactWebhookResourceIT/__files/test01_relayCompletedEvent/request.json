@@ -1,0 +1,14 @@
+{
+	"eventTrigger": "signingInstanceCompleted",
+	"signingInstanceId": "1234567890",
+	"customerReference": "550e8400-e29b-41d4-a716-446655440000",
+	"statusCode": "completed",
+	"expires": "2040-12-31T23:59:59Z",
+	"signedDocument": {
+		"name": "Employment contract",
+		"fileName": "contract.pdf",
+		"mimeType": "application/pdf",
+		"content": "Zm9v"
+	},
+	"timestamp": "2026-07-07T12:00:00Z"
+}

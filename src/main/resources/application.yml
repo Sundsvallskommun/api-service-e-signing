@@ -21,6 +21,8 @@ spring:
             token-uri: ${config.document.token-url}
           comfactfacade:
             token-uri: ${config.comfactfacade.token-url}
+          postportalservice:
+            token-uri: ${config.postportalservice.token-url}
         registration:
           esigningprocess:
             authorization-grant-type: client_credentials
@@ -37,6 +39,11 @@ spring:
             provider: comfactfacade
             client-id: ${config.comfactfacade.client-id}
             client-secret: ${config.comfactfacade.client-secret}
+          postportalservice:
+            authorization-grant-type: client_credentials
+            provider: postportalservice
+            client-id: ${config.postportalservice.client-id}
+            client-secret: ${config.postportalservice.client-secret}
 esigning:
   provider:
     # Active signing provider per organization (municipality id). Falls back to default-provider when unmapped.
@@ -56,3 +63,7 @@ integration:
     connect-timeout: ${config.comfactfacade.connect-timeout}
     read-timeout: ${config.comfactfacade.read-timeout}
     base-url: ${config.comfactfacade.base-url}
+  postportalservice:
+    connect-timeout: ${config.postportalservice.connect-timeout}
+    read-timeout: ${config.postportalservice.read-timeout}
+    base-url: ${config.postportalservice.base-url}

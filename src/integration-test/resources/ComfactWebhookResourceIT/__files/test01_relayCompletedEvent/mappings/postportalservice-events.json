@@ -1,0 +1,34 @@
+{
+	"request": {
+		"headers": {
+			"Authorization": {
+				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+			},
+			"Content-Type": {
+				"contains": "application/json"
+			}
+		},
+		"method": "POST",
+		"url": "/postportalservice/2281/e-signing/events/550e8400-e29b-41d4-a716-446655440000",
+		"bodyPatterns": [
+			{
+				"equalToJson": {
+					"customerReference": "550e8400-e29b-41d4-a716-446655440000",
+					"providerCaseId": "1234567890",
+					"provider": "comfact",
+					"eventType": "CASE_COMPLETED",
+					"status": "SIGNERAT",
+					"signedDocument": {
+						"fileName": "contract.pdf",
+						"mimeType": "application/pdf"
+					}
+				},
+				"ignoreExtraElements": true
+			}
+		]
+	},
+	"response": {
+		"status": 200
+	},
+	"name": "postportalservice-events"
+}
