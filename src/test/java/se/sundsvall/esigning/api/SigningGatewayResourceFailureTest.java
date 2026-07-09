@@ -1,6 +1,7 @@
 package se.sundsvall.esigning.api;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static se.sundsvall.esigning.TestUtil.createSignatory;
+import static se.sundsvall.esigning.TestUtil.createSigningDocument;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
 
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
@@ -64,6 +66,7 @@ class SigningGatewayResourceFailureTest {
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setSignatories(Set.of(createSignatory(signatory -> signatory.setPartyId(null))))), "signatories[].partyId", "not a valid UUID"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setSignatories(Set.of(createSignatory(signatory -> signatory.setEmail(null))))), "signatories[].email", "must not be blank"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setSignatories(Set.of(createSignatory(signatory -> signatory.setEmail("not-a-valid-email"))))), "signatories[].email", "must be a well-formed email address"),
+			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setAttachments(List.of(createSigningDocument(document -> document.setFileName(null))))), "attachments[0].fileName", "must not be blank"),
 			Arguments.of("not valid", createStartSigningRequest(), "createSigning.municipalityId", "not a valid municipality ID"));
 	}
 

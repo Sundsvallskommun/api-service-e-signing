@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:50762
+- url: http://localhost:57681
   description: Generated server url
 tags:
 - name: eSigning
@@ -353,10 +353,10 @@ components:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        detail:
-          type: string
         causeAsProblem:
           $ref: "#/components/schemas/ThrowableProblem"
+        detail:
+          type: string
         instance:
           type: string
           format: uri
@@ -562,68 +562,6 @@ components:
       - initiator
       - notificationMessage
       - signatories
-    Problem:
-      type: object
-      properties:
-        title:
-          type: string
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-        type:
-          type: string
-          format: uri
-        status:
-          type: integer
-          format: int32
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-        status:
-          type: integer
-          format: int32
-        violations:
-          type: array
-          items:
-            $ref: "#/components/schemas/Violation"
-        title:
-          type: string
-        detail:
-          type: string
-        causeAsProblem:
-          $ref: "#/components/schemas/ThrowableProblem"
-        instance:
-          type: string
-          format: uri
-    ThrowableProblem:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-        title:
-          type: string
-        status:
-          type: integer
-          format: int32
-        detail:
-          type: string
-        instance:
-          type: string
-          format: uri
-        causeAsProblem: {}
-    Violation:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
     EsigningResponse:
       type: object
       description: Response model
@@ -658,7 +596,13 @@ components:
           - 2026-12-31T23:59:59Z
         document:
           $ref: "#/components/schemas/SigningDocument"
-          description: The document to sign
+          description: The primary document to sign
+        attachments:
+          type: array
+          description: Optional additional documents (attachments) included in the
+            signing alongside the primary document
+          items:
+            $ref: "#/components/schemas/SigningDocument"
         initiator:
           $ref: "#/components/schemas/Initiator"
           description: The initiator of the signing request
