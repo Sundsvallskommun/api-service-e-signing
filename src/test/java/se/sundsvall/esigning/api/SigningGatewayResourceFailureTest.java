@@ -3,6 +3,7 @@ package se.sundsvall.esigning.api;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -88,6 +89,27 @@ class SigningGatewayResourceFailureTest {
 			assertThat(r.getStatus()).isEqualTo(BAD_REQUEST);
 			assertThat(r.getViolations()).extracting(Violation::field, Violation::message)
 				.containsExactlyInAnyOrder(tuple(field, message));
+		});
+
+		verifyNoInteractions(signingGatewayServiceMock);
+	}
+
+	@Test
+	void cancelSigning_invalidMunicipalityId() {
+		final var response = webTestClient.delete()
+			.uri("/not-valid/e-signing/signings/1234567890")
+			.exchange()
+			.expectStatus().isBadRequest()
+			.expectHeader().contentType(APPLICATION_PROBLEM_JSON_VALUE)
+			.expectBody(ConstraintViolationProblem.class)
+			.returnResult()
+			.getResponseBody();
+
+		assertThat(response).isNotNull().satisfies(r -> {
+			assertThat(r.getTitle()).isEqualTo("Constraint Violation");
+			assertThat(r.getStatus()).isEqualTo(BAD_REQUEST);
+			assertThat(r.getViolations()).extracting(Violation::field, Violation::message)
+				.containsExactlyInAnyOrder(tuple("cancelSigning.municipalityId", "not a valid municipality ID"));
 		});
 
 		verifyNoInteractions(signingGatewayServiceMock);

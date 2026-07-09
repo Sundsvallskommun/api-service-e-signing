@@ -44,4 +44,9 @@ public class SigningGatewayService {
 			.withSignedDocument(info.signedDocument())
 			.build();
 	}
+
+	public void cancelSigning(final String municipalityId, final String providerCaseId) {
+		final var provider = signingProviderRegistry.resolve(municipalityId);
+		provider.cancelSigning(municipalityId, providerCaseId);
+	}
 }

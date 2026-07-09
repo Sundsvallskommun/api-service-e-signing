@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "2.0"
 servers:
-- url: http://localhost:60089
+- url: http://localhost:63765
   description: Generated server url
 tags:
 - name: eSigning
@@ -135,6 +135,57 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SigningInstanceResponse"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "502":
+          description: Bad Gateway
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+    delete:
+      tags:
+      - eSigning
+      summary: Cancel a signing case via the configured signing provider
+      description: Withdraws the signing case at the provider so it stops progressing.
+        The final state is confirmed asynchronously through the provider callback.
+      operationId: cancelSigning
+      parameters:
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: providerCaseId
+        in: path
+        description: The signing provider's case id
+        required: true
+        schema:
+          type: string
+        example: 1234567890
+      responses:
+        "204":
+          description: No Content
         "404":
           description: Not Found
           content:

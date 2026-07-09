@@ -78,4 +78,17 @@ class SigningGatewayServiceTest {
 		verify(mockProvider).getId();
 		verifyNoMoreInteractions(mockRegistry, mockProvider);
 	}
+
+	@Test
+	void cancelSigning() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "case-1";
+		when(mockRegistry.resolve(municipalityId)).thenReturn(mockProvider);
+
+		service.cancelSigning(municipalityId, providerCaseId);
+
+		verify(mockRegistry).resolve(municipalityId);
+		verify(mockProvider).cancelSigning(municipalityId, providerCaseId);
+		verifyNoMoreInteractions(mockRegistry, mockProvider);
+	}
 }
