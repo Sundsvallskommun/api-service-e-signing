@@ -31,7 +31,7 @@ class PostportalserviceIntegrationTest {
 
 		assertThatNoException().isThrownBy(() -> integration.sendEvent(municipalityId, event));
 
-		verify(mockClient).sendEvent(municipalityId, event);
+		verify(mockClient).sendEvent(municipalityId, event.customerReference(), event);
 		verifyNoMoreInteractions(mockClient);
 	}
 
@@ -39,7 +39,7 @@ class PostportalserviceIntegrationTest {
 	void sendEvent_whenThrowsPropagatesProblem() {
 		final var municipalityId = "2281";
 		final var event = createSigningEvent();
-		doThrow(Problem.valueOf(BAD_GATEWAY, "Postportalservice unavailable")).when(mockClient).sendEvent(municipalityId, event);
+		doThrow(Problem.valueOf(BAD_GATEWAY, "Postportalservice unavailable")).when(mockClient).sendEvent(municipalityId, event.customerReference(), event);
 
 		assertThatThrownBy(() -> integration.sendEvent(municipalityId, event))
 			.isInstanceOf(Problem.class)
@@ -47,7 +47,7 @@ class PostportalserviceIntegrationTest {
 			.hasMessageContaining("Postportalservice unavailable")
 			.hasFieldOrPropertyWithValue("status", BAD_GATEWAY);
 
-		verify(mockClient).sendEvent(municipalityId, event);
+		verify(mockClient).sendEvent(municipalityId, event.customerReference(), event);
 		verifyNoMoreInteractions(mockClient);
 	}
 }
