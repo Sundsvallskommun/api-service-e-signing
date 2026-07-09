@@ -19,7 +19,8 @@ public class PostportalserviceIntegration {
 
 	public void sendEvent(final String municipalityId, final SigningEvent signingEvent) {
 		try {
-			postportalserviceClient.sendEvent(municipalityId, signingEvent);
+			// customerReference is the Postportalen message id; it identifies the signing case as a path variable.
+			postportalserviceClient.sendEvent(municipalityId, signingEvent.customerReference(), signingEvent);
 		} catch (final ThrowableProblem e) {
 			// Rethrow with the case id as context so the whole webhook chain fails and the provider retries the
 			// delivery later. The propagated problem is logged upstream by the framework; providerCaseId comes from an

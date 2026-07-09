@@ -9,7 +9,7 @@
 			}
 		},
 		"method": "POST",
-		"url": "/postportalservice/2281/e-signing/events",
+		"url": "/postportalservice/2281/e-signing/events/550e8400-e29b-41d4-a716-446655440000",
 		"bodyPatterns": [
 			{
 				"equalToJson": {
