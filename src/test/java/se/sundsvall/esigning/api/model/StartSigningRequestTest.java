@@ -2,6 +2,7 @@ package se.sundsvall.esigning.api.model;
 
 import com.google.code.beanmatchers.BeanMatchers;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.hamcrest.MatcherAssert;
@@ -48,10 +49,12 @@ class StartSigningRequestTest {
 		final var message = createMessage();
 		final var initiator = createInitiator();
 		final var document = createSigningDocument();
+		final var attachments = List.of(createSigningDocument());
 
 		final var bean = StartSigningRequest.builder()
 			.withExpires(expires)
 			.withDocument(document)
+			.withAttachments(attachments)
 			.withLanguage(language)
 			.withCustomerReference(customerReference)
 			.withReminder(reminder)
@@ -69,6 +72,7 @@ class StartSigningRequestTest {
 			assertThat(b.getNotificationMessage()).isEqualTo(message);
 			assertThat(b.getInitiator()).isEqualTo(initiator);
 			assertThat(b.getDocument()).isEqualTo(document);
+			assertThat(b.getAttachments()).isEqualTo(attachments);
 		}).hasNoNullFieldsOrProperties();
 	}
 

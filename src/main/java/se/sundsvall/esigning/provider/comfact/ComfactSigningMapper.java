@@ -51,6 +51,7 @@ public final class ComfactSigningMapper {
 			.customerReference(request.getCustomerReference())
 			.expires(request.getExpires())
 			.document(toDocument(request.getDocument()))
+			.additionalDocuments(toAdditionalDocuments(request.getAttachments()))
 			.initiator(toInitiator(request.getInitiator()))
 			.notificationMessage(toNotificationMessage(request.getNotificationMessage(), language))
 			.reminder(toReminder(request.getReminder(), language))
@@ -63,6 +64,12 @@ public final class ComfactSigningMapper {
 			.fileName(document.getFileName())
 			.mimeType(document.getMimeType())
 			.content(Base64.getDecoder().decode(document.getContent()));
+	}
+
+	static List<Document> toAdditionalDocuments(final List<SigningDocument> attachments) {
+		return Optional.ofNullable(attachments).orElseGet(List::of).stream()
+			.map(ComfactSigningMapper::toDocument)
+			.toList();
 	}
 
 	static Party toInitiator(final Initiator initiator) {

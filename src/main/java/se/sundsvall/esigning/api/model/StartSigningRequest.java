@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,8 +45,11 @@ public class StartSigningRequest {
 
 	@Valid
 	@NotNull
-	@Schema(description = "The document to sign", implementation = SigningDocument.class, requiredMode = REQUIRED)
+	@Schema(description = "The primary document to sign", implementation = SigningDocument.class, requiredMode = REQUIRED)
 	private SigningDocument document;
+
+	@ArraySchema(schema = @Schema(implementation = SigningDocument.class), arraySchema = @Schema(description = "Optional additional documents (attachments) included in the signing alongside the primary document", requiredMode = NOT_REQUIRED))
+	private List<@Valid SigningDocument> attachments;
 
 	@Valid
 	@NotNull

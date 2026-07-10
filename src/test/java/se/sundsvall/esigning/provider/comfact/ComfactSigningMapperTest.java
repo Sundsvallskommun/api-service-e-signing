@@ -5,6 +5,7 @@ import generated.se.sundsvall.comfactfacade.SigningInstance;
 import generated.se.sundsvall.comfactfacade.Status;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static se.sundsvall.esigning.TestUtil.createComfactEventNotification;
+import static se.sundsvall.esigning.TestUtil.createSigningDocument;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
 import static se.sundsvall.esigning.provider.model.SigningStatus.EXPIRED;
 import static se.sundsvall.esigning.provider.model.SigningStatus.FAILED;
@@ -61,6 +63,9 @@ class ComfactSigningMapperTest {
 		assertThat(result.getDocument().getMimeType()).isEqualTo("application/pdf");
 		assertThat(result.getDocument().getContent()).isEqualTo("test".getBytes(StandardCharsets.UTF_8));
 
+		// No attachments were provided, so no additional documents are sent.
+		assertThat(result.getAdditionalDocuments()).isEmpty();
+
 		assertThat(result.getSignatories()).hasSize(1);
 		final var mappedSignatory = result.getSignatories().getFirst();
 		assertThat(mappedSignatory.getName()).isEqualTo(signatory.getName());
@@ -68,6 +73,19 @@ class ComfactSigningMapperTest {
 		assertThat(mappedSignatory.getEmail()).isEqualTo(signatory.getEmail());
 		assertThat(mappedSignatory.getIdentifications()).hasSize(1);
 		assertThat(mappedSignatory.getIdentifications().getFirst().getAlias()).isEqualTo(ComfactSigningMapper.IDENTIFICATION_ALIAS);
+	}
+
+	@Test
+	void toComfactSigningRequest_mapsAttachmentsToAdditionalDocuments() {
+		final var request = createStartSigningRequest(r -> r.setAttachments(List.of(
+			createSigningDocument(d -> d.setFileName("attachment-1.pdf")),
+			createSigningDocument(d -> d.setFileName("attachment-2.pdf")))));
+
+		final var result = ComfactSigningMapper.toComfactSigningRequest(request);
+
+		assertThat(result.getAdditionalDocuments()).hasSize(2)
+			.extracting(Document::getFileName)
+			.containsExactly("attachment-1.pdf", "attachment-2.pdf");
 	}
 
 	@Test
