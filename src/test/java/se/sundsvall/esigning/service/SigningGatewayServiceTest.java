@@ -20,8 +20,8 @@ import static org.mockito.Mockito.when;
 import static se.sundsvall.esigning.TestUtil.createSigningDocument;
 import static se.sundsvall.esigning.TestUtil.createSigningEvent;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
-import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
-import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNERAT;
+import static se.sundsvall.esigning.provider.model.SigningStatus.INITIATED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNED;
 
 @ExtendWith(MockitoExtension.class)
 class SigningGatewayServiceTest {
@@ -44,13 +44,13 @@ class SigningGatewayServiceTest {
 		final var request = createStartSigningRequest();
 		final var signatoryUrls = Map.of("party", "url");
 		when(mockRegistry.resolve(municipalityId)).thenReturn(mockProvider);
-		when(mockProvider.startSigning(municipalityId, request)).thenReturn(new SigningResult("case-1", INITIERAT, signatoryUrls));
+		when(mockProvider.startSigning(municipalityId, request)).thenReturn(new SigningResult("case-1", INITIATED, signatoryUrls));
 		when(mockProvider.getId()).thenReturn("comfact");
 
 		final var response = service.startSigning(municipalityId, request);
 
 		assertThat(response.getProviderCaseId()).isEqualTo("case-1");
-		assertThat(response.getStatus()).isEqualTo("INITIERAT");
+		assertThat(response.getStatus()).isEqualTo("INITIATED");
 		assertThat(response.getProvider()).isEqualTo("comfact");
 		assertThat(response.getSignatoryUrls()).isEqualTo(signatoryUrls);
 
@@ -67,13 +67,13 @@ class SigningGatewayServiceTest {
 		final var expires = OffsetDateTime.now().plusDays(10);
 		final var signedDocument = createSigningDocument();
 		when(mockRegistry.resolve(municipalityId)).thenReturn(mockProvider);
-		when(mockProvider.getSigningInstance(municipalityId, providerCaseId)).thenReturn(new SigningInstanceInfo(providerCaseId, SIGNERAT, expires, signedDocument));
+		when(mockProvider.getSigningInstance(municipalityId, providerCaseId)).thenReturn(new SigningInstanceInfo(providerCaseId, SIGNED, expires, signedDocument));
 		when(mockProvider.getId()).thenReturn("comfact");
 
 		final var response = service.getSigningInstance(municipalityId, providerCaseId);
 
 		assertThat(response.getProviderCaseId()).isEqualTo(providerCaseId);
-		assertThat(response.getStatus()).isEqualTo("SIGNERAT");
+		assertThat(response.getStatus()).isEqualTo("SIGNED");
 		assertThat(response.getProvider()).isEqualTo("comfact");
 		assertThat(response.getExpires()).isEqualTo(expires);
 		assertThat(response.getSignedDocument()).isEqualTo(signedDocument);

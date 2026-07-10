@@ -36,7 +36,7 @@ class SigningInstanceResponseTest {
 	@Test
 	void builderTest() {
 		final var providerCaseId = "1234567890";
-		final var status = "SIGNERAT";
+		final var status = "SIGNED";
 		final var provider = "comfact";
 		final var expires = OffsetDateTime.now().plusDays(30);
 		final var signedDocument = createSigningDocument();

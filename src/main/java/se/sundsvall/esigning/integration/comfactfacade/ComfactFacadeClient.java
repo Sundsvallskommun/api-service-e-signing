@@ -26,13 +26,13 @@ public interface ComfactFacadeClient {
 
 	@Retry(name = CLIENT_ID)
 	@PostMapping(path = "/{municipalityId}/signings", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	CreateSigningResponse createSigningRequest(@PathVariable("municipalityId") String municipalityId, @RequestBody SigningRequest request);
+	CreateSigningResponse createSigningRequest(@PathVariable String municipalityId, @RequestBody SigningRequest request);
 
 	@Retry(name = CLIENT_ID)
 	@GetMapping(path = "/{municipalityId}/signings/{signingId}", produces = APPLICATION_JSON_VALUE)
-	SigningInstance getSigningInstance(@PathVariable("municipalityId") String municipalityId, @PathVariable("signingId") String signingId);
+	SigningInstance getSigningInstance(@PathVariable String municipalityId, @PathVariable String signingId);
 
 	@Retry(name = CLIENT_ID)
 	@PatchMapping(path = "/{municipalityId}/signings/{signingId}", consumes = APPLICATION_JSON_VALUE)
-	void updateSigningRequest(@PathVariable("municipalityId") String municipalityId, @PathVariable("signingId") String signingId, @RequestBody UpdateSigningRequest request);
+	void updateSigningRequest(@PathVariable String municipalityId, @PathVariable String signingId, @RequestBody UpdateSigningRequest request);
 }

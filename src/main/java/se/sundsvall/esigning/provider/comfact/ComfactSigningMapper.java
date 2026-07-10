@@ -27,11 +27,11 @@ import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
 import se.sundsvall.esigning.provider.model.SigningStatus;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static se.sundsvall.esigning.provider.model.SigningStatus.FEL;
-import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
-import static se.sundsvall.esigning.provider.model.SigningStatus.INVANTAR_SIGNERING;
-import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNERAT;
-import static se.sundsvall.esigning.provider.model.SigningStatus.UTGANGET;
+import static se.sundsvall.esigning.provider.model.SigningStatus.EXPIRED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.FAILED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.INITIATED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.PENDING;
+import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNED;
 
 /**
  * Maps between the provider-neutral API/domain models and Comfact facade's generated models.
@@ -114,7 +114,7 @@ public final class ComfactSigningMapper {
 
 		// The signed document is only exposed once the case is signed (see SigningInstanceInfo / SigningInstanceResponse).
 		final var signedDocument = Optional.of(status)
-			.filter(SIGNERAT::equals)
+			.filter(SIGNED::equals)
 			.map(_ -> toSignedDocument(instance.getSignedDocument()))
 			.orElse(null);
 
@@ -141,13 +141,13 @@ public final class ComfactSigningMapper {
 	 */
 	static SigningStatus toSigningStatus(final String comfactStatusCode) {
 		return switch (Optional.ofNullable(comfactStatusCode).map(code -> code.toLowerCase(Locale.ROOT)).orElse("")) {
-			case "created" -> INITIERAT;
-			case "active", "reactivated", "approved" -> INVANTAR_SIGNERING;
-			case "completed" -> SIGNERAT;
-			case "expired" -> UTGANGET;
-			case "withdrawn", "declined", "halted", "faulty" -> FEL;
+			case "created" -> INITIATED;
+			case "active", "reactivated", "approved" -> PENDING;
+			case "completed" -> SIGNED;
+			case "expired" -> EXPIRED;
+			case "withdrawn", "declined", "halted", "faulty" -> FAILED;
 			// Unknown/unset: do not finalize the case - the authoritative terminal status arrives via a known code.
-			default -> INVANTAR_SIGNERING;
+			default -> PENDING;
 		};
 	}
 
