@@ -24,9 +24,9 @@ public interface ComfactFacadeClient {
 
 	@Retry(name = CLIENT_ID)
 	@PostMapping(path = "/{municipalityId}/signings", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	CreateSigningResponse createSigningRequest(@PathVariable("municipalityId") String municipalityId, @RequestBody SigningRequest request);
+	CreateSigningResponse createSigningRequest(@PathVariable String municipalityId, @RequestBody SigningRequest request);
 
 	@Retry(name = CLIENT_ID)
 	@GetMapping(path = "/{municipalityId}/signings/{signingId}", produces = APPLICATION_JSON_VALUE)
-	SigningInstance getSigningInstance(@PathVariable("municipalityId") String municipalityId, @PathVariable("signingId") String signingId);
+	SigningInstance getSigningInstance(@PathVariable String municipalityId, @PathVariable String signingId);
 }
