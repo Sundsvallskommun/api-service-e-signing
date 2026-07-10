@@ -46,4 +46,9 @@ public class ComfactSigningProvider implements SigningProvider {
 	public SigningInstanceInfo getSigningInstance(final String municipalityId, final String providerCaseId) {
 		return toSigningInstanceInfo(comfactFacadeIntegration.getSigning(municipalityId, providerCaseId));
 	}
+
+	@Override
+	public void cancelSigning(final String municipalityId, final String providerCaseId) {
+		comfactFacadeIntegration.withdrawSigning(municipalityId, providerCaseId);
+	}
 }

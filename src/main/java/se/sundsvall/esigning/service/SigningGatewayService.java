@@ -50,6 +50,11 @@ public class SigningGatewayService {
 			.build();
 	}
 
+	public void cancelSigning(final String municipalityId, final String providerCaseId) {
+		final var provider = signingProviderRegistry.resolve(municipalityId);
+		provider.cancelSigning(municipalityId, providerCaseId);
+	}
+
 	/**
 	 * Relays a normalized, provider-neutral signing event to Postportalservice. The provider-specific inbound resource
 	 * has already mapped the provider's payload to {@link SigningEvent}; pps correlates the case by

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ import se.sundsvall.esigning.service.SigningGatewayService;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
@@ -68,6 +70,20 @@ class SigningGatewayResource {
 		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
 		@PathVariable @Parameter(name = "providerCaseId", description = "The signing provider's case id", example = "1234567890") final String providerCaseId) {
 		return ok(signingGatewayService.getSigningInstance(municipalityId, providerCaseId));
+	}
+
+	@Operation(summary = "Cancel a signing case via the configured signing provider",
+		description = "Withdraws the signing case at the provider so it stops progressing. The final state is confirmed asynchronously through the provider callback.",
+		responses = {
+			@ApiResponse(responseCode = "204", description = "No Content"),
+			@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+		})
+	@DeleteMapping(value = "/signings/{providerCaseId}")
+	ResponseEntity<Void> cancelSigning(
+		@PathVariable @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId final String municipalityId,
+		@PathVariable @Parameter(name = "providerCaseId", description = "The signing provider's case id", example = "1234567890") final String providerCaseId) {
+		signingGatewayService.cancelSigning(municipalityId, providerCaseId);
+		return noContent().build();
 	}
 
 }

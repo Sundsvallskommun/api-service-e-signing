@@ -74,4 +74,18 @@ class SigningGatewayResourceTest {
 		verify(signingGatewayServiceMock).getSigningInstance(municipalityId, providerCaseId);
 		verifyNoMoreInteractions(signingGatewayServiceMock);
 	}
+
+	@Test
+	void cancelSigning() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "1234567890";
+
+		webTestClient.delete()
+			.uri("/" + municipalityId + "/e-signing/signings/" + providerCaseId)
+			.exchange()
+			.expectStatus().isNoContent();
+
+		verify(signingGatewayServiceMock).cancelSigning(municipalityId, providerCaseId);
+		verifyNoMoreInteractions(signingGatewayServiceMock);
+	}
 }
