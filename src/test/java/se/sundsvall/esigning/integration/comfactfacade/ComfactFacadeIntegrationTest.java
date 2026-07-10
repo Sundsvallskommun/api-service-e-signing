@@ -55,7 +55,7 @@ class ComfactFacadeIntegrationTest {
 
 		assertThatThrownBy(() -> integration.createSigning(municipalityId, request))
 			.isInstanceOf(Problem.class)
-			.hasMessage("Bad Request: Bad partyId")
+			.hasMessage("Bad Request: Could not create signing instance at Comfact facade. Error: Bad partyId")
 			.hasFieldOrPropertyWithValue("status", BAD_REQUEST);
 
 		verify(mockClient).createSigningRequest(municipalityId, request);
@@ -84,7 +84,7 @@ class ComfactFacadeIntegrationTest {
 
 		assertThatThrownBy(() -> integration.getSigning(municipalityId, signingId))
 			.isInstanceOf(Problem.class)
-			.hasMessage("Not Found: No such signing instance")
+			.hasMessage("Not Found: Could not fetch signing instance comfact-123 at Comfact facade. Error: No such signing instance")
 			.hasFieldOrPropertyWithValue("status", NOT_FOUND);
 
 		verify(mockClient).getSigningInstance(municipalityId, signingId);
@@ -112,7 +112,7 @@ class ComfactFacadeIntegrationTest {
 
 		assertThatThrownBy(() -> integration.withdrawSigning(municipalityId, signingId))
 			.isInstanceOf(Problem.class)
-			.hasMessage("Not Found: No such signing instance")
+			.hasMessage("Not Found: Could not withdraw signing instance comfact-123 at Comfact facade. Error: No such signing instance")
 			.hasFieldOrPropertyWithValue("status", NOT_FOUND);
 
 		verify(mockClient).updateSigningRequest(eq(municipalityId), eq(signingId), any());
