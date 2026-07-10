@@ -11,7 +11,7 @@ import se.sundsvall.esigning.provider.model.SigningResult;
 import static java.util.Collections.emptyMap;
 import static se.sundsvall.esigning.provider.comfact.ComfactSigningMapper.toComfactSigningRequest;
 import static se.sundsvall.esigning.provider.comfact.ComfactSigningMapper.toSigningInstanceInfo;
-import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
+import static se.sundsvall.esigning.provider.model.SigningStatus.INITIATED;
 
 /**
  * Reference {@link SigningProvider} implementation backed by Comfact (via api-comfact-facade).
@@ -38,12 +38,17 @@ public class ComfactSigningProvider implements SigningProvider {
 
 		return new SigningResult(
 			response.getSigningId(),
-			INITIERAT,
+			INITIATED,
 			Optional.ofNullable(response.getSignatoryUrls()).orElse(emptyMap()));
 	}
 
 	@Override
 	public SigningInstanceInfo getSigningInstance(final String municipalityId, final String providerCaseId) {
 		return toSigningInstanceInfo(comfactFacadeIntegration.getSigning(municipalityId, providerCaseId));
+	}
+
+	@Override
+	public void cancelSigning(final String municipalityId, final String providerCaseId) {
+		comfactFacadeIntegration.withdrawSigning(municipalityId, providerCaseId);
 	}
 }

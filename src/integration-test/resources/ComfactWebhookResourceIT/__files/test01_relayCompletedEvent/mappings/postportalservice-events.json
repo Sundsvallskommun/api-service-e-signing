@@ -17,7 +17,7 @@
 					"providerCaseId": "1234567890",
 					"provider": "comfact",
 					"eventType": "CASE_COMPLETED",
-					"status": "SIGNERAT",
+					"status": "SIGNED",
 					"signedDocument": {
 						"fileName": "contract.pdf",
 						"mimeType": "application/pdf"

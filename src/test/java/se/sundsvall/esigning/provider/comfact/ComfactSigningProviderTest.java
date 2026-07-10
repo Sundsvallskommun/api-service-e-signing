@@ -54,7 +54,7 @@ class ComfactSigningProviderTest {
 		final var result = provider.startSigning(municipalityId, request);
 
 		assertThat(result.providerCaseId()).isEqualTo("comfact-123");
-		assertThat(result.status()).isEqualTo(SigningStatus.INITIERAT);
+		assertThat(result.status()).isEqualTo(SigningStatus.INITIATED);
 		assertThat(result.signatoryUrls()).isEqualTo(signatoryUrls);
 
 		verify(mockIntegration).createSigning(eq(municipalityId), requestCaptor.capture());
@@ -90,12 +90,23 @@ class ComfactSigningProviderTest {
 		final var info = provider.getSigningInstance(municipalityId, providerCaseId);
 
 		assertThat(info.providerCaseId()).isEqualTo(providerCaseId);
-		assertThat(info.status()).isEqualTo(SigningStatus.SIGNERAT);
+		assertThat(info.status()).isEqualTo(SigningStatus.SIGNED);
 		assertThat(info.expires()).isEqualTo(expires);
 		assertThat(info.signedDocument().getFileName()).isEqualTo("signed.pdf");
 		assertThat(info.signedDocument().getContent()).isEqualTo("dGVzdA==");
 
 		verify(mockIntegration).getSigning(municipalityId, providerCaseId);
+		verifyNoMoreInteractions(mockIntegration);
+	}
+
+	@Test
+	void cancelSigning() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "comfact-123";
+
+		provider.cancelSigning(municipalityId, providerCaseId);
+
+		verify(mockIntegration).withdrawSigning(municipalityId, providerCaseId);
 		verifyNoMoreInteractions(mockIntegration);
 	}
 }

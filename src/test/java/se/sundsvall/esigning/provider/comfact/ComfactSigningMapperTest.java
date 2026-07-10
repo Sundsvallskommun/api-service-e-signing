@@ -23,11 +23,11 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static se.sundsvall.esigning.TestUtil.createComfactEventNotification;
 import static se.sundsvall.esigning.TestUtil.createSigningDocument;
 import static se.sundsvall.esigning.TestUtil.createStartSigningRequest;
-import static se.sundsvall.esigning.provider.model.SigningStatus.FEL;
-import static se.sundsvall.esigning.provider.model.SigningStatus.INITIERAT;
-import static se.sundsvall.esigning.provider.model.SigningStatus.INVANTAR_SIGNERING;
-import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNERAT;
-import static se.sundsvall.esigning.provider.model.SigningStatus.UTGANGET;
+import static se.sundsvall.esigning.provider.model.SigningStatus.EXPIRED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.FAILED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.INITIATED;
+import static se.sundsvall.esigning.provider.model.SigningStatus.PENDING;
+import static se.sundsvall.esigning.provider.model.SigningStatus.SIGNED;
 
 class ComfactSigningMapperTest {
 
@@ -104,16 +104,16 @@ class ComfactSigningMapperTest {
 
 	private static Stream<Arguments> statusMappings() {
 		return Stream.of(
-			Arguments.of("created", INITIERAT),
-			Arguments.of("active", INVANTAR_SIGNERING),
-			Arguments.of("reactivated", INVANTAR_SIGNERING),
-			Arguments.of("approved", INVANTAR_SIGNERING),
-			Arguments.of("Completed", SIGNERAT),
-			Arguments.of("expired", UTGANGET),
-			Arguments.of("withdrawn", FEL),
-			Arguments.of("declined", FEL),
-			Arguments.of("halted", FEL),
-			Arguments.of("faulty", FEL));
+			Arguments.of("created", INITIATED),
+			Arguments.of("active", PENDING),
+			Arguments.of("reactivated", PENDING),
+			Arguments.of("approved", PENDING),
+			Arguments.of("Completed", SIGNED),
+			Arguments.of("expired", EXPIRED),
+			Arguments.of("withdrawn", FAILED),
+			Arguments.of("declined", FAILED),
+			Arguments.of("halted", FAILED),
+			Arguments.of("faulty", FAILED));
 	}
 
 	@ParameterizedTest
@@ -128,7 +128,7 @@ class ComfactSigningMapperTest {
 		"", "something-unexpected"
 	})
 	void toSigningStatus_unknownOrNullIsNotFinalized(final String comfactCode) {
-		assertThat(ComfactSigningMapper.toSigningStatus(comfactCode)).isEqualTo(INVANTAR_SIGNERING);
+		assertThat(ComfactSigningMapper.toSigningStatus(comfactCode)).isEqualTo(PENDING);
 	}
 
 	@Test
@@ -143,7 +143,7 @@ class ComfactSigningMapperTest {
 		final var info = ComfactSigningMapper.toSigningInstanceInfo(instance);
 
 		assertThat(info.providerCaseId()).isEqualTo("comfact-123");
-		assertThat(info.status()).isEqualTo(SIGNERAT);
+		assertThat(info.status()).isEqualTo(SIGNED);
 		assertThat(info.expires()).isEqualTo(expires);
 		assertThat(info.signedDocument()).isNotNull();
 		assertThat(info.signedDocument().getName()).isEqualTo("Contract");
@@ -159,7 +159,7 @@ class ComfactSigningMapperTest {
 		final var info = ComfactSigningMapper.toSigningInstanceInfo(instance);
 
 		assertThat(info.providerCaseId()).isEqualTo("comfact-123");
-		assertThat(info.status()).isEqualTo(INVANTAR_SIGNERING);
+		assertThat(info.status()).isEqualTo(PENDING);
 		assertThat(info.signedDocument()).isNull();
 	}
 
@@ -172,7 +172,7 @@ class ComfactSigningMapperTest {
 
 		final var info = ComfactSigningMapper.toSigningInstanceInfo(instance);
 
-		assertThat(info.status()).isEqualTo(INVANTAR_SIGNERING);
+		assertThat(info.status()).isEqualTo(PENDING);
 		assertThat(info.signedDocument()).isNull();
 	}
 
@@ -186,7 +186,7 @@ class ComfactSigningMapperTest {
 		assertThat(event.providerCaseId()).isEqualTo(notification.getSigningInstanceId());
 		assertThat(event.provider()).isEqualTo("comfact");
 		assertThat(event.eventType()).isEqualTo("CASE_COMPLETED");
-		assertThat(event.status()).isEqualTo("SIGNERAT");
+		assertThat(event.status()).isEqualTo("SIGNED");
 		assertThat(event.occurredAt()).isEqualTo(notification.getTimestamp());
 		assertThat(event.signedDocument()).isNotNull();
 		assertThat(event.signedDocument().getFileName()).isEqualTo("test.pdf");
@@ -203,7 +203,7 @@ class ComfactSigningMapperTest {
 		final var event = ComfactSigningMapper.toSigningEvent(notification);
 
 		assertThat(event.eventType()).isEqualTo("SIGNATORY_APPROVED");
-		assertThat(event.status()).isEqualTo("INVANTAR_SIGNERING");
+		assertThat(event.status()).isEqualTo("PENDING");
 		assertThat(event.signedDocument()).isNull();
 		assertThat(event.signatory()).isNotNull();
 		assertThat(event.signatory().partyId()).isEqualTo(notification.getSignatory().getPartyId());

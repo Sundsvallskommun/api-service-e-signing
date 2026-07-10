@@ -17,8 +17,8 @@ public class StartSigningResponse {
 	@Schema(description = "The signing provider's case id", examples = "1234567890")
 	private String providerCaseId;
 
-	@Schema(description = "The normalized status of the signing case", examples = "INITIERAT", allowableValues = {
-		"INITIERAT", "INVANTAR_SIGNERING", "SIGNERAT", "UTGANGET", "FEL"
+	@Schema(description = "The normalized status of the signing case", examples = "INITIATED", allowableValues = {
+		"INITIATED", "PENDING", "SIGNED", "EXPIRED", "FAILED"
 	})
 	private String status;
 

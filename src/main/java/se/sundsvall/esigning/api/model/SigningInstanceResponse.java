@@ -17,8 +17,8 @@ public class SigningInstanceResponse {
 	@Schema(description = "The signing provider's case id", examples = "1234567890")
 	private String providerCaseId;
 
-	@Schema(description = "The normalized status of the signing case", examples = "INVANTAR_SIGNERING", allowableValues = {
-		"INITIERAT", "INVANTAR_SIGNERING", "SIGNERAT", "UTGANGET", "FEL"
+	@Schema(description = "The normalized status of the signing case", examples = "PENDING", allowableValues = {
+		"INITIATED", "PENDING", "SIGNED", "EXPIRED", "FAILED"
 	})
 	private String status;
 
@@ -28,7 +28,7 @@ public class SigningInstanceResponse {
 	@Schema(description = "When the signing case expires", examples = "2026-12-31T23:59:59Z")
 	private OffsetDateTime expires;
 
-	@Schema(description = "The signed document, present only when status is SIGNERAT", implementation = SigningDocument.class)
+	@Schema(description = "The signed document, present only when status is SIGNED", implementation = SigningDocument.class)
 	private SigningDocument signedDocument;
 
 }

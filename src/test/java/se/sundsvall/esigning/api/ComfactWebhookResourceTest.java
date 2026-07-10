@@ -50,7 +50,7 @@ class ComfactWebhookResourceTest {
 			assertThat(event.providerCaseId()).isEqualTo("1234567890");
 			assertThat(event.provider()).isEqualTo("comfact");
 			assertThat(event.eventType()).isEqualTo("CASE_COMPLETED");
-			assertThat(event.status()).isEqualTo("SIGNERAT");
+			assertThat(event.status()).isEqualTo("SIGNED");
 			assertThat(event.signedDocument()).isNotNull();
 		});
 	}

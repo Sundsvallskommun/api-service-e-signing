@@ -77,5 +77,10 @@ class SigningProviderRegistryTest {
 		public SigningInstanceInfo getSigningInstance(final String municipalityId, final String providerCaseId) {
 			return null;
 		}
+
+		@Override
+		public void cancelSigning(final String municipalityId, final String providerCaseId) {
+			// no-op test stub
+		}
 	}
 }
