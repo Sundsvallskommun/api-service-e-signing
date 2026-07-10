@@ -98,4 +98,15 @@ class ComfactSigningProviderTest {
 		verify(mockIntegration).getSigning(municipalityId, providerCaseId);
 		verifyNoMoreInteractions(mockIntegration);
 	}
+
+	@Test
+	void cancelSigning() {
+		final var municipalityId = "2281";
+		final var providerCaseId = "comfact-123";
+
+		provider.cancelSigning(municipalityId, providerCaseId);
+
+		verify(mockIntegration).withdrawSigning(municipalityId, providerCaseId);
+		verifyNoMoreInteractions(mockIntegration);
+	}
 }

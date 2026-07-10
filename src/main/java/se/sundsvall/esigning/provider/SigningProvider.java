@@ -33,4 +33,12 @@ public interface SigningProvider {
 	 * @return                the provider-neutral snapshot including the normalized status and, once signed, the document
 	 */
 	SigningInstanceInfo getSigningInstance(String municipalityId, String providerCaseId);
+
+	/**
+	 * Cancels an in-progress signing case at the provider (the provider stops it from progressing any further).
+	 *
+	 * @param municipalityId the municipality the signing belongs to
+	 * @param providerCaseId the provider's case id
+	 */
+	void cancelSigning(String municipalityId, String providerCaseId);
 }
