@@ -692,13 +692,13 @@ components:
           type: string
           description: The normalized status of the signing case
           enum:
-          - INITIERAT
-          - INVANTAR_SIGNERING
-          - SIGNERAT
-          - UTGANGET
-          - FEL
+          - INITIATED
+          - PENDING
+          - SIGNED
+          - EXPIRED
+          - FAILED
           examples:
-          - INITIERAT
+          - INITIATED
         provider:
           type: string
           description: The id of the signing provider that handled the request
@@ -722,13 +722,13 @@ components:
           type: string
           description: The normalized status of the signing case
           enum:
-          - INITIERAT
-          - INVANTAR_SIGNERING
-          - SIGNERAT
-          - UTGANGET
-          - FEL
+          - INITIATED
+          - PENDING
+          - SIGNED
+          - EXPIRED
+          - FAILED
           examples:
-          - INVANTAR_SIGNERING
+          - PENDING
         provider:
           type: string
           description: The id of the signing provider that handled the request
@@ -742,5 +742,5 @@ components:
           - 2026-12-31T23:59:59Z
         signedDocument:
           $ref: "#/components/schemas/SigningDocument"
-          description: "The signed document, present only when status is SIGNERAT"
+          description: "The signed document, present only when status is SIGNED"
   securitySchemes: {}

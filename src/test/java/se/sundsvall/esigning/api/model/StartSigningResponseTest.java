@@ -35,7 +35,7 @@ class StartSigningResponseTest {
 	@Test
 	void builderTest() {
 		final var providerCaseId = "1234567890";
-		final var status = "INITIERAT";
+		final var status = "INITIATED";
 		final var provider = "comfact";
 		final var signatoryUrls = Map.of("550e8400-e29b-41d4-a716-446655440000", "https://sign.example/abc");
 

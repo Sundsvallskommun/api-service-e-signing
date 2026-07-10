@@ -184,7 +184,7 @@ public final class TestUtil {
 	public static StartSigningResponse createStartSigningResponse(final Consumer<StartSigningResponse> modifier) {
 		final var bean = StartSigningResponse.builder()
 			.withProviderCaseId("1234567890")
-			.withStatus("INITIERAT")
+			.withStatus("INITIATED")
 			.withProvider("comfact")
 			.withSignatoryUrls(Map.of("550e8400-e29b-41d4-a716-446655440000", "https://sign.example/abc"))
 			.build();
@@ -201,7 +201,7 @@ public final class TestUtil {
 	public static SigningInstanceResponse createSigningInstanceResponse(final Consumer<SigningInstanceResponse> modifier) {
 		final var bean = SigningInstanceResponse.builder()
 			.withProviderCaseId("1234567890")
-			.withStatus("SIGNERAT")
+			.withStatus("SIGNED")
 			.withProvider("comfact")
 			.withExpires(OffsetDateTime.now().plusDays(30))
 			.withSignedDocument(createSigningDocument())
@@ -259,7 +259,7 @@ public final class TestUtil {
 			"1234567890",
 			"comfact",
 			"CASE_COMPLETED",
-			"SIGNERAT",
+			"SIGNED",
 			new EventSignatory("550e8400-e29b-41d4-a716-446655440000", "APPROVED", null),
 			createSigningDocument(),
 			OffsetDateTime.now());
