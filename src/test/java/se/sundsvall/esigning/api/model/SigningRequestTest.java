@@ -16,8 +16,8 @@ import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetter
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.allOf;
 import static se.sundsvall.esigning.TestUtil.createDocument;
-import static se.sundsvall.esigning.TestUtil.createInitiator;
 import static se.sundsvall.esigning.TestUtil.createMessage;
+import static se.sundsvall.esigning.TestUtil.createProcessInitiator;
 import static se.sundsvall.esigning.TestUtil.createReminder;
 import static se.sundsvall.esigning.TestUtil.createSignatory;
 
@@ -46,7 +46,7 @@ class SigningRequestTest {
 		final var reminder = createReminder();
 		final var signatories = Set.of(createSignatory());
 		final var message = createMessage();
-		final var initiator = createInitiator();
+		final var initiator = createProcessInitiator();
 		final var document = createDocument();
 
 		final var bean = SigningRequest.builder()

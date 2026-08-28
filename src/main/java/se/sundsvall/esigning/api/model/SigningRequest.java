@@ -55,8 +55,8 @@ public class SigningRequest {
 
 	@Valid
 	@NotNull
-	@Schema(description = "The initiator of the signing request", implementation = Initiator.class, requiredMode = REQUIRED)
-	private Initiator initiator;
+	@Schema(description = "The initiator of the signing request", implementation = ProcessInitiator.class, requiredMode = REQUIRED)
+	private ProcessInitiator initiator;
 
 	@Valid
 	@NotNull

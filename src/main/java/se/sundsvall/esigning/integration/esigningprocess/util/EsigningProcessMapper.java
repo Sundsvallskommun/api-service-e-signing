@@ -3,8 +3,8 @@ package se.sundsvall.esigning.integration.esigningprocess.util;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import se.sundsvall.esigning.api.model.Initiator;
 import se.sundsvall.esigning.api.model.Message;
+import se.sundsvall.esigning.api.model.ProcessInitiator;
 import se.sundsvall.esigning.api.model.Reminder;
 import se.sundsvall.esigning.api.model.Signatory;
 import se.sundsvall.esigning.api.model.SigningRequest;
@@ -57,7 +57,7 @@ public final class EsigningProcessMapper {
 			.collect(Collectors.toSet());
 	}
 
-	public static generated.se.sundsvall.pw_e_signing.Initiator toInitiator(final Initiator initiator) {
+	public static generated.se.sundsvall.pw_e_signing.Initiator toInitiator(final ProcessInitiator initiator) {
 		if (initiator == null) {
 			return null;
 		}
