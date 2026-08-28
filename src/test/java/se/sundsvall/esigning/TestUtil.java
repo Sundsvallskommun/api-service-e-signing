@@ -12,6 +12,7 @@ import se.sundsvall.esigning.api.model.Document;
 import se.sundsvall.esigning.api.model.EsigningResponse;
 import se.sundsvall.esigning.api.model.Initiator;
 import se.sundsvall.esigning.api.model.Message;
+import se.sundsvall.esigning.api.model.ProcessInitiator;
 import se.sundsvall.esigning.api.model.Reminder;
 import se.sundsvall.esigning.api.model.Signatory;
 import se.sundsvall.esigning.api.model.SigningDocument;
@@ -41,6 +42,23 @@ public final class TestUtil {
 
 	public static Initiator createInitiator() {
 		return createInitiator(null);
+	}
+
+	public static ProcessInitiator createProcessInitiator(final Consumer<ProcessInitiator> modifier) {
+		final var bean = ProcessInitiator.builder()
+			.withEmail("email@email.com")
+			.withName("name")
+			.withOrganization("organization")
+			.withPartyId(UUID.randomUUID().toString())
+			.build();
+
+		Optional.ofNullable(modifier).ifPresent(m -> m.accept(bean));
+
+		return bean;
+	}
+
+	public static ProcessInitiator createProcessInitiator() {
+		return createProcessInitiator(null);
 	}
 
 	public static Message createMessage(final Consumer<Message> modifier) {
@@ -114,7 +132,7 @@ public final class TestUtil {
 			.withLanguage("sv-SE")
 			.withCallbackUrl("callbackUrl")
 			.withNotificationMessage(createMessage())
-			.withInitiator(createInitiator())
+			.withInitiator(createProcessInitiator())
 			.withReminder(createReminder())
 			.withSignatories(Set.of(createSignatory()))
 			.withDocument(createDocument())

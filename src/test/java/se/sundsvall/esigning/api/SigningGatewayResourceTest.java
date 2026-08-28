@@ -55,6 +55,28 @@ class SigningGatewayResourceTest {
 	}
 
 	@Test
+	void createSigningWithoutInitiatorPartyId() {
+		final var municipalityId = "2281";
+		final var request = createStartSigningRequest(r -> r.getInitiator().setPartyId(null));
+		final var response = createStartSigningResponse();
+
+		when(signingGatewayServiceMock.startSigning(municipalityId, request)).thenReturn(response);
+
+		final var responseBody = webTestClient.post()
+			.uri("/" + municipalityId + "/e-signing/signings")
+			.bodyValue(request)
+			.exchange()
+			.expectStatus().isCreated()
+			.expectBody(StartSigningResponse.class)
+			.returnResult()
+			.getResponseBody();
+
+		assertThat(responseBody).isEqualTo(response);
+		verify(signingGatewayServiceMock).startSigning(municipalityId, request);
+		verifyNoMoreInteractions(signingGatewayServiceMock);
+	}
+
+	@Test
 	void getSigningInstance() {
 		final var municipalityId = "2281";
 		final var providerCaseId = "1234567890";

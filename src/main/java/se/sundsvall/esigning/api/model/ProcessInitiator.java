@@ -16,6 +16,10 @@ import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+/**
+ * Initiator for the process-based signing flow. Unlike the provider-gateway {@link Initiator}, the party id is
+ * mandatory here since the downstream pw-e-signing process requires it.
+ */
 @Getter
 @Setter
 @ToString
@@ -23,15 +27,15 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
-@Schema(description = "Initiator model")
-public class Initiator {
+@Schema(description = "Process initiator model")
+public class ProcessInitiator {
 
 	@NotBlank
 	@Schema(description = "The initiator name", examples = "John Doe", requiredMode = REQUIRED)
 	private String name;
 
-	@ValidUuid(nullable = true)
-	@Schema(description = "The initiator party id", examples = "550e8400-e29b-41d4-a716-446655440000", requiredMode = NOT_REQUIRED)
+	@ValidUuid
+	@Schema(description = "The initiator party id", examples = "550e8400-e29b-41d4-a716-446655440000", requiredMode = REQUIRED)
 	private String partyId;
 
 	@Schema(description = "The initiator organization", examples = "Sundsvall Municipality", requiredMode = NOT_REQUIRED)
