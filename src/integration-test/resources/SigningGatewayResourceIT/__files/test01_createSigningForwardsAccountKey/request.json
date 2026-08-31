@@ -1,0 +1,33 @@
+{
+	"language": "sv-SE",
+	"customerReference": "550e8400-e29b-41d4-a716-446655440000",
+	"expires": "2040-12-31T23:59:59Z",
+	"document": {
+		"name": "Employment contract",
+		"fileName": "contract.pdf",
+		"mimeType": "application/pdf",
+		"content": "ZHVtbXk="
+	},
+	"initiator": {
+		"name": "John Doe",
+		"partyId": "550e8400-e29b-41d4-a716-446655440000",
+		"organization": "Sundsvall Municipality",
+		"email": "john.doe@sundsvall.se"
+	},
+	"notificationMessage": {
+		"subject": "Please sign the document",
+		"body": "Dear John Doe, please sign the document."
+	},
+	"signatories": [
+		{
+			"name": "John Doe",
+			"organization": "Sundsvall Municipality",
+			"partyId": "550e8400-e29b-41d4-a716-446655440000",
+			"email": "john.doe@sundsvall.se",
+			"notificationMessage": {
+				"subject": "Please sign the document",
+				"body": "Dear John Doe, please sign the document."
+			}
+		}
+	]
+}

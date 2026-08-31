@@ -81,6 +81,18 @@ Alternatively, see the `openapi.yml` file located in directory `/src/main/resour
 
 See [API Documentation](#api-documentation) for detailed information on available endpoints.
 
+### Calling system account key
+
+Signings must be kept apart per calling system, since each system signs on its own Comfact account. The subject (`sub`)
+of the caller's bearer token, i.e. the name of the calling system's API gateway account, is therefore passed on to
+api-comfact-facade in the `X-Account-Key` header on every call, and the facade uses it to pick the Comfact account for
+the signing.
+
+This is separate from the `X-Sent-By` header, which carries the identity of the *user* behind the call and is
+propagated independently by dept44.
+
+When the subject cannot be read - no `Authorization` header, or a token that is not a JWT - the header is omitted.
+
 ### Example Request
 
 ```bash
