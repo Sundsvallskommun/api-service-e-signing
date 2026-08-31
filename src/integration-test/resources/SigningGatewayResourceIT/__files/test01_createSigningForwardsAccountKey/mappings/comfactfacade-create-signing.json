@@ -7,7 +7,7 @@
 				"equalTo": "Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
 			},
 			"X-Account-Key": {
-				"equalTo": "postportalservice"
+				"equalTo": "WSO2_MS_PostPortalService"
 			}
 		},
 		"bodyPatterns": [
