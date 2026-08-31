@@ -7,7 +7,6 @@ import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 import se.sundsvall.esigning.Application;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -20,6 +19,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 class SigningGatewayResourceIT extends AbstractAppTest {
 
 	private static final String PATH = "/2281/e-signing/signings";
+	private static final String JWT_ASSERTION_HEADER = "X-JWT-Assertion";
 	private static final String REQUEST_FILE = "request.json";
 	private static final String RESPONSE_FILE = "response.json";
 
@@ -28,7 +28,7 @@ class SigningGatewayResourceIT extends AbstractAppTest {
 		setupCall()
 			.withServicePath(PATH)
 			.withHttpMethod(POST)
-			.withHeader(AUTHORIZATION, "Bearer " + tokenWithSubject("postportalservice"))
+			.withHeader(JWT_ASSERTION_HEADER, tokenWithSubject("WSO2_MS_PostPortalService"))
 			.withRequest(REQUEST_FILE)
 			.withExpectedResponseStatus(CREATED)
 			.withExpectedResponse(RESPONSE_FILE)
@@ -36,10 +36,10 @@ class SigningGatewayResourceIT extends AbstractAppTest {
 	}
 
 	/**
-	 * Without a readable token there is no account key to forward, and the facade falls back to its default account.
+	 * Without a readable assertion there is no account key to forward, and the facade falls back to its default account.
 	 */
 	@Test
-	void test02_createSigningWithoutBearerToken() {
+	void test02_createSigningWithoutJwtAssertion() {
 		setupCall()
 			.withServicePath(PATH)
 			.withHttpMethod(POST)

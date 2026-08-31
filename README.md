@@ -84,14 +84,15 @@ See [API Documentation](#api-documentation) for detailed information on availabl
 ### Calling system account key
 
 Signings must be kept apart per calling system, since each system signs on its own Comfact account. The subject (`sub`)
-of the caller's bearer token, i.e. the name of the calling system's API gateway account, is therefore passed on to
+of the `X-JWT-Assertion` header, i.e. the name of the calling system's API gateway account, is therefore passed on to
 api-comfact-facade in the `X-Account-Key` header on every call, and the facade uses it to pick the Comfact account for
-the signing.
+the signing. The API gateway strips the caller's `Authorization` header before forwarding the call, so the assertion is
+the only place the calling system's identity is available.
 
 This is separate from the `X-Sent-By` header, which carries the identity of the *user* behind the call and is
 propagated independently by dept44.
 
-When the subject cannot be read - no `Authorization` header, or a token that is not a JWT - the header is omitted.
+When the subject cannot be read - no `X-JWT-Assertion` header, or a value that is not a JWT - the header is omitted.
 
 ### Example Request
 

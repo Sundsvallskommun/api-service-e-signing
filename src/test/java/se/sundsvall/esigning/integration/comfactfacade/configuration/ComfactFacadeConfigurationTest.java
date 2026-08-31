@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -32,9 +31,9 @@ import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static se.sundsvall.esigning.integration.comfactfacade.configuration.ComfactFacadeConfiguration.ACCOUNT_KEY_HEADER;
 import static se.sundsvall.esigning.integration.comfactfacade.configuration.ComfactFacadeConfiguration.CLIENT_ID;
+import static se.sundsvall.esigning.integration.comfactfacade.configuration.ComfactFacadeConfiguration.JWT_ASSERTION_HEADER;
 
 @ExtendWith(MockitoExtension.class)
 class ComfactFacadeConfigurationTest {
@@ -96,14 +95,11 @@ class ComfactFacadeConfigurationTest {
 			.hasFieldOrPropertyWithValue("integrationName", CLIENT_ID);
 	}
 
-	@ParameterizedTest
-	@ValueSource(strings = {
-		"Bearer ", "bearer "
-	})
-	void testAccountKeyHeaderIsSetFromBearerTokenSubject(final String bearerPrefix) {
-		setUpRequestWithAuthorizationHeader(bearerPrefix + tokenWithSubject("postportalservice"));
+	@Test
+	void testAccountKeyHeaderIsSetFromJwtAssertionSubject() {
+		setUpRequestWithJwtAssertionHeader(tokenWithSubject("WSO2_MS_PostPortalService"));
 
-		assertThat(applyRequestInterceptor().headers()).containsEntry(ACCOUNT_KEY_HEADER, List.of("postportalservice"));
+		assertThat(applyRequestInterceptor().headers()).containsEntry(ACCOUNT_KEY_HEADER, List.of("WSO2_MS_PostPortalService"));
 	}
 
 	@Test
@@ -112,25 +108,24 @@ class ComfactFacadeConfigurationTest {
 	}
 
 	@Test
-	void testAccountKeyHeaderIsNotSetWhenThereIsNoAuthorizationHeader() {
+	void testAccountKeyHeaderIsNotSetWhenThereIsNoJwtAssertionHeader() {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 
 		assertThat(applyRequestInterceptor().headers()).doesNotContainKey(ACCOUNT_KEY_HEADER);
 	}
 
 	@ParameterizedTest
-	@MethodSource("provideUnusableAuthorizationHeaders")
-	void testAccountKeyHeaderIsNotSetWhenSubjectCannotBeRead(final String authorizationHeader) {
-		setUpRequestWithAuthorizationHeader(authorizationHeader);
+	@MethodSource("provideUnusableJwtAssertionHeaders")
+	void testAccountKeyHeaderIsNotSetWhenSubjectCannotBeRead(final String jwtAssertionHeader) {
+		setUpRequestWithJwtAssertionHeader(jwtAssertionHeader);
 
 		assertThat(applyRequestInterceptor().headers()).doesNotContainKey(ACCOUNT_KEY_HEADER);
 	}
 
-	private static Stream<String> provideUnusableAuthorizationHeaders() {
+	private static Stream<String> provideUnusableJwtAssertionHeaders() {
 		return Stream.of(
-			"Basic dXNlcjpwYXNzd29yZA==",
-			"Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
-			"Bearer " + new PlainJWT(new JWTClaimsSet.Builder().build()).serialize());
+			"MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+			new PlainJWT(new JWTClaimsSet.Builder().build()).serialize());
 	}
 
 	private RequestTemplate applyRequestInterceptor() {
@@ -151,9 +146,9 @@ class ComfactFacadeConfigurationTest {
 		return new PlainJWT(new JWTClaimsSet.Builder().subject(subject).build()).serialize();
 	}
 
-	private static void setUpRequestWithAuthorizationHeader(final String authorizationHeader) {
+	private static void setUpRequestWithJwtAssertionHeader(final String jwtAssertionHeader) {
 		final var request = new MockHttpServletRequest();
-		request.addHeader(AUTHORIZATION, authorizationHeader);
+		request.addHeader(JWT_ASSERTION_HEADER, jwtAssertionHeader);
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 	}
 }
