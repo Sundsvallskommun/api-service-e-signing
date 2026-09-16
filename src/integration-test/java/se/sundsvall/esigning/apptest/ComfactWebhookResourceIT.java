@@ -29,4 +29,19 @@ class ComfactWebhookResourceIT extends AbstractAppTest {
 			.sendRequestAndVerifyResponse();
 	}
 
+	/**
+	 * A Comfact event whose customer reference is not a Postportalen message id is acknowledged without being relayed,
+	 * so the provider stops redelivering it. No Postportalservice stub is set up - a relay attempt would show up as an
+	 * unmatched request and fail the test.
+	 */
+	@Test
+	void test02_acknowledgeEventWithUnroutableCustomerReference() {
+		setupCall()
+			.withServicePath(PATH)
+			.withHttpMethod(POST)
+			.withRequest(REQUEST_FILE)
+			.withExpectedResponseStatus(OK)
+			.sendRequestAndVerifyResponse();
+	}
+
 }
