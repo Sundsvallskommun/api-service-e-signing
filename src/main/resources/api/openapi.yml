@@ -661,9 +661,11 @@ components:
           - sv-SE
         customerReference:
           type: string
-          description: "The consumer's own reference for the case (e.g. Postportalen's\
+          description: "The consumer's own reference for the case (Postportalen's\
             \ MessageId). It is passed to the provider and echoed back verbatim in\
-            \ every event callback, so the consumer can correlate the case."
+            \ every event callback, and is used as the message id when the event is\
+            \ relayed back to the consumer, so it must be a UUID the consumer can\
+            \ correlate the case by."
           examples:
           - 550e8400-e29b-41d4-a716-446655440000
         expires:
@@ -697,6 +699,7 @@ components:
           minItems: 1
           uniqueItems: true
       required:
+      - customerReference
       - document
       - initiator
       - notificationMessage

@@ -4,10 +4,14 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.esigning.integration.postportalservice.PostportalserviceIntegration;
+import se.sundsvall.esigning.integration.postportalservice.SigningEvent;
 import se.sundsvall.esigning.provider.SigningProvider;
 import se.sundsvall.esigning.provider.SigningProviderRegistry;
 import se.sundsvall.esigning.provider.model.SigningInstanceInfo;
@@ -92,6 +96,22 @@ class SigningGatewayServiceTest {
 		service.relaySigningEvent(municipalityId, event);
 
 		verify(mockPostportalserviceIntegration).sendEvent(municipalityId, event);
+		verifyNoMoreInteractions(mockRegistry, mockProvider, mockPostportalserviceIntegration);
+	}
+
+	@ParameterizedTest
+	@NullSource
+	@ValueSource(strings = {
+		"", " ", "not-a-uuid", "f58769608eb7457ca5694835744fffbc", "test-utan-body", "test-subject-utan-body"
+	})
+	void relaySigningEventIsAcknowledgedWhenCustomerReferenceIsNotAMessageId(final String customerReference) {
+		final var municipalityId = "2281";
+		final var template = createSigningEvent();
+		final var event = new SigningEvent(customerReference, template.providerCaseId(), template.provider(), template.eventType(), template.status(), template.signatory(), template.signedDocument(),
+			template.occurredAt());
+
+		service.relaySigningEvent(municipalityId, event);
+
 		verifyNoMoreInteractions(mockRegistry, mockProvider, mockPostportalserviceIntegration);
 	}
 

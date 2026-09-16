@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import se.sundsvall.dept44.common.validators.annotation.OneOf;
+import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
@@ -33,9 +34,11 @@ public class StartSigningRequest {
 	@Schema(description = "The language used for the signing instance. Swedish will be used if no language is provided", examples = "sv-SE", requiredMode = NOT_REQUIRED)
 	private String language;
 
-	@Schema(description = "The consumer's own reference for the case (e.g. Postportalen's MessageId). It is passed to the provider and echoed back verbatim in every event callback, so the consumer can correlate the case.",
+	@ValidUuid
+	@Schema(
+		description = "The consumer's own reference for the case (Postportalen's MessageId). It is passed to the provider and echoed back verbatim in every event callback, and is used as the message id when the event is relayed back to the consumer, so it must be a UUID the consumer can correlate the case by.",
 		examples = "550e8400-e29b-41d4-a716-446655440000",
-		requiredMode = NOT_REQUIRED)
+		requiredMode = REQUIRED)
 	private String customerReference;
 
 	@Future
