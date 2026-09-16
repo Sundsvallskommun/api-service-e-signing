@@ -475,9 +475,7 @@ components:
           description: Body of the message
           examples:
           - "Dear John Doe, please sign the document."
-          minLength: 1
       required:
-      - body
       - subject
     ProcessInitiator:
       type: object

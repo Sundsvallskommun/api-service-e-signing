@@ -26,8 +26,9 @@ public class Message {
 	@Schema(description = "Subject of the message", examples = "Please sign the document", requiredMode = REQUIRED)
 	private String subject;
 
-	@NotBlank
-	@Schema(description = "Body of the message", examples = "Dear John Doe, please sign the document.", requiredMode = REQUIRED)
+	// Optional: Comfact accepts a signing instance without a notification body and simply renders the e-mail
+	// without that section, so callers that have nothing to say are not forced to invent a text.
+	@Schema(description = "Body of the message", examples = "Dear John Doe, please sign the document.")
 	private String body;
 
 }

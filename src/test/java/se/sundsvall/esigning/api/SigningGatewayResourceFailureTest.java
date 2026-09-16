@@ -59,7 +59,6 @@ class SigningGatewayResourceFailureTest {
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getInitiator().setName(null)), "initiator.name", "must not be blank"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getInitiator().setPartyId("Not-a-valid-UUID")), "initiator.partyId", "not a valid UUID"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.setNotificationMessage(null)), "notificationMessage", "must not be null"),
-			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getNotificationMessage().setBody(null)), "notificationMessage.body", "must not be blank"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getNotificationMessage().setSubject(null)), "notificationMessage.subject", "must not be blank"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getReminder().setMessage(null)), "reminder.message", "must not be null"),
 			Arguments.of(municipalityId, createStartSigningRequest(request -> request.getReminder().setIntervalInHours(0)), "reminder.intervalInHours", "must be greater than or equal to 1"),
